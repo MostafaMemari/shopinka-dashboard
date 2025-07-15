@@ -25,8 +25,9 @@ const ModalGallery = ({ btnLabel, multi = false, onSelect, initialSelected, chil
   const [selectedItems, setSelectedItems] = useState<GalleryItem[]>([])
   const [activeItem, setActiveItem] = useState<GalleryItem | null>(null)
   const [searchTerm, setSearchTerm] = useState<string>('')
-  const [visibleItems, setVisibleItems] = useState<number>(12)
+  const [page, setPage] = useState<number>(1)
   const [gallerySelected, setGallerySelected] = useState<string>('all')
+  const [allGalleryItems, setAllGalleryItems] = useState<GalleryItem[]>([])
   const contentRef = useRef<HTMLDivElement>(null)
 
   const {
@@ -39,16 +40,27 @@ const ModalGallery = ({ btnLabel, multi = false, onSelect, initialSelected, chil
     enabled: open,
     params: {
       galleryId: gallerySelected === 'all' ? undefined : gallerySelected,
-      title: searchTerm
+      title: searchTerm,
+      take: 20,
+      page
     },
     staleTime: 5 * 60 * 1000
   })
 
-  const galleryItems: GalleryItem[] = galleryItemsData?.data?.items || []
+  useEffect(() => {
+    if (galleryItemsData?.data?.items) {
+      if (page === 1) {
+        setAllGalleryItems(galleryItemsData.data.items)
+      } else {
+        setAllGalleryItems(prev => [...prev, ...galleryItemsData.data.items])
+      }
+    }
+  }, [galleryItemsData, page])
 
   const debouncedSetSearchTerm = useCallback((value: string) => {
     const debouncedFn = debounce((val: string) => {
       setSearchTerm(val)
+      setPage(1)
     }, 500)
 
     debouncedFn(value)
@@ -76,6 +88,8 @@ const ModalGallery = ({ btnLabel, multi = false, onSelect, initialSelected, chil
     setSelectedItems([])
     setSearchTerm('')
     setGallerySelected('all')
+    setPage(1)
+    setAllGalleryItems([])
   }
 
   const handleGalleryChange = (event: SelectChangeEvent<string>) => {
@@ -84,6 +98,8 @@ const ModalGallery = ({ btnLabel, multi = false, onSelect, initialSelected, chil
     setGallerySelected(newGalleryId)
     setSelectedItems([])
     setActiveItem(null)
+    setPage(1)
+    setAllGalleryItems([])
     refetchItems()
   }
 
@@ -94,6 +110,10 @@ const ModalGallery = ({ btnLabel, multi = false, onSelect, initialSelected, chil
     } else {
       showToast({ type: 'warning', message: 'لطفاً حداقل یک تصویر انتخاب کنید' })
     }
+  }
+
+  const handleShowMore = () => {
+    setPage(prev => prev + 1)
   }
 
   return (
@@ -127,12 +147,12 @@ const ModalGallery = ({ btnLabel, multi = false, onSelect, initialSelected, chil
           <GalleryHeader searchTerm={searchTerm} gallerySelected={gallerySelected} onSearchChange={debouncedSetSearchTerm} onGalleryChange={handleGalleryChange} enabled={open} />
           <Box ref={contentRef} tabIndex={-1} sx={{ display: 'flex', flex: 1, flexDirection: { xs: 'column', sm: 'row' }, overflow: 'hidden' }}>
             <GalleryContent
-              galleryItems={galleryItems}
+              galleryItems={allGalleryItems}
               isLoading={isLoadingItems || isFetchingItems}
               error={errorItems}
-              visibleItems={visibleItems}
               selectedItems={selectedItems}
-              onShowMore={() => setVisibleItems(prev => prev + 12)}
+              onShowMore={handleShowMore}
+              hasMore={galleryItemsData?.data?.pager?.hasNextPage}
               onItemClick={item => {
                 if (multi) {
                   const isSelected = selectedItems.some(i => i.id === item.id)

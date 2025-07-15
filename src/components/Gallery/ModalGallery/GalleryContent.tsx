@@ -9,14 +9,14 @@ interface GalleryContentProps {
   galleryItems: GalleryItem[]
   isLoading: boolean
   error: any
-  visibleItems: number
   selectedItems: GalleryItem[]
   onShowMore: () => void
   onItemClick: (item: GalleryItem) => void
   onRetry: () => void
+  hasMore?: boolean
 }
 
-const GalleryContent = ({ galleryItems, isLoading, error, visibleItems, selectedItems, onShowMore, onItemClick, onRetry }: GalleryContentProps) => {
+const GalleryContent = ({ galleryItems, isLoading, error, selectedItems, onShowMore, onItemClick, onRetry, hasMore = true }: GalleryContentProps) => {
   return (
     <Box
       sx={{
@@ -44,7 +44,7 @@ const GalleryContent = ({ galleryItems, isLoading, error, visibleItems, selected
         <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Typography variant='h6'>هیچ تصویری یافت نشد</Typography>
           <Typography variant='body2' color='text.secondary'>
-            به نظر می‌رسد هیچ تصویری در این گالری وجودpenalty ندارد.
+            به نظر می‌رسد هیچ تصویری در این گالری وجود ندارد.
           </Typography>
         </Box>
       )}
@@ -56,7 +56,7 @@ const GalleryContent = ({ galleryItems, isLoading, error, visibleItems, selected
             gap: { xs: 2, sm: 4 }
           }}
         >
-          {galleryItems.slice(0, visibleItems).map((item: GalleryItem) => (
+          {galleryItems.map((item: GalleryItem) => (
             <Box
               key={item.id}
               sx={{
@@ -75,7 +75,7 @@ const GalleryContent = ({ galleryItems, isLoading, error, visibleItems, selected
           ))}
         </Box>
       )}
-      {galleryItems.length > visibleItems && (
+      {!isLoading && !error && galleryItems.length > 0 && hasMore && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
           <Button variant='outlined' onClick={onShowMore}>
             نمایش بیشتر
