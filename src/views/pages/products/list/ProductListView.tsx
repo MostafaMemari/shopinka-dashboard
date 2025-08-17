@@ -5,7 +5,6 @@ import Card from '@mui/material/Card'
 import { Box, Button, CardHeader, Divider, useMediaQuery, useTheme } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import DesktopProductTable from './DesktopProductTable'
-import LoadingSpinner from '@/components/LoadingSpinner'
 import { Product } from '@/types/app/product.type'
 import { useDebounce } from '@/hooks/useDebounce'
 import ErrorState from '@/components/states/ErrorState'
@@ -16,7 +15,7 @@ import CustomTextField from '@/@core/components/mui/TextField'
 import TableFilters from './TableFilters'
 import { useQuerySetState } from '@/hooks/useQuerySetState'
 import { parseAsArrayOf, parseAsInteger, parseAsString } from 'nuqs'
-import { UserListSkeleton } from '../../../../components/TableSkeleton'
+import { TableListSkeleton } from '@/components/TableSkeleton'
 
 const ProductListView = () => {
   const router = useRouter()
@@ -87,7 +86,7 @@ const ProductListView = () => {
       </Box>
 
       {isLoading || isFetching ? (
-        <UserListSkeleton />
+        <TableListSkeleton />
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : products.length === 0 ? (
