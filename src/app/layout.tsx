@@ -18,7 +18,7 @@ import '@/app/globals.css'
 
 // Generated Icon CSS Imports
 import '@assets/iconify-icons/generated-icons.css'
-
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import QueryProvider from './providers'
 
 export const metadata = {
@@ -50,7 +50,9 @@ const RootLayout = async (props: ChildrenType) => {
           pauseOnHover
         />
         <InitColorSchemeScript attribute='data' defaultMode={systemMode} />
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </QueryProvider>
       </body>
     </html>
   )

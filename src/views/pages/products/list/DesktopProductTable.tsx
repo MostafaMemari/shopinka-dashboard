@@ -12,7 +12,7 @@ const DesktopProductTable = ({ products }: { products: Product[] }) => {
   const [isNavigating, setIsNavigating] = useState<number | null>(null)
 
   const handleEditProduct = (id: number) => {
-    setIsNavigating(id) // فعال کردن لودینگ برای ردیف خاص
+    setIsNavigating(id)
     router.push(`/products/edit?id=${id}`)
   }
 
