@@ -94,7 +94,7 @@ const ProductListView = () => {
         <EmptyProductState isSearch={!!filters.state.search} searchQuery={filters.state.search} />
       ) : (
         <>
-          {!isMobile && <DesktopProductTable products={products} />}
+          <DesktopProductTable products={products} />
           <TablePaginationComponent
             currentPage={filters.state.page}
             totalPages={paginationData.totalPages}

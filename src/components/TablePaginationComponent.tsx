@@ -3,6 +3,7 @@ import Pagination from '@mui/material/Pagination'
 import Typography from '@mui/material/Typography'
 import MenuItem from '@mui/material/MenuItem'
 import CustomTextField from '@/@core/components/mui/TextField'
+import { type Theme, useMediaQuery } from '@mui/material'
 
 type TablePaginationProps = {
   currentPage: number
@@ -17,6 +18,8 @@ type TablePaginationProps = {
 const TablePaginationComponent = ({ currentPage, totalPages, totalCount, rowsPerPage, onPageChange, onRowsPerPageChange, currentPageItemCount }: TablePaginationProps) => {
   const from = totalCount === 0 ? 0 : (currentPage - 1) * rowsPerPage + 1
   const to = from + currentPageItemCount - 1
+
+  const isSmall = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'))
 
   return (
     <div className='flex justify-between items-center flex-wrap pli-6 border-bs bs-auto plb-[12.5px] gap-2'>
@@ -33,6 +36,7 @@ const TablePaginationComponent = ({ currentPage, totalPages, totalCount, rowsPer
         </div>
 
         <Pagination
+          size={isSmall ? 'small' : 'medium'}
           shape='rounded'
           color='primary'
           variant='tonal'
