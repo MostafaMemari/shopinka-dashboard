@@ -13,10 +13,10 @@ import EmptyContactState from './EmptyContactState'
 import DesktopContactTable from './DesktopContactTable'
 import { Contact } from '@/types/app/contact.type'
 import { useContacts } from '@/hooks/reactQuery/useContact'
+import { TableListSkeleton } from '@/components/TableSkeleton'
 
 const ContactView = () => {
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   const { page, size, setPage, setSize } = usePaginationParams()
   const { search, setSearch } = useSearch()
@@ -56,14 +56,14 @@ const ContactView = () => {
       </Box>
 
       {isLoading || isFetching ? (
-        <LoadingSpinner />
+        <TableListSkeleton />
       ) : error ? (
         <ErrorState onRetry={refetch} />
       ) : contacts.length === 0 ? (
         <EmptyContactState isSearch={!!search} searchQuery={search} />
       ) : (
         <>
-          {!isMobile && <DesktopContactTable contacts={contacts} />}
+          <DesktopContactTable contacts={contacts} />
           <TablePaginationComponent
             currentPage={pager.currentPage}
             totalPages={pager.totalPages}

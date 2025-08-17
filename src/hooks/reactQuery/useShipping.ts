@@ -10,7 +10,7 @@ import { createShipping, getShippings, updateShipping } from '@/libs/api/shippin
 import { shippingSchema } from '@/libs/validators/shipping.schema'
 import { errorShippingMessage } from '@/messages/shippingMessages'
 
-export function useShippings({ enabled = true, params = {}, staleTime = 1 * 60 * 1000 }: QueryOptions) {
+export function useShippings({ enabled = true, params = {}, staleTime = 5 * 60 * 1000 }: QueryOptions) {
   const fetchShipping = () => getShippings(params).then(res => res)
 
   return useQuery<any, Error>({

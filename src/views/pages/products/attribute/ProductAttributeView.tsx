@@ -40,7 +40,6 @@ const ProductAttributeView = () => {
   })
 
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   const attributes: Attribute[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
@@ -61,7 +60,7 @@ const ProductAttributeView = () => {
         <EmptyAttributeState isSearch={!!search} searchQuery={search} />
       ) : (
         <>
-          {!isMobile && <DesktopAttributeTable data={attributes} />}
+          <DesktopAttributeTable data={attributes} />
           <TablePaginationComponent
             currentPage={page}
             totalPages={paginationData.totalPages}

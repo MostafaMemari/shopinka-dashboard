@@ -2,10 +2,8 @@
 
 import { useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
-import { Box, useMediaQuery, useTheme } from '@mui/material'
+import { Box } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
-
-import LoadingSpinner from '@/components/LoadingSpinner'
 import { usePaginationParams } from '@/hooks/usePaginationParams'
 import { useDebounce } from '@/hooks/useDebounce'
 import ErrorState from '@/components/states/ErrorState'
@@ -15,6 +13,7 @@ import DesktopOrderTable from './DesktopOrderTable'
 import { Order } from '@/types/app/order.type'
 import EmptyOrderState from './EmptyOrderState'
 import { useOrders } from '@/hooks/reactQuery/useOrder'
+import { TableListSkeleton } from '@/components/TableSkeleton'
 
 const OrderListView = () => {
   const { page, size, setPage, setSize } = usePaginationParams()
@@ -41,9 +40,6 @@ const OrderListView = () => {
     staleTime: 5 * 60 * 1000
   })
 
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-
   const orders: Order[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
 
@@ -56,14 +52,14 @@ const OrderListView = () => {
       </Box>
 
       {isLoading || isFetching ? (
-        <LoadingSpinner />
+        <TableListSkeleton />
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : orders.length === 0 ? (
         <EmptyOrderState isSearch={!!search} searchQuery={search} />
       ) : (
         <>
-          {!isMobile && <DesktopOrderTable orders={orders} refetch={refetch} />}
+          <DesktopOrderTable orders={orders} refetch={refetch} />
           <TablePaginationComponent
             currentPage={page}
             totalPages={paginationData.totalPages}

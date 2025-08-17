@@ -2,10 +2,9 @@
 
 import { useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import DesktopBannerTable from './DesktopBannerTable'
-import LoadingSpinner from '@/components/LoadingSpinner'
 import { usePaginationParams } from '@/hooks/usePaginationParams'
 import { useDebounce } from '@/hooks/useDebounce'
 import ErrorState from '@/components/states/ErrorState'
@@ -15,6 +14,7 @@ import { useBanners } from '@/hooks/reactQuery/useBanner'
 import EmptyBannerState from './EmptyBannerState'
 import CreateBannerModal from './CreateBannerModal'
 import { Banner } from '@/types/app/banner.type'
+import { TableListSkeleton } from '@/components/TableSkeleton'
 
 const BannerListView = () => {
   const { page, size, setPage, setSize } = usePaginationParams()
@@ -39,9 +39,6 @@ const BannerListView = () => {
     staleTime: 5 * 60 * 1000
   })
 
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-
   const banners: Banner[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
 
@@ -57,14 +54,14 @@ const BannerListView = () => {
         <CustomTextField id='form-props-search' placeholder='جستجوی بنر' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>
       {isLoading || isFetching ? (
-        <LoadingSpinner />
+        <TableListSkeleton />
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : banners.length === 0 ? (
         <EmptyBannerState isSearch={!!search} searchQuery={search} />
       ) : (
         <>
-          {!isMobile && <DesktopBannerTable banners={banners} />}
+          <DesktopBannerTable banners={banners} />
           <TablePaginationComponent
             currentPage={page}
             totalPages={paginationData.totalPages}

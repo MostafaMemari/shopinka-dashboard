@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import Card from '@mui/material/Card'
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import DesktopMediaGallery from './DesktopMediaGallery'
 import CreateMediaModal from './CreateMediaModal'
@@ -14,8 +14,8 @@ import { usePaginationParams } from '@/hooks/usePaginationParams'
 import ErrorState from '@/components/states/ErrorState'
 import EmptyGalleryItemsState from './EmptyGalleryItemsState'
 import { useSearch } from '@/hooks/useSearchQuery'
-import { useDebounce } from 'react-use'
 import CustomTextField from '@/@core/components/mui/TextField'
+import { GalleryItemSkeleton, TableListSkeleton } from '@/components/TableSkeleton'
 
 const GalleryItemView = ({ galleryId }: { galleryId: string }) => {
   const { page, size, setPage, setSize } = usePaginationParams()
@@ -49,9 +49,6 @@ const GalleryItemView = ({ galleryId }: { galleryId: string }) => {
     staleTime: 5 * 60 * 1000
   })
 
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-
   const galleryItems: GalleryItem[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
 
@@ -73,9 +70,6 @@ const GalleryItemView = ({ galleryId }: { galleryId: string }) => {
     setSelected([])
   }
 
-  if (isLoading || isFetching) return <LoadingSpinner />
-  if (error) return <ErrorState onRetry={() => refetch()} />
-
   return (
     <Card sx={{ bgcolor: 'background.paper', borderColor: 'divider' }}>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 4, p: 6 }}>
@@ -90,7 +84,11 @@ const GalleryItemView = ({ galleryId }: { galleryId: string }) => {
         <CustomTextField id='form-props-search' placeholder='جستجوی رسانه' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>
 
-      {galleryItems.length === 0 ? (
+      {isLoading || isFetching ? (
+        <GalleryItemSkeleton />
+      ) : error ? (
+        <ErrorState onRetry={() => refetch()} />
+      ) : galleryItems.length === 0 ? (
         <EmptyGalleryItemsState isSearch={!!search} searchQuery={search} />
       ) : (
         <>

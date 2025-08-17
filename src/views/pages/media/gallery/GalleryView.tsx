@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import DesktopGalleryTable from './DesktopGalleryTable'
 import LoadingSpinner from '@/components/LoadingSpinner'
@@ -15,6 +15,7 @@ import CustomTextField from '@/@core/components/mui/TextField'
 import EmptyGalleryState from './EmptyGalleryState'
 import { Gallery } from '@/types/app/gallery.type'
 import CreateGalleryModal from './CreateGalleryModal'
+import { TableListSkeleton } from '@/components/TableSkeleton'
 
 const GalleryListView = () => {
   const { page, size, setPage, setSize } = usePaginationParams()
@@ -38,14 +39,8 @@ const GalleryListView = () => {
     staleTime: 5 * 60 * 1000
   })
 
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-
   const galleries: Gallery[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
-
-  if (isLoading || isFetching) return <LoadingSpinner />
-  if (error) return <ErrorState onRetry={() => refetch()} />
 
   return (
     <Card sx={{ bgcolor: 'background.paper', borderColor: 'divider' }}>
@@ -58,11 +53,15 @@ const GalleryListView = () => {
 
         <CustomTextField id='form-props-search' placeholder='جستجوی گالری' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>
-      {galleries.length === 0 ? (
+      {isLoading || isFetching ? (
+        <TableListSkeleton />
+      ) : error ? (
+        <ErrorState onRetry={() => refetch()} />
+      ) : galleries.length === 0 ? (
         <EmptyGalleryState isSearch={!!search} searchQuery={search} />
       ) : (
         <>
-          {!isMobile && <DesktopGalleryTable data={galleries} />}
+          <DesktopGalleryTable data={galleries} />
           <TablePaginationComponent
             currentPage={page}
             totalPages={paginationData.totalPages}

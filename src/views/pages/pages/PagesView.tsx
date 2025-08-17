@@ -2,9 +2,8 @@
 
 import { useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
-import LoadingSpinner from '@/components/LoadingSpinner'
 import { usePaginationParams } from '@/hooks/usePaginationParams'
 import { useDebounce } from '@/hooks/useDebounce'
 import ErrorState from '@/components/states/ErrorState'
@@ -15,6 +14,7 @@ import { Page } from '@/types/app/page.type'
 import CreatePageModal from './CreatePageModal'
 import EmptyPageState from './EmptyPageState'
 import DesktopPageTable from './DesktopPageTable'
+import { TableListSkeleton } from '@/components/TableSkeleton'
 
 const PageListView = () => {
   const { page, size, setPage, setSize } = usePaginationParams()
@@ -38,9 +38,6 @@ const PageListView = () => {
     staleTime: 5 * 60 * 1000
   })
 
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-
   const pages: Page[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
 
@@ -56,14 +53,14 @@ const PageListView = () => {
         <CustomTextField id='form-props-search' placeholder='جستجوی تگ' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>
       {isLoading || isFetching ? (
-        <LoadingSpinner />
+        <TableListSkeleton />
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : pages.length === 0 ? (
         <EmptyPageState isSearch={!!search} searchQuery={search} />
       ) : (
         <>
-          {!isMobile && <DesktopPageTable pages={pages} />}
+          <DesktopPageTable pages={pages} />
           <TablePaginationComponent
             currentPage={page}
             totalPages={paginationData.totalPages}

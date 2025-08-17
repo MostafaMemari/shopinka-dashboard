@@ -15,6 +15,7 @@ import { useSearch } from '@/hooks/useSearchQuery'
 import { useDebounce } from '@/hooks/useDebounce'
 import CustomTextField from '@/@core/components/mui/TextField'
 import EmptyCategoryState from './EmptyCategoryState'
+import { TableListSkeleton } from '@/components/TableSkeleton'
 
 const CategoryView = () => {
   const { page, size, setPage, setSize } = usePaginationParams()
@@ -61,7 +62,7 @@ const CategoryView = () => {
       </Box>
 
       {isLoading || isFetching ? (
-        <LoadingSpinner />
+        <TableListSkeleton />
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : categories.length === 0 ? (

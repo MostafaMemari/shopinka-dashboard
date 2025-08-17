@@ -5,7 +5,6 @@ import Card from '@mui/material/Card'
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import DesktopBlogTable from './DesktopBlogTable'
-import LoadingSpinner from '@/components/LoadingSpinner'
 import { Blog } from '@/types/app/blog.type'
 import { usePaginationParams } from '@/hooks/usePaginationParams'
 import { useDebounce } from '@/hooks/useDebounce'
@@ -15,6 +14,7 @@ import { useRouter } from 'next/navigation'
 import { useSearch } from '@/hooks/useSearchQuery'
 import CustomTextField from '@/@core/components/mui/TextField'
 import EmptyBlogState from './EmptyBlogState'
+import { TableListSkeleton } from '@/components/TableSkeleton'
 
 const BlogListView = () => {
   const { page, size, setPage, setSize } = usePaginationParams()
@@ -45,7 +45,6 @@ const BlogListView = () => {
   })
 
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   const blogs: Blog[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
@@ -59,15 +58,16 @@ const BlogListView = () => {
 
         <CustomTextField id='form-props-search' placeholder='جستجوی وبلاگ' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>
+
       {isLoading || isFetching ? (
-        <LoadingSpinner />
+        <TableListSkeleton />
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : blogs.length === 0 ? (
         <EmptyBlogState isSearch={!!search} searchQuery={search} />
       ) : (
         <>
-          {!isMobile && <DesktopBlogTable blogs={blogs} />}
+          <DesktopBlogTable blogs={blogs} />
           <TablePaginationComponent
             currentPage={page}
             totalPages={paginationData.totalPages}
