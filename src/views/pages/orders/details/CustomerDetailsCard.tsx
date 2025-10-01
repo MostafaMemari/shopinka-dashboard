@@ -28,7 +28,10 @@ const CustomerDetails = ({ customerData }: { customerData?: User }) => {
               اطلاعات تماس
             </Typography>
           </div>
-          <Typography>موبایل: {customerData?.mobile}</Typography>
+          <div className='flex justify-between'>
+            <Typography color='text.secondary'>موبایل:</Typography>
+            <Typography color='text.primary'>{customerData?.mobile}</Typography>
+          </div>
         </div>
       </CardContent>
     </Card>

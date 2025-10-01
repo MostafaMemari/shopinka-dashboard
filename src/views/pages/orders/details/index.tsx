@@ -6,8 +6,8 @@ import { type OrderDetails } from '@/types/app/order.type'
 // Component Imports
 import OrderDetailHeader from './OrderDetailHeader'
 import OrderDetailsCard from './OrderDetailsCard'
-import ShippingActivity from './ShippingActivityCard'
 import CustomerDetails from './CustomerDetailsCard'
+import ShippingAddress from './ShippingAddressCard'
 
 const OrderDetails = ({ order }: { order: OrderDetails }) => {
   return (
@@ -20,9 +20,6 @@ const OrderDetails = ({ order }: { order: OrderDetails }) => {
           <Grid size={{ xs: 12 }}>
             <OrderDetailsCard order={order} />
           </Grid>
-          {/* <Grid size={{ xs: 12 }}>
-            <ShippingActivity order={order} />
-          </Grid> */}
         </Grid>
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
@@ -30,7 +27,9 @@ const OrderDetails = ({ order }: { order: OrderDetails }) => {
           <Grid size={{ xs: 12 }}>
             <CustomerDetails customerData={order.user} />
           </Grid>
-          <Grid size={{ xs: 12 }}>{/* <ShippingAddress /> */}</Grid>
+          <Grid size={{ xs: 12 }}>
+            <ShippingAddress addressSnapshot={order.addressSnapshot} />
+          </Grid>
           <Grid size={{ xs: 12 }}>{/* <BillingAddress /> */}</Grid>
         </Grid>
       </Grid>
