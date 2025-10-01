@@ -5,7 +5,7 @@ export type ShippingInfo = {
   id: number
   orderId: number
   trackingCode: string
-  sentAt: Date
+  sentAt: string
   createdAt: string
   updatedAt: string
 }

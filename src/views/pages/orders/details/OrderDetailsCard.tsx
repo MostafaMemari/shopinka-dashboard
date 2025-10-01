@@ -288,31 +288,21 @@ const OrderDetailsCard = ({ order }: { order: OrderDetails }) => {
       />
       <OrderTable orderItems={orderItems} />
       <CardContent className='flex justify-start'>
-        <div>
-          <div className='flex items-center gap-12'>
-            <Typography color='text.primary' className='min-is-[100px]'>
-              مجموع فروش :
-            </Typography>
-            <Typography color='text.primary' className='font-medium'>
-              {totalSum} تومان
-            </Typography>
-          </div>
-          <div className='flex items-center gap-12'>
-            <Typography color='text.primary' className='min-is-[100px]'>
-              هزینه ارسال:
-            </Typography>
-            <Typography color='text.primary' className='font-medium'>
-              {order.totalPrice - totalSum} تومان
-            </Typography>
-          </div>
-          <div className='flex items-center gap-12'>
-            <Typography color='text.primary' className='font-medium min-is-[100px]'>
-              مجموع پرداختی:
-            </Typography>
-            <Typography color='text.primary' className='font-medium'>
-              {order.totalPrice} تومان
-            </Typography>
-          </div>
+        <div className='flex flex-col gap-2'>
+          {[
+            { label: 'مجموع فروش', value: `${totalSum} تومان` },
+            { label: 'هزینه ارسال', value: `${order.totalPrice - totalSum} تومان` },
+            { label: 'مجموع پرداختی', value: `${order.totalPrice} تومان` }
+          ].map((item, idx) => (
+            <div key={idx} className='flex items-center gap-12'>
+              <Typography color='text.primary' className='min-w-[100px]'>
+                {item.label} :
+              </Typography>
+              <Typography color='text.primary' className='font-medium'>
+                {item.value}
+              </Typography>
+            </div>
+          ))}
         </div>
       </CardContent>
     </Card>
