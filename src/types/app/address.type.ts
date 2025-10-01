@@ -11,3 +11,15 @@ export type Address = {
   createdAt: string
   updatedAt: string
 }
+
+export type AddressSnapshot = {
+  id: number
+  fullName: string
+  province: string
+  city: string
+  postalAddress: string
+  buildingNumber: number
+  unit: number | null
+  postalCode: string
+  createdAt: string
+}

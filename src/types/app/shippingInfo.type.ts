@@ -10,4 +10,15 @@ export type ShippingInfo = {
   updatedAt: string
 }
 
+export type Shipping = {
+  id: number
+  userId: number
+  name: string
+  price: number
+  estimatedDays: number
+  isActive: boolean
+  createdAt: number
+  updatedAt: number
+}
+
 export type ShippingInfoForm = yup.InferType<typeof shippingInfoSchema>

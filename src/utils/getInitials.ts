@@ -6,3 +6,11 @@ export const extractTime = (text: string) => {
 
   return match ? match[1] : null
 }
+
+export const getPersianInitials = (str: string): string => {
+  const parts = str.trim().split(/[\s\u200C]+/)
+
+  if (parts.length === 1) return parts[0][0] || ''
+
+  return (parts[0][0] || '') + '\u200C' + (parts[1][0] || '')
+}

@@ -1,26 +1,12 @@
 import { useState } from 'react'
 import { Typography, Chip } from '@mui/material'
-import { Order } from '@/types/app/order.type'
+import { Order, ORDER_STATUS_MAP } from '@/types/app/order.type'
 import { changeStatusOrder } from '@/libs/api/order.api'
 import OrderTableActions from './OrderTableActions'
 import { ShippingInfo } from '@/types/app/shippingInfo.type'
-
-const TRANSACTION_STATUS_MAP = {
-  SUCCESS: { label: 'موفق', color: 'success' },
-  FAILED: { label: 'ناموفق', color: 'error' },
-  PENDING: { label: 'در انتظار', color: 'info' },
-  REFUNDED: { label: 'برگشت داده', color: 'warning' },
-  UNKNOWN: { label: 'نامشخص', color: 'info' }
-} as const
-
-const ORDER_STATUS_MAP = {
-  CANCELLED: { label: 'لغو شده', color: 'error' },
-  DELIVERED: { label: 'تحویل شده', color: 'success' },
-  PENDING: { label: 'در انتظار', color: 'warning' },
-  PROCESSING: { label: 'درحال پردازش', color: 'secondary' },
-  SHIPPED: { label: 'تحویل پست', color: 'info' },
-  UNKNOWN: { label: 'نامشخص', color: 'info' }
-} as const
+import Link from 'next/link'
+import classNames from 'classnames'
+import { TRANSACTION_STATUS_MAP } from '@/types/app/transaction.type'
 
 interface OrderTableRowProps {
   order: Order
@@ -50,14 +36,19 @@ const OrderTableRow = ({ order, refetch }: OrderTableRowProps) => {
 
   return (
     <tr>
-      <td>{order.orderNumber}</td>
+      <td className='text-sky-300 dark:text-sky-600'>
+        <Link href={`/orders/${order.id}`}>{order.id}#</Link>
+      </td>
       <td>
         <Typography className='font-medium' color='text.primary'>
           {order.address?.fullName}
         </Typography>
       </td>
       <td>
-        <Chip label={transactionStatus.label} color={transactionStatus.color} size='small' />
+        <div className='flex items-center gap-1'>
+          <i className={classNames('tabler-circle-filled bs-2.5 is-2.5', transactionStatus.colorClassName)} />
+          <Typography className={classNames('font-medium', transactionStatus.colorClassName)}>{transactionStatus.label}</Typography>
+        </div>
       </td>
       <td>
         <Chip label={orderStatus.label} color={orderStatus.color} size='small' />
