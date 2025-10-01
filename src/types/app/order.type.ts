@@ -41,7 +41,7 @@ export type OrderDetails = {
 
   shipping: Shipping
   shippingInfo?: ShippingInfo | null
-  transaction?: Transaction
+  transaction: Transaction
   user: User
   addressSnapshot: AddressSnapshot
 }

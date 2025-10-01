@@ -8,8 +8,11 @@ import OrderDetailHeader from './OrderDetailHeader'
 import OrderDetailsCard from './OrderDetailsCard'
 import CustomerDetails from './CustomerDetailsCard'
 import ShippingAddress from './ShippingAddressCard'
+import TransactionDetails from './TransactionDetails'
 
 const OrderDetails = ({ order }: { order: OrderDetails }) => {
+  console.log(order.transaction)
+
   return (
     <Grid container spacing={6}>
       <Grid size={{ xs: 12 }}>
@@ -30,7 +33,9 @@ const OrderDetails = ({ order }: { order: OrderDetails }) => {
           <Grid size={{ xs: 12 }}>
             <ShippingAddress addressSnapshot={order.addressSnapshot} />
           </Grid>
-          <Grid size={{ xs: 12 }}>{/* <BillingAddress /> */}</Grid>
+          <Grid size={{ xs: 12 }}>
+            <TransactionDetails transactionData={order.transaction} />
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

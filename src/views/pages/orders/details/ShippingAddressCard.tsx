@@ -5,8 +5,6 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 
 const ShippingAddress = ({ addressSnapshot }: { addressSnapshot: AddressSnapshot }) => {
-  console.log(addressSnapshot)
-
   return (
     <Card>
       <CardContent className='flex flex-col gap-6'>
