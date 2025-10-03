@@ -7,11 +7,12 @@ interface ShippingInfoFormProps {
   control: any
   errors: any
   isLoading: boolean
+  onSubmit: (data: any) => void
 }
 
-const ShippingInfoForm = ({ control, errors, isLoading }: ShippingInfoFormProps) => {
+const ShippingInfoForm = ({ control, errors, isLoading, onSubmit }: ShippingInfoFormProps) => {
   return (
-    <form className='flex flex-col gap-5'>
+    <form className='flex flex-col gap-5' onSubmit={onSubmit}>
       <Controller
         name='trackingCode'
         control={control}

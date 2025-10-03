@@ -14,7 +14,7 @@ const ShippingMethod = ({ orderId, shippingData, shippingInfo }: { orderId: numb
         <div className='flex justify-between items-center'>
           <Typography variant='h5'>روش ارسال</Typography>
 
-          <ShippingInfoModal shippingInfo={shippingInfo} id={orderId}>
+          <ShippingInfoModal shippingInfo={shippingInfo} orderId={orderId}>
             <Button variant='outlined'>اطلاعات ارسال</Button>
           </ShippingInfoModal>
         </div>

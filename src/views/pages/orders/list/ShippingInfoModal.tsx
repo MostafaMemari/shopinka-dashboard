@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, ReactNode } from 'react'
+import { useState, useCallback, ReactNode, useEffect, useMemo } from 'react'
 import Button from '@mui/material/Button'
 import FormActions from '@/components/FormActions'
 import { useShippingInfoForm } from '@/hooks/reactQuery/useShippingInfo'
@@ -10,26 +10,28 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { shippingInfoSchema } from '@/libs/validators/shippingInfo.schema'
 import ShippingInfoForm from '../form/ShippingInfoForm'
+import { useRouter } from 'next/navigation'
 
 interface ShippingInfoModalProps {
-  id: number
+  orderId: number
   shippingInfo?: ShippingInfo
   children?: ReactNode
 }
 
-const ShippingInfoModal = ({ children, id, shippingInfo }: ShippingInfoModalProps) => {
-  const [open, setOpen] = useState<boolean>(false)
+const ShippingInfoModal = ({ orderId, shippingInfo, children }: ShippingInfoModalProps) => {
+  const [open, setOpen] = useState(false)
+  const router = useRouter()
+
   const handleOpen = useCallback(() => setOpen(true), [])
+  const handleClose = useCallback(() => setOpen(false), [])
 
-  const initialData = {
-    orderId: id,
-    ...shippingInfo
-  }
-
-  const defaultValues: ShippingInfoType = {
-    orderId: initialData?.orderId ?? null,
-    trackingCode: initialData?.trackingCode ?? ''
-  }
+  const defaultValues = useMemo<ShippingInfoType>(
+    () => ({
+      orderId: orderId ?? null,
+      trackingCode: shippingInfo?.trackingCode ?? ''
+    }),
+    [orderId, shippingInfo?.trackingCode]
+  )
 
   const {
     control,
@@ -41,17 +43,19 @@ const ShippingInfoModal = ({ children, id, shippingInfo }: ShippingInfoModalProp
     resolver: yupResolver(shippingInfoSchema)
   })
 
+  useEffect(() => {
+    reset(defaultValues)
+  }, [reset, defaultValues])
+
   const { mutate, isPending } = useShippingInfoForm({
     initialData: shippingInfo,
     onSuccess: () => {
-      reset()
+      router.refresh()
       handleClose()
     }
   })
 
-  const handleClose = useCallback(() => {
-    setOpen(false)
-  }, [])
+  const onSubmit = handleSubmit(data => mutate(data))
 
   return (
     <div>
@@ -68,9 +72,9 @@ const ShippingInfoModal = ({ children, id, shippingInfo }: ShippingInfoModalProp
         onClose={handleClose}
         title='حمل و نقل'
         defaultMaxWidth='xs'
-        actions={<FormActions submitText='ثبت' onCancel={handleClose} onSubmit={handleSubmit(data => mutate(data))} isLoading={isPending} />}
+        actions={<FormActions submitText='ثبت' onCancel={handleClose} onSubmit={onSubmit} isLoading={isPending} />}
       >
-        <ShippingInfoForm control={control} errors={errors} isLoading={isPending} />
+        <ShippingInfoForm onSubmit={onSubmit} control={control} errors={errors} isLoading={isPending} />
       </CustomDialog>
     </div>
   )
