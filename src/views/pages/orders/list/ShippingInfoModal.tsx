@@ -2,7 +2,7 @@
 
 import { useState, useCallback, ReactNode } from 'react'
 import Button from '@mui/material/Button'
-import CustomDialog from '@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import FormActions from '@/components/FormActions'
 import ShippingInfoForm from '../form/ShippingInfoForm'
 import { useShippingInfoForm } from '@/hooks/reactQuery/useShippingInfo'

@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography'
 import { ORDER_STATUS_MAP, OrderDetails } from '@/types/app/order.type'
 import { TRANSACTION_STATUS_MAP } from '@/types/app/transaction.type'
 
+import CompleteOrderDialog from './CompleteOrderDialog'
+
 const OrderDetailHeader = ({ order }: { order: OrderDetails }) => {
   const transactionStatus = order.transaction?.status
     ? TRANSACTION_STATUS_MAP[order.transaction.status as keyof typeof TRANSACTION_STATUS_MAP] || TRANSACTION_STATUS_MAP.UNKNOWN
@@ -23,7 +25,7 @@ const OrderDetailHeader = ({ order }: { order: OrderDetails }) => {
         </div>
       </div>
 
-      <OpenDialogOnElementClick element={Button} elementProps={buttonProps('Delete Order', 'error', 'tonal')} dialog={ConfirmationDialog} dialogProps={{ type: 'delete-order' }} />
+      <CompleteOrderDialog orderId={order.id} />
     </div>
   )
 }

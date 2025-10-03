@@ -2,7 +2,7 @@
 
 import { useState, useCallback, ReactNode } from 'react'
 import { Typography } from '@mui/material'
-import CustomDialog from '@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import AttributeValueForm from './AttributeValueForm'
 import FormActions from '@/components/FormActions'
 import { AttributeType, AttributeValueForm as AttributeValueFormType } from '@/types/app/productAttributes.type'

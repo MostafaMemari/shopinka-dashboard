@@ -1,4 +1,4 @@
-import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
+import ConfirmDeleteModal from '@/components/dialogs/ConfirmDeleteModal'
 import { useInvalidateQuery } from '@/hooks/useInvalidateQuery'
 import { removeProductVariant } from '@/libs/api/productVariants.api'
 import { QueryKeys } from '@/types/enums/query-keys'

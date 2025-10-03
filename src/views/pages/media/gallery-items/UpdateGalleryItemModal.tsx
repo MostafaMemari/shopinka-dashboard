@@ -1,6 +1,6 @@
 import { useState, useCallback, ReactNode } from 'react'
 import CustomTextField from '@core/components/mui/TextField'
-import CustomDialog from '@/@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import { Controller, useForm } from 'react-hook-form'
 import { IconButton, DialogContent } from '@mui/material'
 import { type GalleryItemForm, type GalleryForm } from '@/types/app/gallery.type'

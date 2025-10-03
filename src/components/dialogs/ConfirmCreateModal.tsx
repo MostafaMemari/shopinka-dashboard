@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, CircularProgress, DialogContent } from '@mui/material'
-import CustomDialog from '@/@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import { showToast } from '@/utils/showToast'
 
 type ConfirmCreateModalProps = {

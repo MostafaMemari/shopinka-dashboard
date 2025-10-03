@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import CustomDialog from '@/@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import { removeGalleryItem } from '@/libs/api/galleyItem.api'
 import { showToast } from '@/utils/showToast'
 import { Button, CircularProgress, DialogContent, DialogContentText } from '@mui/material'

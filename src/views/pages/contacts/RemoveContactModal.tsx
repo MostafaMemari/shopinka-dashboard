@@ -1,4 +1,4 @@
-import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
+import ConfirmDeleteModal from '@/components/dialogs/ConfirmDeleteModal'
 import { useInvalidateQuery } from '@/hooks/useInvalidateQuery'
 import { removeContact } from '@/libs/api/contact.api' // توجه به فایل درست
 import { QueryKeys } from '@/types/enums/query-keys'

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, ReactNode } from 'react'
 import Button from '@mui/material/Button'
-import CustomDialog from '@/@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import PageForm from './PageForm'
 import FormActions from '@/components/FormActions'
 import { Page } from '@/types/app/page.type'

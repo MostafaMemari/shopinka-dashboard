@@ -1,4 +1,4 @@
-import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
+import ConfirmDeleteModal from '@/components/dialogs/ConfirmDeleteModal'
 import { IconButton } from '@mui/material'
 import { useInvalidateQuery } from '@/hooks/useInvalidateQuery'
 import { QueryKeys } from '@/types/enums/query-keys'

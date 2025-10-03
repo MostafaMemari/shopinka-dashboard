@@ -1,3 +1,5 @@
+'use client'
+
 import { ReactNode } from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -10,7 +12,7 @@ interface CustomDialogProps {
   open: boolean
   onClose: () => void
   title?: string
-  children: ReactNode
+  children?: ReactNode
   defaultMaxWidth?: Breakpoint
   actions?: ReactNode
   dialogStyles?: object

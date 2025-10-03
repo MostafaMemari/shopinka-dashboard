@@ -3,7 +3,7 @@
 import React from 'react'
 import { Button, DialogContent, Typography, Box, IconButton } from '@mui/material'
 import { Info, Title, Description, Image as ImageIcon, Storage, CalendarToday } from '@mui/icons-material'
-import CustomDialog from '@/@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import { GalleryItem } from '@/types/app/gallery.type'
 import { formatDate, formatFileSize } from '@/utils/formatters'
 

@@ -2,7 +2,7 @@
 
 import React, { ReactNode, useState } from 'react'
 import { Button } from '@mui/material'
-import CustomDialog from '@/@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import { useParams, useRouter } from 'next/navigation'
 import { showToast } from '@/utils/showToast'
 import { createGalleryItem } from '@/libs/api/galleyItem.api'

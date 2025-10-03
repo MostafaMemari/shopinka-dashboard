@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Box } from '@mui/material'
-import CustomDialog from '@/@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import GallerySelect from '@/components/Gallery/GallerySelect'
 import CreateGalleryModal from '@/views/pages/media/gallery/CreateGalleryModal'
 import { type SelectChangeEvent } from '@mui/material'

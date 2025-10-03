@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Button, CircularProgress, DialogContent, DialogContentText } from '@mui/material'
-import CustomDialog from '@/@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import { showToast } from '@/utils/showToast'
-import FormActions from './FormActions'
+import FormActions from '../FormActions'
 
 type ConfirmDeleteModalProps = {
   id: string | number

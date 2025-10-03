@@ -3,7 +3,7 @@
 import React from 'react'
 import { Button, DialogContent, Typography, Box, IconButton } from '@mui/material'
 import { Title, Description, Person, Star, CalendarToday, Inventory } from '@mui/icons-material'
-import CustomDialog from '@/@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import { Comment } from '@/types/app/comment.type'
 import { stripHtml } from '@/utils/formatters'
 

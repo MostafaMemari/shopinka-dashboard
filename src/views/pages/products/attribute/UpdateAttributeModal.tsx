@@ -2,7 +2,7 @@
 
 import { useState, useCallback, ReactNode } from 'react'
 import { IconButton } from '@mui/material'
-import CustomDialog from '@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import AttributeForm from './AttributeForm'
 import FormActions from '@/components/FormActions'
 import { Attribute } from '@/types/app/productAttributes.type'

@@ -2,7 +2,7 @@
 
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material'
 import { Title, Description, Person, Star, CalendarToday, Inventory, Info } from '@mui/icons-material'
-import CustomDialog from '@/@core/components/mui/CustomDialog'
+import CustomDialog from '@/components/dialogs/CustomDialog'
 import { Comment } from '@/types/app/comment.type'
 import { formatDate, stripHtml } from '@/utils/formatters'
 import { useState } from 'react'
