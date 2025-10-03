@@ -50,50 +50,6 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed
 }
 
-// type dataType = {
-//   productName: string
-//   productImage: string
-//   brand: string
-//   price: number
-//   quantity: number
-//   total: number
-// }
-
-// const orderData: dataType[] = [
-//   {
-//     productName: 'OnePlus 7 Pro',
-//     productImage: '/images/apps/ecommerce/product-21.png',
-//     brand: 'OnePluse',
-//     price: 799,
-//     quantity: 1,
-//     total: 799
-//   },
-//   {
-//     productName: 'Magic Mouse',
-//     productImage: '/images/apps/ecommerce/product-22.png',
-//     brand: 'Google',
-//     price: 89,
-//     quantity: 1,
-//     total: 89
-//   },
-//   {
-//     productName: 'Wooden Chair',
-//     productImage: '/images/apps/ecommerce/product-23.png',
-//     brand: 'Insofar',
-//     price: 289,
-//     quantity: 2,
-//     total: 578
-//   },
-//   {
-//     productName: 'Air Jorden',
-//     productImage: '/images/apps/ecommerce/product-24.png',
-//     brand: 'Nike',
-//     price: 299,
-//     quantity: 2,
-//     total: 598
-//   }
-// ]
-
 // Column Definitions
 const columnHelper = createColumnHelper<OrderMappedItem>()
 
@@ -278,28 +234,7 @@ const OrderDetailsCard = ({ order }: { order: OrderDetails }) => {
 
   return (
     <Card>
-      <CardHeader
-        title='جزئیات سفارش'
-        action={
-          <Box display='flex' alignItems='center' gap={2}>
-            <Typography component={Link} color='error.main' className='font-medium'>
-              لغو سفارش
-            </Typography>
-            <Typography component={Link} color='primary.main' className='font-medium'>
-              ویرایش
-            </Typography>
-          </Box>
-
-          // <>
-          //   <Box display='flex' alignItems='center' gap={2}>
-          //     <Button variant='contained' color='error'>
-          //       لغو سفارش
-          //     </Button>
-          //     <Button variant='contained'>تحویل داده شد</Button>
-          //   </Box>
-          // </>
-        }
-      />
+      <CardHeader title='جزئیات سفارش' />
       <OrderTable orderItems={orderItems} />
       <CardContent className='flex justify-start'>
         <div className='flex flex-col gap-2'>

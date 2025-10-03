@@ -31,7 +31,7 @@ const TransactionDetails = ({ transactionData }: { transactionData: Transaction 
           </div>
           <div className='flex justify-between'>
             <Typography color='text.secondary'>مبلغ:</Typography>
-            <Typography color='text.primary'>{transactionData.amount.toLocaleString()} تومان</Typography>
+            <Typography color='text.primary'>{(transactionData.amount / 10).toLocaleString()} تومان</Typography>
           </div>
           <div className='flex justify-between'>
             <Typography color='text.secondary'>شماره فاکتور:</Typography>
@@ -48,7 +48,7 @@ const TransactionDetails = ({ transactionData }: { transactionData: Transaction 
             </Typography>
           </div>
           <div className='flex justify-between'>
-            <Typography color='text.secondary'>شناسه جلسه:</Typography>
+            <Typography color='text.secondary'>شناسه پرداخت:</Typography>
             <Typography color='text.primary'>{transactionData.sessionId}</Typography>
           </div>
           <div className='flex justify-between'>

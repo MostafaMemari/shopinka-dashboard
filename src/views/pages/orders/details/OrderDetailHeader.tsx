@@ -7,6 +7,7 @@ import { ORDER_STATUS_MAP, OrderDetails } from '@/types/app/order.type'
 import { TRANSACTION_STATUS_MAP } from '@/types/app/transaction.type'
 
 import CompleteOrderDialog from './CompleteOrderDialog'
+import CancelOrderDialog from './CancelOrderDialog'
 
 const OrderDetailHeader = ({ order }: { order: OrderDetails }) => {
   const transactionStatus = order.transaction?.status
@@ -25,7 +26,10 @@ const OrderDetailHeader = ({ order }: { order: OrderDetails }) => {
         </div>
       </div>
 
-      <CompleteOrderDialog orderId={order.id} />
+      <div className='flex items-center gap-4 max-sm:w-full max-sm:justify-between'>
+        {order.status !== 'CANCELLED' && order.status !== 'DELIVERED' && <CancelOrderDialog orderId={order.id} />}
+        {order.status !== 'DELIVERED' && <CompleteOrderDialog orderId={order.id} />}
+      </div>
     </div>
   )
 }

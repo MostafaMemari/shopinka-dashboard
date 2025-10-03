@@ -53,8 +53,6 @@ const ShippingActivity = ({ order }: { order: OrderDetails }) => {
     ? TRANSACTION_STATUS_MAP[transaction.status as keyof typeof TRANSACTION_STATUS_MAP] || TRANSACTION_STATUS_MAP.UNKNOWN
     : TRANSACTION_STATUS_MAP.UNKNOWN
 
-  console.log(order)
-
   return (
     <Card>
       <CardHeader title='فعالیت‌های ارسال' />

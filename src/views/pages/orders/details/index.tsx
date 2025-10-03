@@ -10,6 +10,7 @@ import CustomerDetails from './CustomerDetailsCard'
 import ShippingAddress from './ShippingAddressCard'
 import TransactionDetails from './TransactionDetails'
 import ShippingActivity from './ShippingActivityCard'
+import ShippingMethod from './ShippingMethod'
 
 const OrderDetails = ({ order }: { order: OrderDetails }) => {
   return (
@@ -31,6 +32,9 @@ const OrderDetails = ({ order }: { order: OrderDetails }) => {
         <Grid container spacing={6}>
           <Grid size={{ xs: 12 }}>
             <CustomerDetails customerData={order.user} />
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <ShippingMethod shippingData={order.shipping} />
           </Grid>
           <Grid size={{ xs: 12 }}>
             <ShippingAddress addressSnapshot={order.addressSnapshot} />
