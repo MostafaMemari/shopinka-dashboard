@@ -1,4 +1,4 @@
-import { ShippingInfo, ShippingInfoForm } from '@/types/app/shippingInfo.type'
+import { ShippingInfo, ShippingInfoType } from '@/types/app/shippingInfo.type'
 import { Response } from '@/types/response'
 import { serverApiFetch } from '@/utils/api/serverApiFetch'
 
@@ -10,7 +10,7 @@ export const getShippings = async (params?: { page?: number; take?: number }): P
   }
 }
 
-export const updateShippingInfo = async (id: string, data: Partial<ShippingInfoForm>): Promise<{ status: number; data: ShippingInfo | null }> => {
+export const updateShippingInfo = async (id: string, data: Partial<ShippingInfoType>): Promise<{ status: number; data: ShippingInfo | null }> => {
   const res = await serverApiFetch(`/shipping-info/${id}`, {
     method: 'PATCH',
     body: { ...data }
@@ -21,7 +21,7 @@ export const updateShippingInfo = async (id: string, data: Partial<ShippingInfoF
   }
 }
 
-export const addShippingInfo = async (data: ShippingInfoForm): Promise<{ status: number; data: ShippingInfo | null }> => {
+export const addShippingInfo = async (data: ShippingInfoType): Promise<{ status: number; data: ShippingInfo | null }> => {
   const res = await serverApiFetch('/shipping-info', {
     method: 'POST',
     body: { ...data, sentAt: new Date() }

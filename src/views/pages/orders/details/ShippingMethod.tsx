@@ -4,15 +4,19 @@ import { Button } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
+import ShippingInfoModal from '../list/ShippingInfoModal'
+import { ShippingInfo } from '@/types/app/shippingInfo.type'
 
-const ShippingMethod = ({ shippingData }: { shippingData: Shipping }) => {
+const ShippingMethod = ({ orderId, shippingData, shippingInfo }: { orderId: number; shippingData: Shipping; shippingInfo?: ShippingInfo }) => {
   return (
     <Card>
       <CardContent className='flex flex-col gap-6'>
         <div className='flex justify-between items-center'>
           <Typography variant='h5'>روش ارسال</Typography>
 
-          <Button variant='outlined'>اطلاعات ارسال</Button>
+          <ShippingInfoModal shippingInfo={shippingInfo} id={orderId}>
+            <Button variant='outlined'>اطلاعات ارسال</Button>
+          </ShippingInfoModal>
         </div>
         <div className='flex flex-col gap-2'>
           <div className='flex justify-between'>

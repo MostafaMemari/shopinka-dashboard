@@ -34,7 +34,7 @@ const OrderDetails = ({ order }: { order: OrderDetails }) => {
             <CustomerDetails customerData={order.user} />
           </Grid>
           <Grid size={{ xs: 12 }}>
-            <ShippingMethod shippingData={order.shipping} />
+            <ShippingMethod orderId={order.id} shippingData={order.shipping} shippingInfo={order.shippingInfo ?? undefined} />
           </Grid>
           <Grid size={{ xs: 12 }}>
             <ShippingAddress addressSnapshot={order.addressSnapshot} />

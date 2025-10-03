@@ -232,7 +232,7 @@ export const useProductForm = ({ id, initialData }: UseProductFormProps) => {
             attributeIds: data.attributeIds ?? []
           })
 
-          const response = await submitForm(cleanedData, () => {})
+          const response = await submitForm(cleanedData)
 
           if (response?.status === 201) router.replace(`/products/edit?id=${response.data?.id}`)
         })()

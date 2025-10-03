@@ -10,4 +10,4 @@ export type ShippingInfo = {
   updatedAt: string
 }
 
-export type ShippingInfoForm = yup.InferType<typeof shippingInfoSchema>
+export type ShippingInfoType = yup.InferType<typeof shippingInfoSchema>

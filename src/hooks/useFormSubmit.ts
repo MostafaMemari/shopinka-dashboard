@@ -22,7 +22,7 @@ interface UseFormSubmitProps<T extends Record<string, any>> {
 
 interface UseFormSubmitResult<T extends Record<string, any>> {
   isLoading: boolean
-  onSubmit: (formData: T, handleClose: () => void) => Promise<ApiResponse<T> | undefined>
+  onSubmit: (formData: T) => Promise<ApiResponse<T> | undefined>
 }
 
 interface ApiResponse<T> {
@@ -46,11 +46,12 @@ export const useFormSubmit = <T extends Record<string, any>>({
   const { invalidate } = useInvalidateQuery()
 
   const onSubmit = useCallback(
-    async (formData: T, handleClose: () => void): Promise<ApiResponse<T> | undefined> => {
+    async (formData: T): Promise<ApiResponse<T> | undefined> => {
       setIsLoading(true)
 
       try {
         const processedData = preprocessData ? preprocessData(formData) : formData
+
         const cleanedData = cleanObject(processedData)
 
         if (isUpdate && initialData?.id && updateApi) {
@@ -76,7 +77,6 @@ export const useFormSubmit = <T extends Record<string, any>>({
           if (response.status === 200) {
             showToast({ type: 'success', message: successMessage })
             invalidate(queryKey)
-            handleClose()
 
             return {
               status: 200,
@@ -96,7 +96,6 @@ export const useFormSubmit = <T extends Record<string, any>>({
           if (response.status === 201 || response.status === 200) {
             showToast({ type: 'success', message: successMessage })
             invalidate(queryKey)
-            handleClose()
 
             return {
               status: 201,

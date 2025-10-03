@@ -66,7 +66,7 @@ export const useShippingForm = ({ initialData, isUpdate = false, handleModalClos
     errors,
     setValue,
     isLoading,
-    onSubmit: handleSubmit(data => onSubmit(data, handleModalClose ?? (() => {}))),
+    onSubmit: handleSubmit(data => onSubmit(data)),
     handleClose
   }
 }

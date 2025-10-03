@@ -80,7 +80,7 @@ export const useProductVariantForm = ({ initialData, productId, isUpdate = false
     errors,
     setValue,
     isLoading,
-    onSubmit: handleSubmit(data => onSubmit(data, handleClose)),
+    onSubmit: handleSubmit(data => onSubmit(data)),
     handleClose
   }
 }
