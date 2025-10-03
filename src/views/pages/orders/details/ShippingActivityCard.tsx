@@ -146,7 +146,7 @@ const ShippingActivity = ({ order }: { order: OrderDetails }) => {
                 </Typography>
 
                 <Typography variant='caption'>
-                  {order.status === 'DELIVERED' && shippingInfo?.sentAt
+                  {order.status === 'PROCESSING' && shippingInfo?.sentAt
                     ? `${formatDate(shippingInfo.sentAt)} ${formatTime(shippingInfo.sentAt)}`
                     : `${formatDate(order.createdAt)} ${formatTime(order.createdAt)}`}
                 </Typography>

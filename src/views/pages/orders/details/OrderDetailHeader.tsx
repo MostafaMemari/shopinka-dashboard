@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography'
 // Component Imports
 import { ORDER_STATUS_MAP, OrderDetails } from '@/types/app/order.type'
 import { TRANSACTION_STATUS_MAP } from '@/types/app/transaction.type'
-import OrderDateTime from './OrderDateTime'
 
 const OrderDetailHeader = ({ order }: { order: OrderDetails }) => {
   const transactionStatus = order.transaction?.status
@@ -22,8 +21,9 @@ const OrderDetailHeader = ({ order }: { order: OrderDetails }) => {
           <Chip variant='tonal' label={`پرداخت ${transactionStatus.label}`} color={transactionStatus.color} size='small' />
           <Chip variant='tonal' label={orderStatus.label} color={orderStatus.color} size='small' />
         </div>
-        <OrderDateTime createdAt={order.createdAt} />
       </div>
+
+      <OpenDialogOnElementClick element={Button} elementProps={buttonProps('Delete Order', 'error', 'tonal')} dialog={ConfirmationDialog} dialogProps={{ type: 'delete-order' }} />
     </div>
   )
 }

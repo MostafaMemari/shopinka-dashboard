@@ -35,7 +35,7 @@ import tableStyles from '@core/styles/table.module.css'
 import { type OrderDetails, type OrderMappedItem } from '@/types/app/order.type'
 import { mappedOrderItem } from '@/utils/mappedOrderItem'
 import classNames from 'classnames'
-import { Box } from '@mui/material'
+import { Box, Button } from '@mui/material'
 
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
@@ -281,9 +281,23 @@ const OrderDetailsCard = ({ order }: { order: OrderDetails }) => {
       <CardHeader
         title='جزئیات سفارش'
         action={
-          <Typography component={Link} color='primary.main' className='font-medium'>
-            ویرایش
-          </Typography>
+          <Box display='flex' alignItems='center' gap={2}>
+            <Typography component={Link} color='error.main' className='font-medium'>
+              لغو سفارش
+            </Typography>
+            <Typography component={Link} color='primary.main' className='font-medium'>
+              ویرایش
+            </Typography>
+          </Box>
+
+          // <>
+          //   <Box display='flex' alignItems='center' gap={2}>
+          //     <Button variant='contained' color='error'>
+          //       لغو سفارش
+          //     </Button>
+          //     <Button variant='contained'>تحویل داده شد</Button>
+          //   </Box>
+          // </>
         }
       />
       <OrderTable orderItems={orderItems} />
