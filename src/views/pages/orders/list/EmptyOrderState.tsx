@@ -3,12 +3,12 @@
 import { Inventory2 } from '@mui/icons-material'
 import EmptyState from '@/components/states/EmptyState'
 
-interface EmptyOrderStateProps {
+interface EmptyUserStateProps {
   isSearch?: boolean
   searchQuery?: string
 }
 
-const EmptyOrderState = ({ isSearch = false, searchQuery = '' }: EmptyOrderStateProps) => {
+const EmptyUserState = ({ isSearch = false, searchQuery = '' }: EmptyUserStateProps) => {
   const title = isSearch ? `محصولی برای "${searchQuery}" یافت نشد` : 'هیچ محصولی یافت نشد'
 
   const subtitle = isSearch
@@ -18,4 +18,4 @@ const EmptyOrderState = ({ isSearch = false, searchQuery = '' }: EmptyOrderState
   return <EmptyState title={title} subtitle={subtitle} icon={<Inventory2 color='action' sx={{ fontSize: 60, mb: 2, opacity: 0.7 }} />} />
 }
 
-export default EmptyOrderState
+export default EmptyUserState

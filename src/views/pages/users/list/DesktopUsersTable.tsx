@@ -47,13 +47,14 @@ const DesktopUserTable = ({ users }: DesktopUserTableProps) => {
                   </Typography>
                 </td>
                 <td>
+                  <Chip label={user.isVerifiedMobile ? 'تایید شده' : 'تایید نشده'} color={user.isVerifiedMobile ? 'success' : 'error'} size='small' />
+                </td>
+                <td>
                   <Typography className='font-medium' color='text.primary'>
                     {user.role === 'CUSTOMER' ? 'مشتری' : user.role === 'ADMIN' ? 'مدیر' : 'ناشناخته'}
                   </Typography>
                 </td>
-                <td>
-                  <Chip label={user.isVerifiedMobile ? 'تایید شده' : 'تایید نشده'} color={user.isVerifiedMobile ? 'success' : 'error'} size='small' />
-                </td>
+
                 <td>{user?.createdAt ? new Date(user.createdAt).toLocaleString('fa-ir') : '-'}</td>
               </tr>
             ))

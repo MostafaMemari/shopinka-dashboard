@@ -12,7 +12,7 @@ interface OrderTableActionsProps {
 const OrderTableActions = ({ orderId, shippingInfo, isLoading, onStatusChange }: OrderTableActionsProps) => {
   return (
     <Box display='flex' alignItems='center' gap={2}>
-      <ShippingInfoModal id={orderId} shippingInfo={shippingInfo as ShippingInfo}>
+      <ShippingInfoModal orderId={orderId} shippingInfo={shippingInfo as ShippingInfo}>
         <Tooltip title='ارسال اطلاعات حمل و نقل'>
           <IconButton size='small'>
             <i className='tabler-truck-delivery text-gray-500 text-lg' />

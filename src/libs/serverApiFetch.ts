@@ -2,7 +2,6 @@
 
 import { cookies } from 'next/headers'
 import { COOKIE_NAMES } from '@/libs/constants'
-import { ofetch } from 'ofetch'
 
 export const serverApiFetch = async (
   path: string,
@@ -18,24 +17,41 @@ export const serverApiFetch = async (
 
   const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData
 
+  let queryString = ''
+
+  if (options.query && Object.keys(options.query).length > 0) {
+    const params = new URLSearchParams(options.query as Record<string, string>)
+
+    queryString = `?${params.toString()}`
+  }
+
+  const url = `${process.env.API_BASE_URL}${path}${queryString}`
+
   try {
-    const data = await ofetch(path, {
-      baseURL: process.env.API_BASE_URL,
+    const response = await fetch(url, {
       method: options.method || 'GET',
-      body: isFormData ? options.body : options.body,
-      query: options.query,
       headers: {
         Authorization: `Bearer ${token}`,
         ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
         ...options.headers
-      }
+      },
+      body: options.method && options.method !== 'GET' ? (isFormData ? options.body : JSON.stringify(options.body)) : undefined,
+      cache: 'no-store'
     })
 
-    return { status: 200, data }
+    const contentType = response.headers.get('content-type')
+    const data = contentType?.includes('application/json') ? await response.json() : await response.text()
+
+    await new Promise(resolve => setTimeout(resolve, 200))
+
+    return {
+      status: response.status,
+      data
+    }
   } catch (error: any) {
     return {
-      status: error?.response?.status || 500,
-      data: error?.data || { message: 'خطای ناشناخته' }
+      status: 500,
+      data: { message: 'خطای ناشناخته', error: error.message }
     }
   }
 }
