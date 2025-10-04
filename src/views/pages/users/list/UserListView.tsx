@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
 import { Box } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
@@ -23,7 +23,7 @@ function UserListView() {
   const debounceDelay = 500
   const debouncedInputValue = useDebounce(inputValue, debounceDelay)
 
-  useMemo(() => {
+  useEffect(() => {
     setSearch(debouncedInputValue)
   }, [debouncedInputValue, setSearch])
 
@@ -35,7 +35,7 @@ function UserListView() {
       includeAddress: true,
       includeTransaction: true,
       includeShippingInfo: true,
-      name: search ?? undefined
+      search: !!search ? search : undefined
     },
     staleTime: 5 * 60 * 1000
   })
