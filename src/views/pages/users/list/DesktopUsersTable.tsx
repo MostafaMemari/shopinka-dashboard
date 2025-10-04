@@ -38,7 +38,7 @@ const DesktopUserTable = ({ users }: DesktopUserTableProps) => {
                 </td>
                 <td>
                   <Typography className='font-medium' color='text.primary'>
-                    {user.fullName}
+                    {user.fullName ?? '-'}
                   </Typography>
                 </td>
                 <td>
