@@ -18,6 +18,7 @@ import '@/app/globals.css'
 
 // Generated Icon CSS Imports
 import '@assets/iconify-icons/generated-icons.css'
+
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import QueryProvider from './providers'
 

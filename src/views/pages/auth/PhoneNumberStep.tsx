@@ -18,28 +18,15 @@ import CircularProgress from '@mui/material/CircularProgress'
 import CustomTextField from '@core/components/mui/TextField'
 import Logo from '@components/layout/shared/Logo'
 import AuthIllustrationWrapper from './AuthIllustrationWrapper'
-import OtpInputComponent from './OtpStep'
 
 // Config Imports
-import themeConfig from '@configs/themeConfig'
 
 // API Imports
 import { sendOtp } from '@/libs/api/auth.api'
 import { showToast } from '@/utils/showToast'
 import { handleApiError } from '@/utils/handleApiError'
 import { errorPhoneNumberStepMessages } from '@/messages/auth/loginMessages'
-
-const phoneNumberStepMessages = {
-  welcome: (templateName: string) => `به ${templateName} خوش آمدید! 👋🏻`,
-  instruction: 'لطفاً با شماره موبایل خود وارد شوید و ماجرا را آغاز کنید',
-  phoneLabel: 'شماره موبایل',
-  phonePlaceholder: 'شماره موبایل خود را وارد کنید',
-  invalidPhone: 'شماره موبایل معتبر نیست',
-  loginButton: 'ورود',
-  newUser: 'کاربر جدید هستید؟',
-  createAccount: 'ایجاد حساب کاربری',
-  backButton: 'بازگشت'
-}
+import { OtpInputComponent } from './OtpStep'
 
 const LoginOtp = () => {
   const [step, setStep] = useState<'login' | 'otp'>('login')
@@ -77,8 +64,6 @@ const LoginOtp = () => {
     }
   }
 
-  const messages = phoneNumberStepMessages
-
   return (
     <AuthIllustrationWrapper>
       <Card className='flex flex-col sm:is-[450px]'>
@@ -89,19 +74,19 @@ const LoginOtp = () => {
 
           {step === 'login' ? (
             <>
-              <div className='flex flex-col gap-1 mbe-6'>
-                <Typography variant='h4'>{messages.welcome(themeConfig.templateName)}</Typography>
-                <Typography>{messages.instruction}</Typography>
+              <div className='flex flex-col gap-1 align-center justify-center text-center mb-6'>
+                <Typography variant='h5'>ورود به حساب یا ثبت نام</Typography>
+                <Typography>شماره موبایل را وارد کنید تا وارد پنل مدیریت شوید</Typography>
               </div>
               <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
                 <CustomTextField
                   autoFocus
                   fullWidth
-                  label={messages.phoneLabel}
-                  placeholder={messages.phonePlaceholder}
+                  label='شماره موبایل'
+                  placeholder='شماره موبایل را وارد کنید'
                   type='tel'
                   error={!!errors.mobile}
-                  helperText={errors.mobile ? messages.invalidPhone : ''}
+                  helperText={errors.mobile ? errors.mobile.message : ''}
                   inputProps={{
                     style: { textAlign: 'center' }
                   }}
@@ -109,18 +94,14 @@ const LoginOtp = () => {
                     required: true,
                     pattern: {
                       value: /^(0|0098|\+98)9(0[1-5]|[13]\d|2[0-2]|98)\d{7}$/,
-                      message: messages.invalidPhone
+                      message: 'شماره موبایل وارد شده معتبر نیست'
                     }
                   })}
                 />
 
                 <Button fullWidth variant='contained' type='submit' disabled={isLoading} startIcon={isLoading ? <CircularProgress size={20} color='inherit' /> : null}>
-                  {isLoading ? 'در حال ورود...' : messages.loginButton}
+                  {isLoading ? 'در حال ورود...' : 'ورود به پنل مدیریت'}
                 </Button>
-                <div className='flex justify-center items-center flex-wrap gap-2'>
-                  <Typography>{messages.newUser}</Typography>
-                  <Typography color='primary.main'>{messages.createAccount}</Typography>
-                </div>
               </form>
             </>
           ) : (

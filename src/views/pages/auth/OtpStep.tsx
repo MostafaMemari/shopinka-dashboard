@@ -14,17 +14,17 @@ import type { SlotProps } from 'input-otp'
 import classnames from 'classnames'
 
 // Components
-import Link from '@components/Link'
 import { useOtpTimer } from '@/hooks/useOtpTimer'
 
 // Styles
 import styles from '@/libs/styles/inputOtp.module.css'
 
 // Messages
-import { errorOtpStepMessages, otpStepMessages } from '@/messages/auth/otpMessages'
+import { errorOtpStepMessages } from '@/messages/auth/otpMessages'
 import { showToast } from '@/utils/showToast'
 import { verifyOtp } from '@/libs/api/auth.api'
 import { handleApiError } from '@/utils/handleApiError'
+import { Box } from '@mui/material'
 
 const Slot = (props: SlotProps & { isError?: boolean }) => (
   <div
@@ -44,7 +44,7 @@ const FakeCaret = () => (
   </div>
 )
 
-const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string; onBack: () => void }) => {
+export const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string; onBack: () => void }) => {
   const [otp, setOtp] = useState('')
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -110,16 +110,17 @@ const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string; onBac
 
   const maskedPhoneNumber = phoneNumber.slice(0, -4) + '****'
 
-  const messages = otpStepMessages
-
   return (
     <div className='text-center max-w-md mx-auto'>
-      <div className='flex flex-col gap-1 mbe-6'>
-        <Typography variant='h4'>{messages.title}</Typography>
-        <Typography>{messages.subtitle}</Typography>
-        <Typography className='font-medium' color='text.primary' dir='ltr'>
-          {maskedPhoneNumber}
-        </Typography>
+      <div className='flex flex-col gap-1 align-center justify-center text-center mbe-6'>
+        <Box className='flex flex-col items-center gap-2'>
+          <Typography variant='body1' color='text.secondary'>
+            لطفا کد اعتبارسنجی را وارد کنید
+          </Typography>
+          <Typography variant='h6' className='font-' color='text.primary' dir='ltr'>
+            {maskedPhoneNumber}
+          </Typography>
+        </Box>
       </div>
 
       <form
@@ -132,7 +133,7 @@ const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string; onBac
         className='flex flex-col gap-6'
       >
         <div className='flex flex-col gap-2'>
-          <Typography>{messages.inputLabel}</Typography>
+          <Typography>کد امنیتی ۶ رقمی را وارد کنید</Typography>
           <div dir='ltr'>
             <OTPInput
               ref={otpInputRef}
@@ -151,7 +152,7 @@ const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string; onBac
           </div>
 
           <Typography color={isExpired ? 'error.main' : 'text.primary'} className='mt-2'>
-            {isExpired ? messages.timerExpired : `زمان باقی‌مانده: ${formatTime(timeLeft)}`}
+            {isExpired ? 'زمان به پایان رسید!' : `زمان باقی‌مانده: ${formatTime(timeLeft)}`}
           </Typography>
         </div>
 
@@ -162,34 +163,13 @@ const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string; onBac
           disabled={otp.length !== 6 || isExpired || isLoading}
           startIcon={isLoading ? <CircularProgress size={20} color='inherit' /> : null}
         >
-          {isLoading ? 'در حال بررسی...' : messages.submitButton}
+          {isLoading ? 'در حال بررسی...' : 'ورود'}
         </Button>
 
-        <div className='flex justify-center items-center flex-wrap gap-2'>
-          <Typography>{messages.resendPrompt}</Typography>
-          <Typography
-            color={isExpired ? 'primary.main' : 'text.disabled'}
-            component={Link}
-            href='/'
-            onClick={e => {
-              e.preventDefault()
-
-              if (isExpired) {
-                resetTimer()
-                setOtp('')
-              }
-            }}
-          >
-            {messages.resendLink}
-          </Typography>
-        </div>
-
         <Button variant='text' onClick={onBack}>
-          {messages.back}
+          بازگشت
         </Button>
       </form>
     </div>
   )
 }
-
-export default OtpInputComponent

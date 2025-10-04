@@ -60,7 +60,7 @@ export const SettingsProvider = (props: Props) => {
     navbarContentWidth: themeConfig.navbar.contentWidth,
     contentWidth: themeConfig.contentWidth,
     footerContentWidth: themeConfig.footer.contentWidth,
-    primaryColor: primaryColorConfig[0].main
+    primaryColor: primaryColorConfig[3].main
   }
 
   const updatedInitialSettings = {
@@ -75,9 +75,7 @@ export const SettingsProvider = (props: Props) => {
   )
 
   // State
-  const [_settingsState, _updateSettingsState] = useState<Settings>(
-    JSON.stringify(settingsCookie) !== '{}' ? settingsCookie : updatedInitialSettings
-  )
+  const [_settingsState, _updateSettingsState] = useState<Settings>(JSON.stringify(settingsCookie) !== '{}' ? settingsCookie : updatedInitialSettings)
 
   const updateSettings = (settings: Partial<Settings>, options?: UpdateSettingsOptions) => {
     const { updateCookie = true } = options || {}

@@ -5,7 +5,8 @@ import FooterContent from './FooterContent'
 const Footer = () => {
   return (
     <LayoutFooter>
-      <FooterContent />
+      {/* <FooterContent /> */}
+      <></>
     </LayoutFooter>
   )
 }

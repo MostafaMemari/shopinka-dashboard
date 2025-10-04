@@ -17,9 +17,7 @@ const FooterContent = () => {
   const { isBreakpointReached } = useHorizontalNav()
 
   return (
-    <div
-      className={classnames(horizontalLayoutClasses.footerContent, 'flex items-center justify-between flex-wrap gap-4')}
-    >
+    <div className={classnames(horizontalLayoutClasses.footerContent, 'flex items-center justify-between flex-wrap gap-4')}>
       <p>
         <span className='text-textSecondary'>{`© ${new Date().getFullYear()}, Made with `}</span>
         <span>{`❤️`}</span>
@@ -36,11 +34,7 @@ const FooterContent = () => {
           <Link href='https://themeforest.net/user/pixinvent/portfolio' target='_blank' className='text-primary'>
             More Themes
           </Link>
-          <Link
-            href='https://demos.pixinvent.com/vuexy-nextjs-admin-template/documentation'
-            target='_blank'
-            className='text-primary'
-          >
+          <Link href='https://demos.pixinvent.com/vuexy-nextjs-admin-template/documentation' target='_blank' className='text-primary'>
             Documentation
           </Link>
           <Link href='https://pixinvent.ticksy.com' target='_blank' className='text-primary'>
