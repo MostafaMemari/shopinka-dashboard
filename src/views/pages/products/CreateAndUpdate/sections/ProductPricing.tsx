@@ -1,46 +1,27 @@
 'use client'
 
-import { useFormContext } from 'react-hook-form'
-
 // MUI Imports
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
+import Grid from '@mui/material/Grid2'
 
 // Component Imports
-import CustomTextField from '@core/components/mui/TextField'
+import FormField from '@/components/form/FormField'
 
 const ProductPricing = () => {
-  const {
-    register,
-    formState: { errors }
-  } = useFormContext()
-
   return (
     <Card>
       <CardHeader title='قیمت‌گذاری' />
       <CardContent>
-        <CustomTextField
-          fullWidth
-          label='قیمت پایه'
-          placeholder='۵۰۰,۰۰۰ تومان'
-          type='number'
-          className='mbe-6'
-          {...register('basePrice')}
-          error={!!errors.basePrice}
-          helperText={errors.basePrice?.message?.toString()}
-        />
-
-        <CustomTextField
-          fullWidth
-          label='قیمت با تخفیف'
-          placeholder='۴۹۹,۰۰۰ تومان'
-          type='number'
-          className='mbe-6'
-          {...register('salePrice')}
-          error={!!errors.salePrice}
-          helperText={errors.salePrice?.message?.toString()}
-        />
+        <Grid container spacing={6} className='mbe-6'>
+          <Grid size={{ xs: 12 }}>
+            <FormField name='basePrice' label='قیمت پایه' placeholder='لطفا قیمت پایه را وارد کنید' />
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <FormField name='salePrice' label='قیمت با تخفیف' placeholder='لطفا قیمت تخفیف را وارد کنید' />
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   )

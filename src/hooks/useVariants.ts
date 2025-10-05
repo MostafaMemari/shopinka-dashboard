@@ -29,10 +29,6 @@ const useVariants = (productType: ProductType, attributeIds: number[]) => {
       if (attributeIds.length > 0) {
         setValue('attributeIds', [], { shouldValidate: true })
       }
-
-      if (attributeIds.length > 0) {
-        setValue('attributeValuesIds', [], { shouldValidate: true })
-      }
     }
   }, [productType, attributesData, attributeIds, setValue])
 

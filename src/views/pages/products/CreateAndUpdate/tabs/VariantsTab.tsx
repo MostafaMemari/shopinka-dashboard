@@ -1,23 +1,25 @@
 'use client'
 
-import { Controller, useFormContext } from 'react-hook-form'
-import { Autocomplete, Box, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import MenuItem from '@mui/material/MenuItem'
-import CustomTextField from '@core/components/mui/TextField'
 import useVariants from '@/hooks/useVariants'
-import { Attribute, AttributeValue } from '@/types/app/productAttributes.type'
+import { AttributeValue } from '@/types/app/productAttributes.type'
 import CreateAttributeModal from '../../attribute/CreateAttributeModal'
 import FormField from '@/components/form/FormField'
 import { useProductContext } from '../ProductContext'
+import { useMemo } from 'react'
+import { useFormContext } from 'react-hook-form'
 
 const VariantsTab = () => {
   const { product } = useProductContext()
+  const { watch } = useFormContext()
 
-  const { control, watch } = useFormContext()
+  const attributeIds = useMemo(() => {
+    return product?.attributes?.map(att => att.id) ?? []
+  }, [product])
 
-  const attributeIds = product?.attributes?.map(att => att.id) ?? []
-  const formType = product?.type ?? 'SIMPLE'
+  const formType = watch('type')
 
   const { attributesData, isLoadingAttributes, isFetchingAttributes, errorAttributes } = useVariants(formType, attributeIds)
 
