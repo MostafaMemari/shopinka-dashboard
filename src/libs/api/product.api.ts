@@ -1,11 +1,11 @@
-import { Product, ProductForm } from '@/types/app/product.type'
+import { Product, ProductFormType } from '@/types/app/product.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
 import { handleSeoSave } from '../services/seo/seo.service'
 import { showToast } from '@/utils/showToast'
 import { generateProductSeoDescription } from '@/hooks/reactQuery/seoDescriptionGenerators'
 
 import { SeoMetaTargetType, type SeoForm } from '@/types/app/seo.type'
+import { serverApiFetch } from '../serverApiFetch'
 
 export const getProducts = async (params?: Record<string, string>): Promise<Response<Product[]>> => {
   const res = await serverApiFetch('/product/admin', {
@@ -39,7 +39,7 @@ export const defaultVariantProduct = async (id: number, variantId: number | null
   }
 }
 
-export const updateProduct = async (id: number, data: Partial<ProductForm>): Promise<{ status: number; data: Product | null }> => {
+export const updateProduct = async (id: number, data: Partial<ProductFormType>): Promise<{ status: number; data: Product | null }> => {
   const res = await serverApiFetch(`/product/${id}`, {
     method: 'PATCH',
     body: { ...data }
@@ -56,7 +56,7 @@ export const updateProduct = async (id: number, data: Partial<ProductForm>): Pro
   }
 }
 
-export const createProduct = async (data: ProductForm): Promise<{ status: number; data: { product: (Product & { id: number }) | null } }> => {
+export const createProduct = async (data: ProductFormType): Promise<{ status: number; data: { product: (Product & { id: number }) | null } }> => {
   const res = await serverApiFetch('/product', {
     method: 'POST',
     body: { ...data }
@@ -80,16 +80,13 @@ export const removeProduct = async (id: string): Promise<{ status: number; data:
   }
 }
 
-const handleSeo = async (productId: number, data: Partial<ProductForm>, isUpdate?: boolean) => {
+const handleSeo = async (productId: number, data: Partial<ProductFormType>, isUpdate?: boolean) => {
   const seoData = isUpdate
     ? {
         seo_title: data.seo_title,
         seo_description: data.seo_description,
         seo_keywords: data.seo_keywords,
         seo_canonicalUrl: data.seo_canonicalUrl,
-        seo_ogTitle: data.seo_ogTitle,
-        seo_ogDescription: data.seo_ogDescription,
-        seo_ogImage: (data as any).seo_ogImage,
         seo_robotsTag: data.seo_robotsTag
       }
     : {
@@ -102,14 +99,6 @@ const handleSeo = async (productId: number, data: Partial<ProductForm>, isUpdate
           }),
         seo_keywords: data.seo_keywords,
         seo_canonicalUrl: data.seo_canonicalUrl || data.slug,
-        seo_ogTitle: data.seo_ogTitle || data.name,
-        seo_ogDescription:
-          data.seo_ogDescription ||
-          generateProductSeoDescription({
-            title: data.name,
-            description: data.shortDescription ?? ''
-          }),
-        seo_ogImage: (data as any).seo_ogImage || data.mainImageId,
         seo_robotsTag: data.seo_robotsTag
       }
 

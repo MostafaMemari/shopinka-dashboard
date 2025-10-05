@@ -15,13 +15,14 @@ import SeoTabContent from '@/views/pages/products/CreateAndUpdate/SeoTabContent'
 import VariableTabContent from '@/views/pages/products/CreateAndUpdate/variants/VariableTabContent'
 import { ProductType } from '@/types/app/product.type'
 import ProductTags from './sections/ProductTags'
+import { useProductContext } from './ProductContext'
 
-interface ProductFormTabsProps {
-  productType: ProductType
-  id: number | null
-}
+const ProductFormTabs = () => {
+  const { product } = useProductContext()
 
-const ProductFormTabs = ({ productType, id }: ProductFormTabsProps) => {
+  const productType = product?.type
+  const productId = product?.id
+
   const [tabValue, setTabValue] = useState(0)
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -34,7 +35,7 @@ const ProductFormTabs = ({ productType, id }: ProductFormTabsProps) => {
         <Tabs value={tabValue} onChange={handleTabChange} aria-label='product form tabs'>
           <Tab label='اطلاعات اصلی' id='tab-0' aria-controls='tabpanel-0' />
           <Tab label='سئو' id='tab-1' aria-controls='tabpanel-1' />
-          {id && productType === ProductType.VARIABLE && <Tab label='متغیر محصول' id='tab-2' aria-controls='tabpanel-2' />}
+          {productId && productType === ProductType.VARIABLE && <Tab label='متغیر محصول' id='tab-2' aria-controls='tabpanel-2' />}
         </Tabs>
       </Box>
       <Grid container spacing={6}>
@@ -80,7 +81,7 @@ const ProductFormTabs = ({ productType, id }: ProductFormTabsProps) => {
             </Grid>
           </Grid>
         )}
-        {tabValue === 2 && id && productType === ProductType.VARIABLE && (
+        {tabValue === 2 && productId && productType === ProductType.VARIABLE && (
           <Grid size={{ xs: 12 }}>
             <Grid container spacing={6}>
               <Grid size={{ xs: 12 }}>

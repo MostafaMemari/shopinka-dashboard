@@ -1,6 +1,6 @@
 import { Order, OrderDetails } from '@/types/app/order.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '../serverApiFetch'
 
 export const getOrders = async (params?: Record<string, string | number | boolean>): Promise<Response<Order>> => {
   const res = await serverApiFetch('/order', {

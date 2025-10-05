@@ -14,18 +14,22 @@ import { GalleryItem } from '@/types/app/gallery.type'
 import { useFormContext } from 'react-hook-form'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 import { Typography } from '@mui/material'
+import { useProductContext } from '../ProductContext'
 
 const ProductMainImage = () => {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null)
-  const { setValue, getValues } = useFormContext()
+
+  const { setValue } = useFormContext()
+  const { product } = useProductContext()
+
+  const mainImage = product?.mainImage ?? undefined
 
   useEffect(() => {
-    const mainImage = getValues('mainImage') as GalleryItem | undefined
-
-    if (mainImage && !selectedImage) {
+    if (mainImage) {
       setSelectedImage(mainImage)
     }
-  }, [getValues, selectedImage])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSelect = (item: GalleryItem | GalleryItem[]) => {
     const image = Array.isArray(item) ? item[0] : item
@@ -34,13 +38,11 @@ const ProductMainImage = () => {
     const mainImageId = typeof image.id === 'number' && image.id > 0 ? image.id : undefined
 
     setValue('mainImageId', mainImageId)
-    setValue('mainImage', image)
   }
 
   const handleRemove = () => {
     setSelectedImage(null)
     setValue('mainImageId', null)
-    setValue('mainImage', null)
   }
 
   return (

@@ -1,3 +1,4 @@
+import { getProductById } from '@/libs/api/product.api'
 import ProductForm from '@/views/pages/products/CreateAndUpdate/ProductForm'
 
 interface PageProps {
@@ -7,7 +8,9 @@ interface PageProps {
 const EditProduct = async ({ searchParams }: PageProps) => {
   const { id } = await searchParams
 
-  return <ProductForm />
+  const res = await getProductById(Number(id))
+
+  return <ProductForm product={res.data ?? undefined} />
 }
 
 export default EditProduct
