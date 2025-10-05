@@ -15,17 +15,16 @@ import { useFormContext } from 'react-hook-form'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 import { Typography } from '@mui/material'
 
-const ProductGallery = () => {
+const ProductGallery = ({ galleryImages }: { galleryImages?: GalleryItem[] }) => {
   const [selectedImages, setSelectedImages] = useState<GalleryItem[]>([])
-  const { setValue, getValues } = useFormContext()
+  const { setValue } = useFormContext()
 
   useEffect(() => {
-    const galleryImages = getValues('galleryImages') as GalleryItem[] | undefined
-
     if (galleryImages && galleryImages.length > 0 && selectedImages.length === 0) {
       setSelectedImages(galleryImages)
     }
-  }, [getValues, selectedImages])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSelect = (items: GalleryItem | GalleryItem[]) => {
     const newItems = Array.isArray(items) ? items : [items]
@@ -34,7 +33,6 @@ const ProductGallery = () => {
 
     setSelectedImages(newItems)
     setValue('galleryImageIds', uniqueIds.length > 0 ? uniqueIds : undefined)
-    setValue('galleryImages', newItems)
   }
 
   const handleRemove = (id: number) => {
@@ -44,7 +42,6 @@ const ProductGallery = () => {
 
     setSelectedImages(updatedImages)
     setValue('galleryImageIds', uniqueIds.length > 0 ? uniqueIds : undefined)
-    setValue('galleryImages', updatedImages)
   }
 
   return (

@@ -57,10 +57,10 @@ const ProductFormTabs = () => {
                   <ProductPricing />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <ProductMainImage />
+                  <ProductMainImage mainImage={product?.mainImage} />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <ProductGallery />
+                  <ProductGallery galleryImages={product?.galleryImages} />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
                   <ProductCategories />

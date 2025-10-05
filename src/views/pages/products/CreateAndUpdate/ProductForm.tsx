@@ -63,13 +63,13 @@ const ProductForm = ({ product }: { product?: Product }) => {
       case 'draft':
         setValue('status', ProductStatus.DRAFT)
         methods.handleSubmit(onSubmit)()
-        window.location.reload()
+        router.push('/products')
 
         break
       case 'publish':
         setValue('status', ProductStatus.PUBLISHED)
         methods.handleSubmit(onSubmit)()
-        window.location.reload()
+        router.push('/products')
 
         break
     }

@@ -14,20 +14,15 @@ import { GalleryItem } from '@/types/app/gallery.type'
 import { useFormContext } from 'react-hook-form'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 import { Typography } from '@mui/material'
-import { useProductContext } from '../ProductContext'
 
-const ProductMainImage = () => {
+const ProductMainImage = ({ mainImage }: { mainImage?: GalleryItem | null }) => {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null)
 
   const { setValue } = useFormContext()
-  const { product } = useProductContext()
-
-  const mainImage = product?.mainImage ?? undefined
 
   useEffect(() => {
-    if (mainImage) {
-      setSelectedImage(mainImage)
-    }
+    if (mainImage) setSelectedImage(mainImage)
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
