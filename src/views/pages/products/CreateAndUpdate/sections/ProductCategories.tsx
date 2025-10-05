@@ -19,14 +19,11 @@ import { Category } from '@/types/app/category.type'
 import { useFormContext } from 'react-hook-form'
 import CreateCategoryModal from '@/views/pages/categories/CreateCategoryModal'
 
-const ProductCategories = () => {
+const ProductCategories = ({ initialCategoryIds }: { initialCategoryIds: number[] }) => {
   const {
     setValue,
-    getValues,
     formState: { errors }
   } = useFormContext()
-
-  const initialCategoryIds = getValues('categoryIds') || []
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>(initialCategoryIds.map((id: number) => id.toString()))
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -43,7 +40,9 @@ const ProductCategories = () => {
     staleTime: 5 * 60 * 1000
   })
 
-  const categories: Category[] = useMemo(() => data?.data?.items || [], [data])
+  const categories: Category[] = useMemo(() => {
+    return (data?.data?.items || []).filter((category: Category) => category.parentId === null || category.parentId === undefined)
+  }, [data])
 
   useEffect(() => {
     const categoryIds = selectedCategories.map(id => parseInt(id, 10))
@@ -60,10 +59,10 @@ const ProductCategories = () => {
 
     return categories
       .map(category => {
-        const matches = category.name.toLowerCase().includes(query.toLowerCase().trim())
         const filteredChildren = filterCategories(category.children || [], query)
+        const matches = category.name.toLowerCase().includes(query.toLowerCase().trim())
 
-        if (matches) {
+        if (matches || filteredChildren.length > 0) {
           return {
             ...category,
             children: filteredChildren

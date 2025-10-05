@@ -63,10 +63,10 @@ const ProductFormTabs = () => {
                   <ProductGallery galleryImages={product?.galleryImages} />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <ProductCategories />
+                  <ProductCategories initialCategoryIds={product?.categories?.map(cat => cat.id) ?? []} />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <ProductTags />
+                  <ProductTags initialTagIds={product?.tags?.map(tag => tag.id) ?? []} />
                 </Grid>
               </Grid>
             </Grid>

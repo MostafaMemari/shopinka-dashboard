@@ -56,9 +56,6 @@ export const useBlogForm = ({ id, initialData }: UseBlogFormProps) => {
       seo_description: '',
       seo_keywords: [],
       seo_canonicalUrl: '',
-      seo_ogTitle: '',
-      seo_ogDescription: '',
-      seo_ogImage: null,
       seo_robotsTag: RobotsTag.INDEX_FOLLOW
     }
   })
@@ -84,9 +81,6 @@ export const useBlogForm = ({ id, initialData }: UseBlogFormProps) => {
               methods.setValue('seo_description', blog.seoMeta.description)
               methods.setValue('seo_keywords', blog.seoMeta.keywords)
               methods.setValue('seo_canonicalUrl', blog.seoMeta.canonicalUrl)
-              methods.setValue('seo_ogTitle', blog.seoMeta.ogTitle)
-              methods.setValue('seo_ogDescription', blog.seoMeta.ogDescription)
-              methods.setValue('seo_ogImage', blog.seoMeta.ogImage)
               methods.setValue('seo_robotsTag', blog.seoMeta.robotsTag)
             }
 

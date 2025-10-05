@@ -18,14 +18,12 @@ import { Tag } from '@/types/app/tag.type'
 import { useFormContext } from 'react-hook-form'
 import CreateTagModal from '@/views/pages/tags/CreateTagModal'
 
-const ProductTags = () => {
+const ProductTags = ({ initialTagIds }: { initialTagIds: number[] }) => {
   const {
     setValue,
-    getValues,
     formState: { errors }
   } = useFormContext()
 
-  const initialTagIds = getValues('tagIds') || []
   const [selectedTags, setSelectedTags] = useState<number[]>(initialTagIds)
 
   const { data, isLoading, isFetching, error } = useTags({

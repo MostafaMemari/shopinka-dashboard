@@ -30,15 +30,17 @@ const ProductForm = ({ product }: { product?: Product }) => {
     status: product?.status ?? ProductStatus.DRAFT,
     type: product?.type ?? ProductType.SIMPLE,
     mainImageId: product?.mainImageId ?? null,
-    galleryImageIds: product?.galleryImageIds ?? [],
-    categoryIds: product?.categoryIds ?? [],
-    attributeIds: product?.attributeIds ?? [],
-    tagIds: product?.tagIds ?? [],
+
     width: product?.width ?? null,
     height: product?.height ?? null,
     length: product?.length ?? null,
     weight: product?.weight ?? null,
     defaultVariantId: product?.defaultVariantId ?? null,
+
+    galleryImageIds: product?.galleryImages ? product.galleryImages.map(galleryImage => galleryImage.id) : [],
+    categoryIds: product?.categories ? product.categories.map(category => category.id) : [],
+    attributeIds: product?.attributes ? product?.attributes.map(att => att.id) : [],
+    tagIds: product?.tags ? product.tags.map(tag => tag.id) : [],
 
     seo_title: product?.seoMeta?.title ?? '',
     seo_description: product?.seoMeta?.description ?? '',

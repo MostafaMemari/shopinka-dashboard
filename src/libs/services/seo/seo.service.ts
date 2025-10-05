@@ -14,9 +14,6 @@ export const handleSeoSave = async (type: SeoMetaTargetType, entityId: number, d
     description: data.seo_description ?? null,
     keywords: data.seo_keywords ?? null,
     canonicalUrl: data.seo_canonicalUrl ?? null,
-    ogTitle: data.seo_ogTitle ?? null,
-    ogDescription: data.seo_ogDescription ?? null,
-    ogImage: data.seo_ogImage ?? null,
     robotsTag: data.seo_robotsTag ?? RobotsTag.INDEX_FOLLOW
   }
 

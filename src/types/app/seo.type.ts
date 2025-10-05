@@ -34,8 +34,5 @@ export type SeoMetaForm = {
   description: string | null
   keywords: string[] | null
   canonicalUrl: string | null
-  ogTitle: string | null
-  ogDescription: string | null
-  ogImage: number | null
   robotsTag: RobotsTag | RobotsTag.INDEX_FOLLOW
 }

@@ -28,15 +28,16 @@ export type Product = {
   status: ProductStatus | null
   type: ProductType | null
   mainImageId: number | null
-  galleryImageIds: number[] | []
-  categoryIds: number[] | []
-  attributeIds: number[] | []
-  tagIds: number[] | []
   width: number | null
   height: number | null
   length: number | null
   weight: number | null
   defaultVariantId: number | null
+
+  galleryImageIds: number[] | []
+  categoryIds: number[] | []
+  attributeIds: number[] | []
+  tagIds: number[] | []
 
   seoMeta: Seo | undefined
   mainImage: GalleryItem | undefined

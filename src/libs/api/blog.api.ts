@@ -78,9 +78,6 @@ const handleSeo = async (blogId: number, data: Partial<BlogForm>, isUpdate?: boo
         seo_description: data.seo_description,
         seo_keywords: data.seo_keywords,
         seo_canonicalUrl: data.seo_canonicalUrl,
-        seo_ogTitle: data.seo_ogTitle,
-        seo_ogDescription: data.seo_ogDescription,
-        seo_ogImage: data.seo_ogImage,
         seo_robotsTag: data.seo_robotsTag
       }
     : {
@@ -93,14 +90,6 @@ const handleSeo = async (blogId: number, data: Partial<BlogForm>, isUpdate?: boo
           }),
         seo_keywords: data.seo_keywords,
         seo_canonicalUrl: data.seo_canonicalUrl,
-        seo_ogTitle: data.seo_ogTitle || data.title,
-        seo_ogDescription:
-          data.seo_ogDescription ||
-          generateBlogSeoDescription({
-            title: data.title,
-            description: data.content ?? ''
-          }),
-        seo_ogImage: data.seo_ogImage || data.mainImageId,
         seo_robotsTag: data.seo_robotsTag
       }
 
