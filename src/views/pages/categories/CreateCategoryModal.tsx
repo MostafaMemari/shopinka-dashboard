@@ -3,9 +3,12 @@
 import { useState, useCallback, ReactNode } from 'react'
 import Button from '@mui/material/Button'
 import CustomDialog from '@/components/dialogs/CustomDialog'
-import CategoryForm from './CategoryForm'
 import FormActions from '@/components/FormActions'
 import { useCategoryForm } from '@/hooks/reactQuery/useCategory'
+import { CategoryFormType, categoryFormSchema } from '@/libs/validators/category.schema'
+import { FormProvider, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import CategoryForm from './CategoryForm'
 
 interface CreateCategoryModalProps {
   children?: ReactNode
@@ -17,7 +20,17 @@ const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
   const handleOpen = useCallback(() => setOpen(true), [])
   const handleClose = useCallback(() => setOpen(false), [])
 
-  const { control, errors, setValue, isLoading, onSubmit } = useCategoryForm({ handleModalClose: handleClose })
+  const methods = useForm<CategoryFormType>({
+    resolver: yupResolver(categoryFormSchema)
+  })
+
+  const { mutate, isPending } = useCategoryForm({
+    onSuccess: () => {
+      handleClose()
+    }
+  })
+
+  const onSubmit = methods.handleSubmit(data => mutate(data))
 
   return (
     <div>
@@ -34,9 +47,11 @@ const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
         onClose={handleClose}
         title='ثبت دسته‌بندی جدید'
         defaultMaxWidth='md'
-        actions={<FormActions submitText='ثبت' onCancel={handleClose} onSubmit={onSubmit} isLoading={isLoading} />}
+        actions={<FormActions submitText='ثبت' onCancel={handleClose} onSubmit={onSubmit} isLoading={isPending} />}
       >
-        <CategoryForm control={control} errors={errors} setValue={setValue} isLoading={isLoading} />
+        <FormProvider {...methods}>
+          <CategoryForm isLoading={isPending} />
+        </FormProvider>
       </CustomDialog>
     </div>
   )

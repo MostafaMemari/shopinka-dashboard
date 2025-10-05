@@ -2,11 +2,10 @@
 
 import { useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button, useTheme } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import DesktopCategoryTable from './DesktopCategoryTable'
 import CreateCategoryModal from './CreateCategoryModal'
-import LoadingSpinner from '@/components/LoadingSpinner'
 import { useCategories } from '@/hooks/reactQuery/useCategory'
 import { Category } from '@/types/app/category.type'
 import { usePaginationParams } from '@/hooks/usePaginationParams'
@@ -42,10 +41,6 @@ const CategoryView = () => {
     staleTime: 5 * 60 * 1000
   })
 
-  // Hooks
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-
   const categories: Category[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
 
@@ -69,7 +64,7 @@ const CategoryView = () => {
         <EmptyCategoryState isSearch={!!search} searchQuery={search} />
       ) : (
         <>
-          {!isMobile && <DesktopCategoryTable categories={categories} />}
+          <DesktopCategoryTable categories={categories} />
 
           <TablePaginationComponent
             currentPage={page}

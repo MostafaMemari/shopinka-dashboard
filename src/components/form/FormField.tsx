@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import CustomTextField from '@core/components/mui/TextField'
-import Grid from '@mui/material/Grid2'
+import RichTextEditor from '../RichTextEditor/RichTextEditor'
 
 type FormFieldProps = {
   name: string
@@ -11,22 +11,24 @@ type FormFieldProps = {
   select?: boolean
   children?: React.ReactNode
   defaultValue?: any
-  size?: { xs?: number; sm?: number; md?: number; lg?: number }
+  type?: 'text' | 'richtext'
 }
 
-const FormField: React.FC<FormFieldProps> = ({ name, label, placeholder, multiline, rows, select, children, defaultValue, size = { xs: 12 } }) => {
+const FormField: React.FC<FormFieldProps> = ({ name, label, placeholder, multiline, rows, select, children, defaultValue, type = 'text' }) => {
   const {
     control,
     formState: { errors }
   } = useFormContext()
 
   return (
-    <Grid size={size}>
-      <Controller
-        name={name}
-        control={control}
-        defaultValue={defaultValue}
-        render={({ field }) => (
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={defaultValue}
+      render={({ field }) =>
+        type === 'richtext' ? (
+          <RichTextEditor label={label} placeholder={placeholder} value={field.value || ''} onChange={field.onChange} />
+        ) : (
           <CustomTextField
             {...field}
             value={field.value ?? ''}
@@ -41,9 +43,9 @@ const FormField: React.FC<FormFieldProps> = ({ name, label, placeholder, multili
           >
             {children}
           </CustomTextField>
-        )}
-      />
-    </Grid>
+        )
+      }
+    />
   )
 }
 

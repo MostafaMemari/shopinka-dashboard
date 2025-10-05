@@ -28,7 +28,7 @@ interface UseShippingFormProps {
   handleModalClose?: () => void
 }
 
-export const useShippingForm = ({ initialData, isUpdate = false, handleModalClose }: UseShippingFormProps) => {
+export const useShippingForm = ({ initialData, isUpdate = false }: UseShippingFormProps) => {
   const defaultValues: ShippingForm = {
     name: initialData?.name ?? '',
     price: initialData?.price ?? null,

@@ -1,8 +1,8 @@
 import Grid from '@mui/material/Grid2'
 import Typography from '@mui/material/Typography'
 import MenuItem from '@mui/material/MenuItem'
-import SeoKeywordsInputWithContext from './SeoKeywordsInputWithContext'
 import FormField from '@/components/form/FormField'
+import FormAutocompleteField from '@/components/form/FormAutocompleteField'
 
 const SeoFormWithContext: React.FC = () => {
   return (
@@ -12,12 +12,8 @@ const SeoFormWithContext: React.FC = () => {
         <FormField name='seo_title' label='عنوان سئو' placeholder='عنوان صفحه' />
         <FormField name='seo_description' label='توضیحات سئو' placeholder='توضیحات برای موتورهای جستجو' multiline rows={3} />
         <Grid size={{ xs: 12 }}>
-          <SeoKeywordsInputWithContext />
+          <FormAutocompleteField name='seo_keywords' label='کلمات کلیدی سئو' placeholder='با Enter یا , اضافه کن' />
         </Grid>
-        <FormField name='seo_canonicalUrl' label='آدرس کانونیکال' placeholder='https://example.com/slug' />
-        {/* <FormField name='seo_ogTitle' label='عنوان اوپن‌گراف' placeholder='برای اشتراک در شبکه‌های اجتماعی' /> */}
-        {/* <FormField name='seo_ogDescription' label='توضیحات اوپن‌گراف' placeholder='توضیح شبکه‌های اجتماعی' multiline rows={3} /> */}
-        {/* <FormField name='seo_ogImage' label='تصویر اوپن‌گراف' placeholder='https://...' /> */}
         <FormField name='seo_robotsTag' label='دستورات ربات‌ها' select defaultValue='index, follow'>
           <MenuItem value='index, follow'>Index, Follow</MenuItem>
           <MenuItem value='noindex, follow'>Noindex, Follow</MenuItem>

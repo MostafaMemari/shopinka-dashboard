@@ -33,4 +33,4 @@ export const categorySchema = yup
 
 export const categoryFormSchema = categorySchema.concat(seoSchema)
 
-export type CategoryForm = yup.InferType<typeof categoryFormSchema>
+export type CategoryFormType = yup.InferType<typeof categoryFormSchema>

@@ -2,7 +2,7 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['node-bucket.storage.c2.liara.space']
+    domains: ['s3.shopinka.ir']
   },
   experimental: {
     serverActions: {

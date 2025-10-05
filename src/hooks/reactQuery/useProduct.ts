@@ -90,9 +90,6 @@ export const useProductForm = ({ id, initialData }: UseProductFormProps) => {
       seo_description: '',
       seo_keywords: [],
       seo_canonicalUrl: '',
-      seo_ogTitle: '',
-      seo_ogDescription: '',
-      seo_ogImage: null,
       seo_robotsTag: RobotsTag.INDEX_FOLLOW
     }
   })
@@ -124,9 +121,6 @@ export const useProductForm = ({ id, initialData }: UseProductFormProps) => {
             methods.setValue('seo_description', product?.seoMeta.description || '')
             methods.setValue('seo_keywords', product?.seoMeta.keywords.split(',') || [])
             methods.setValue('seo_canonicalUrl', product?.seoMeta.canonicalUrl || '')
-            methods.setValue('seo_ogTitle', product?.seoMeta.ogTitle || '')
-            methods.setValue('seo_ogDescription', product?.seoMeta.ogDescription || '')
-            methods.setValue('seo_ogImage', product?.seoMeta.ogImage || null)
             methods.setValue('seo_robotsTag', product?.seoMeta.robotsTag || '')
           }
 

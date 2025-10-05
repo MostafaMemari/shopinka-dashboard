@@ -6,13 +6,13 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import { Category } from '@/types/app/category.type'
-import { CategoryForm } from '@/libs/validators/category.schema'
+import { CategoryFormType } from '@/libs/validators/category.schema'
 import { useCategories } from '@/hooks/reactQuery/useCategory'
 import { Controller, type Control, type FieldErrors } from 'react-hook-form'
 
 interface ParentCategorySelectProps {
-  control: Control<CategoryForm>
-  errors: FieldErrors<CategoryForm>
+  control: Control<CategoryFormType>
+  errors: FieldErrors<CategoryFormType>
   isLoading: boolean
 }
 

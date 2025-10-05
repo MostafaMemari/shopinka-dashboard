@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Controller, type Control, type FieldErrors } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
@@ -13,17 +13,20 @@ import { GalleryItem } from '@/types/app/gallery.type'
 import ModalGallery from '@/components/Gallery/ModalGallery/ModalGallery'
 import ImagePlaceholder from '@/components/EmptyPlaceholder'
 import { Category } from '@/types/app/category.type'
-import { CategoryForm } from '@/libs/validators/category.schema'
+import { CategoryFormType } from '@/libs/validators/category.schema'
 
 interface CategoryThumbnailImageProps {
-  control: Control<CategoryForm>
-  errors: FieldErrors<CategoryForm>
   isLoading: boolean
-  setValue: (name: keyof CategoryForm, value: number | null, options?: { shouldValidate?: boolean }) => void
   category?: Category
 }
 
-const CategoryThumbnailImage = ({ control, errors, isLoading, setValue, category }: CategoryThumbnailImageProps) => {
+const CategoryThumbnailImage = ({ isLoading, category }: CategoryThumbnailImageProps) => {
+  const {
+    control,
+    setValue,
+    formState: { errors }
+  } = useFormContext<CategoryFormType>()
+
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null)
 
   useEffect(() => {
@@ -52,7 +55,6 @@ const CategoryThumbnailImage = ({ control, errors, isLoading, setValue, category
     const image = Array.isArray(item) ? item[0] : item
 
     setSelectedImage(image)
-
     const thumbnailImageId = typeof image.id === 'number' && image.id > 0 ? image.id : null
 
     setValue('thumbnailImageId', thumbnailImageId, { shouldValidate: true })

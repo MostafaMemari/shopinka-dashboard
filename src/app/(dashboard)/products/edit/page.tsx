@@ -1,6 +1,12 @@
 import ProductForm from '@/views/pages/products/CreateAndUpdate/ProductForm'
 
-const EditProduct = () => {
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+const EditProduct = async ({ searchParams }: PageProps) => {
+  const { id } = await searchParams
+
   return <ProductForm />
 }
 
