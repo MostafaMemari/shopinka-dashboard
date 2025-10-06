@@ -52,15 +52,7 @@ const ProductMainImage = ({ mainImage }: { mainImage?: GalleryItem | null }) => 
                 size='small'
                 color='error'
                 onClick={handleRemove}
-                sx={{
-                  position: 'absolute',
-                  top: 8,
-                  right: 8,
-                  bgcolor: 'rgba(255,255,255,0.8)',
-                  '&:hover': {
-                    bgcolor: 'rgba(255,0,0,0.15)'
-                  }
-                }}
+                sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'rgba(255,255,255,0.8)', '&:hover': { bgcolor: 'rgba(255,0,0,0.15)' } }}
               >
                 <DeleteOutlineIcon fontSize='small' />
               </IconButton>
