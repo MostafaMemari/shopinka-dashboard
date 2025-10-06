@@ -1,44 +1,18 @@
 'use client'
 
 import { QueryKeys } from '@/types/enums/query-keys'
-import { QueryOptions } from '@/types/queryOptions'
-import { useQuery } from '@tanstack/react-query'
 import { Product, ProductFormType, ProductType } from '@/types/app/product.type'
-import { createProduct, getProductById, getProducts, updateProduct } from '@/libs/api/product.api'
+import { createProduct, updateProduct } from '@/libs/api/product.api'
 
 import { errorProductMessage } from '@/messages/product.message'
-import { useFormSubmit } from '../useFormSubmit'
-
-export function useProducts({ enabled = true, params = {}, staleTime = 1 * 60 * 1000 }: QueryOptions) {
-  const fetchProducts = () => getProducts(params).then(res => res)
-
-  return useQuery<any, Error>({
-    queryKey: [QueryKeys.Products, params],
-    queryFn: fetchProducts,
-    enabled,
-    staleTime,
-    refetchOnWindowFocus: false
-  })
-}
-
-export function useProductById({ enabled = true, productId, staleTime = 1 * 60 * 1000 }: QueryOptions & { productId: number }) {
-  const fetchProduct = () => getProductById(Number(productId)).then(res => res)
-
-  return useQuery<any, Error>({
-    queryKey: [QueryKeys.Product, productId],
-    queryFn: fetchProduct,
-    enabled,
-    staleTime,
-    refetchOnWindowFocus: false
-  })
-}
+import { useFormSubmit } from '@/hooks/useFormSubmit'
 
 interface UseProductFormProps {
   initialData?: Product
   onSuccess?: () => void
 }
 
-export const useProductForm = ({ initialData, onSuccess }: UseProductFormProps) => {
+export const useProductFormSubmit = ({ initialData, onSuccess }: UseProductFormProps) => {
   const isUpdate = !!initialData
 
   return useFormSubmit<ProductFormType & { id?: string }>({

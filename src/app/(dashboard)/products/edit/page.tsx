@@ -1,5 +1,4 @@
-import { getProductById } from '@/libs/api/product.api'
-import ProductForm from '@/views/pages/products/CreateAndUpdate/ProductForm'
+import ProductFetcher from '@/views/pages/products/CreateAndUpdate/ProductFetcher'
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -8,9 +7,7 @@ interface PageProps {
 const EditProduct = async ({ searchParams }: PageProps) => {
   const { id } = await searchParams
 
-  const res = await getProductById(Number(id))
-
-  return <ProductForm product={res.data ?? undefined} />
+  return <ProductFetcher id={id ? String(id) : null} />
 }
 
 export default EditProduct

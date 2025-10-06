@@ -1,61 +1,21 @@
 'use client'
 
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider } from 'react-hook-form'
 import Grid from '@mui/material/Grid2'
-import { useProductForm } from '@/hooks/reactQuery/useProduct'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ProductFormTabs from './ProductFormTabs'
-import { Product, type ProductFormType, ProductStatus, ProductType } from '@/types/app/product.type'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { productFormSchema } from '@/libs/validators/product.schema'
-import { RobotsTag } from '@/types/enums/robotsTag'
-import { transformToStringArray } from '@/utils/transformToStringArray'
+import { Product, ProductStatus } from '@/types/app/product.type'
 import { ProductProvider } from './ProductContext'
 import ProductAddHeader from './sections/ProductAddHeader'
 import { useRouter } from 'next/navigation'
+import { useProductFormSubmit } from '@/hooks/reactQuery/product/useProductFormSubmit'
+import { useProductFormFields } from '@/hooks/reactQuery/product/useProductFormFields'
 
-const ProductForm = ({ product }: { product?: Product }) => {
-  const { isLoading, onSubmit } = useProductForm({ initialData: product })
+const ProductForm = ({ product }: { product?: Product; refetch: () => void }) => {
+  const { isLoading, onSubmit } = useProductFormSubmit({ initialData: product })
+  const { methods } = useProductFormFields({ initialData: product })
+
   const router = useRouter()
-
-  const defaultValues: ProductFormType = {
-    sku: product?.sku ?? '',
-    name: product?.name ?? '',
-    slug: product?.slug ?? '',
-    description: product?.description ?? '',
-    shortDescription: product?.shortDescription ?? '',
-    quantity: product?.quantity ?? null,
-    basePrice: product?.basePrice ?? null,
-    salePrice: product?.salePrice ?? null,
-    status: product?.status ?? ProductStatus.DRAFT,
-    type: product?.type ?? ProductType.SIMPLE,
-    mainImageId: product?.mainImageId ?? null,
-
-    width: product?.width ?? null,
-    height: product?.height ?? null,
-    length: product?.length ?? null,
-    weight: product?.weight ?? null,
-    defaultVariantId: product?.defaultVariantId ?? null,
-
-    galleryImageIds: product?.galleryImages ? product.galleryImages.map(galleryImage => galleryImage.id) : [],
-    categoryIds: product?.categories ? product.categories.map(category => category.id) : [],
-    attributeIds: product?.attributes ? product?.attributes.map(att => att.id) : [],
-    tagIds: product?.tags ? product.tags.map(tag => tag.id) : [],
-
-    seo_title: product?.seoMeta?.title ?? '',
-    seo_description: product?.seoMeta?.description ?? '',
-    seo_keywords: transformToStringArray(product?.seoMeta?.keywords) ?? [],
-    seo_canonicalUrl: product?.seoMeta?.canonicalUrl ?? '',
-    seo_robotsTag: product?.seoMeta?.robotsTag ?? RobotsTag.INDEX_FOLLOW
-  }
-
-  const methods = useForm<ProductFormType & { defaultVariantId: number | null }>({
-    resolver: yupResolver(productFormSchema),
-    mode: 'onChange',
-    defaultValues
-  })
-
-  const { setValue } = methods
 
   const handleHeaderButtonClick = (buttonType: 'cancel' | 'draft' | 'publish') => {
     switch (buttonType) {
@@ -63,15 +23,15 @@ const ProductForm = ({ product }: { product?: Product }) => {
         router.push('/products')
         break
       case 'draft':
-        setValue('status', ProductStatus.DRAFT)
+        methods.setValue('status', ProductStatus.DRAFT)
         methods.handleSubmit(onSubmit)()
-        router.push('/products')
+        window.location.reload()
 
         break
       case 'publish':
-        setValue('status', ProductStatus.PUBLISHED)
+        methods.setValue('status', ProductStatus.PUBLISHED)
         methods.handleSubmit(onSubmit)()
-        router.push('/products')
+        window.location.reload()
 
         break
     }

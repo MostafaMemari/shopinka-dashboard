@@ -12,7 +12,9 @@ const SeoFormWithContext: React.FC = () => {
         <FormField name='seo_title' label='عنوان سئو' placeholder='عنوان صفحه' />
         <FormField name='seo_description' label='توضیحات سئو' placeholder='توضیحات برای موتورهای جستجو' multiline rows={3} />
         <Grid size={{ xs: 12 }}>
-          <FormAutocompleteField name='seo_keywords' label='کلمات کلیدی سئو' placeholder='با Enter یا , اضافه کن' />
+          {/* <FormAutocompleteField name='seo_keywords' label='کلمات کلیدی سئو' placeholder='با Enter یا , اضافه کن' /> */}
+
+          <FormField name='seo_keywords' label='کلمات کلیدی سئو' type='multiselect-autocomplete' />
         </Grid>
         <FormField name='seo_robotsTag' label='دستورات ربات‌ها' select defaultValue='index, follow'>
           <MenuItem value='index, follow'>Index, Follow</MenuItem>

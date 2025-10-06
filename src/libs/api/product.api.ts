@@ -1,3 +1,5 @@
+'use server'
+
 import { Product, ProductFormType } from '@/types/app/product.type'
 import { Response } from '@/types/response'
 import { handleSeoSave } from '../services/seo/seo.service'
@@ -47,11 +49,7 @@ export const updateProduct = async (id: number, data: Partial<ProductFormType>):
     body: { ...data }
   })
 
-  if (id) {
-    await handleSeo(Number(id), data, true)
-  } else {
-    showToast({ type: 'error', message: 'خطا در دریافت آیدی محصول' })
-  }
+  if (res.status === 200) await handleSeo(Number(id), data, true)
 
   return {
     ...res
@@ -83,6 +81,8 @@ export const removeProduct = async (id: string): Promise<{ status: number; data:
 }
 
 const handleSeo = async (productId: number, data: Partial<ProductFormType>, isUpdate?: boolean) => {
+  console.log(data)
+
   const seoData = isUpdate
     ? {
         seo_title: data.seo_title,
@@ -93,16 +93,13 @@ const handleSeo = async (productId: number, data: Partial<ProductFormType>, isUp
       }
     : {
         seo_title: data.seo_title || data.name,
-        seo_description:
-          data.seo_description ||
-          generateProductSeoDescription({
-            title: data.name,
-            description: data.shortDescription ?? ''
-          }),
+        seo_description: data.seo_description || generateProductSeoDescription({ title: data.name, description: data.shortDescription ?? '' }),
         seo_keywords: data.seo_keywords,
         seo_canonicalUrl: data.seo_canonicalUrl || data.slug,
         seo_robotsTag: data.seo_robotsTag
       }
+
+  console.log(seoData)
 
   const seoResponse = await handleSeoSave(SeoMetaTargetType.product, productId, seoData as SeoForm)
 

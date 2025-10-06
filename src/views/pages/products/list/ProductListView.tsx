@@ -9,13 +9,13 @@ import { Product } from '@/types/app/product.type'
 import { useDebounce } from '@/hooks/useDebounce'
 import ErrorState from '@/components/states/ErrorState'
 import EmptyProductState from './EmptyProductState'
-import { useProducts } from '@/hooks/reactQuery/useProduct'
 import { useRouter } from 'next/navigation'
 import CustomTextField from '@/@core/components/mui/TextField'
 import TableFilters from './TableFilters'
 import { useQuerySetState } from '@/hooks/useQuerySetState'
 import { parseAsArrayOf, parseAsInteger, parseAsString } from 'nuqs'
 import { TableListSkeleton } from '@/components/TableSkeleton'
+import { useProducts } from '@/hooks/reactQuery/product/useProduct'
 
 const ProductListView = () => {
   const router = useRouter()
