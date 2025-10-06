@@ -11,13 +11,27 @@ type TextFormFieldProps = {
   children?: React.ReactNode
   defaultValue?: any
   helperText?: string
+  control?: any
+  errors?: Record<string, any>
 }
 
-const TextFormField: React.FC<TextFormFieldProps> = ({ name, label, placeholder, multiline, rows, select, children, defaultValue, helperText }) => {
-  const {
-    control,
-    formState: { errors }
-  } = useFormContext()
+const TextFormField: React.FC<TextFormFieldProps> = ({
+  name,
+  label,
+  placeholder,
+  multiline,
+  rows,
+  select,
+  children,
+  defaultValue,
+  helperText,
+  control: externalControl,
+  errors: externalErrors
+}) => {
+  const context = useFormContext()
+
+  const control = externalControl ?? context?.control
+  const errors = externalErrors ?? context?.formState?.errors ?? {}
 
   return (
     <Controller
@@ -34,8 +48,8 @@ const TextFormField: React.FC<TextFormFieldProps> = ({ name, label, placeholder,
           select={select}
           label={label}
           placeholder={placeholder}
-          error={!!errors[name]}
-          helperText={errors[name]?.message?.toString() || helperText}
+          error={!!errors?.[name]}
+          helperText={errors?.[name]?.message?.toString() || helperText}
         >
           {children}
         </CustomTextField>

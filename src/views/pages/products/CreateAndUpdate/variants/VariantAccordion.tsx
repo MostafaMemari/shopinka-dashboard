@@ -16,45 +16,39 @@ import VariantPricing from './sections/VariantPricing'
 import VariantImage from './sections/VariantImage'
 import RemoveProductVariantModal from './RemoveProductVariantModal'
 import { ProductVariant } from '@/types/app/productVariant.type'
-import { useProductVariantForm } from '@/hooks/reactQuery/useProductVariant'
-import { useEffect } from 'react'
+import { useProductVariantFormSubmit } from '@/hooks/reactQuery/productVariant/useProductVariantFormSubmit'
 import { useDefaultVariant } from '@/hooks/reactQuery/useDefaultVariant'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import StarIcon from '@mui/icons-material/Star'
+import { useProductVariantFormFields } from '@/hooks/reactQuery/productVariant/useProductVariantFormFields'
 
 type VariantAccordionProps = {
-  variant: ProductVariant & { isDefault?: boolean }
+  variant: ProductVariant
   isDefault: boolean
   expanded: boolean
   onChange: (id: string) => void
-  onUpdate: (id: string, updatedFields: Partial<ProductVariant> & { isDefault?: boolean }) => void
 }
 
-const VariantAccordion = ({ variant, expanded, isDefault, onChange, onUpdate }: VariantAccordionProps) => {
-  const { control, errors, setValue, isLoading, onSubmit } = useProductVariantForm({
-    productId: Number(variant.productId),
-    initialData: variant,
-    isUpdate: true
-  })
+const VariantAccordion = ({ variant, expanded, isDefault, onChange }: VariantAccordionProps) => {
+  const { isLoading, onSubmit } = useProductVariantFormSubmit({ productId: Number(variant.productId), initialData: variant })
 
   const { toggleDefaultVariant, isLoading: isSettingDefault } = useDefaultVariant({
     productId: Number(variant.productId),
     variantId: Number(variant.id)
   })
 
-  useEffect(() => {
-    setValue('sku', variant.sku ?? '')
-    setValue('shortDescription', variant.shortDescription ?? '')
-    setValue('quantity', variant.quantity ?? null)
-    setValue('basePrice', variant.basePrice ?? null)
-    setValue('salePrice', variant.salePrice ?? null)
-    setValue('mainImageId', variant.mainImage?.id ?? null)
-    setValue('width', variant.width ?? null)
-    setValue('height', variant.height ?? null)
-    setValue('length', variant.length ?? null)
-    setValue('weight', variant.weight ?? null)
-    setValue('attributeValueIds', variant.attributeValues?.map(av => av.id) ?? [])
-  }, [variant, setValue])
+  const { methods } = useProductVariantFormFields({ initialData: variant })
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors }
+  } = methods
+
+  const handleUpdateProductVariant = () => {
+    handleSubmit(onSubmit)()
+  }
 
   return (
     <Accordion expanded={expanded} onChange={() => onChange(String(variant.id ?? ''))} sx={{ mb: 2, border: '1px solid', borderColor: 'divider' }}>
@@ -68,20 +62,12 @@ const VariantAccordion = ({ variant, expanded, isDefault, onChange, onUpdate }: 
             </Tooltip>
           </RemoveProductVariantModal>
           <Tooltip title={isDefault ? 'حذف از پیش‌فرض' : 'تنظیم به‌عنوان پیش‌فرض'}>
-            <span>
-              <IconButton
-                size='small'
-                color={isDefault ? 'warning' : 'default'}
-                onClick={() => toggleDefaultVariant(isDefault ?? false)}
-                disabled={isSettingDefault}
-                sx={{ mr: 2 }}
-              >
-                {isDefault ? <StarIcon fontSize='small' /> : <StarBorderIcon fontSize='small' />}
-              </IconButton>
-            </span>
+            <IconButton size='small' color={isDefault ? 'warning' : 'default'} onClick={() => toggleDefaultVariant(isDefault ?? false)} disabled={isSettingDefault} sx={{ mr: 2 }}>
+              {isDefault ? <StarIcon fontSize='small' /> : <StarBorderIcon fontSize='small' />}
+            </IconButton>
           </Tooltip>
           <Tooltip title='بروزرسانی متغیر'>
-            <IconButton size='small' color='primary' onClick={onSubmit} sx={{ mr: 2 }} disabled={isLoading}>
+            <IconButton size='small' color='primary' onClick={handleUpdateProductVariant} sx={{ mr: 2 }} disabled={isLoading}>
               <SaveIcon fontSize='small' />
             </IconButton>
           </Tooltip>
@@ -106,7 +92,7 @@ const VariantAccordion = ({ variant, expanded, isDefault, onChange, onUpdate }: 
                 <VariantPricing control={control} errors={errors} />
               </Grid>
               <Grid size={{ xs: 12 }}>
-                <VariantImage variant={variant} control={control} setValue={setValue} />
+                <VariantImage mainImage={variant.mainImage} setValue={setValue} />
               </Grid>
             </Grid>
           </Grid>

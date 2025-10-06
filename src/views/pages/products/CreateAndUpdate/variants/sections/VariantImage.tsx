@@ -9,88 +9,68 @@ import IconButton from '@mui/material/IconButton'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import ModalGallery from '@/components/Gallery/ModalGallery/ModalGallery'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
-import { ProductVariant, ProductVariantForm } from '@/types/app/productVariant.type'
+import { ProductVariantForm } from '@/types/app/productVariant.type'
 import { GalleryItem } from '@/types/app/gallery.type'
-import { Typography } from '@mui/material'
+import { Card, CardContent, CardHeader, Typography } from '@mui/material'
 
 interface Props {
-  variant: ProductVariant
-  control: Control<ProductVariantForm>
+  mainImage?: GalleryItem | null
   setValue: UseFormSetValue<ProductVariantForm>
 }
 
-const VariantImage = ({ variant, control, setValue }: Props) => {
-  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(variant.mainImage || null)
+const VariantImage = ({ mainImage, setValue }: Props) => {
+  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null)
 
-  // Sync selectedImage with variant.mainImage when variant changes
   useEffect(() => {
-    if (variant.mainImage && !selectedImage) {
-      setSelectedImage(variant.mainImage)
-      setValue('mainImageId', variant.mainImage.id || null, { shouldValidate: true })
-    }
-  }, [variant.mainImage, selectedImage, setValue])
+    if (mainImage) setSelectedImage(mainImage)
 
-  const handleSelectImage = (items: GalleryItem | GalleryItem[]) => {
-    const image = Array.isArray(items) ? items[0] : items
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-    if (image) {
-      setSelectedImage(image)
-      const mainImageId = typeof image.id === 'number' && image.id > 0 ? image.id : null
+  const handleSelect = (item: GalleryItem | GalleryItem[]) => {
+    const image = Array.isArray(item) ? item[0] : item
 
-      setValue('mainImageId', mainImageId, { shouldValidate: true })
-    }
+    setSelectedImage(image)
+    const mainImageId = typeof image.id === 'number' && image.id > 0 ? image.id : null
+
+    setValue('mainImageId', mainImageId)
   }
 
-  const handleRemoveImage = () => {
+  const handleRemove = () => {
     setSelectedImage(null)
-
-    setValue('mainImageId', null, { shouldValidate: true })
+    setValue('mainImageId', null)
   }
 
   return (
-    <Box sx={{ p: 4, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
-      <Typography variant='h6' sx={{ mb: 2 }}>
-        تصویر متغیر
-      </Typography>
-      <Controller
-        name='mainImageId'
-        control={control}
-        render={({ field }) => (
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-            {selectedImage && selectedImage.fileUrl ? (
-              <Box sx={{ position: 'relative', width: 200, height: 200, borderRadius: 2, overflow: 'hidden', boxShadow: 1 }}>
-                <Image src={selectedImage.fileUrl} alt={selectedImage.title || 'تصویر متغیر'} fill style={{ objectFit: 'cover' }} />
-                <Tooltip title='حذف تصویر'>
-                  <IconButton
-                    size='small'
-                    color='error'
-                    onClick={handleRemoveImage}
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      bgcolor: 'rgba(255,255,255,0.8)',
-                      '&:hover': { bgcolor: 'rgba(255,0,0,0.15)' }
-                    }}
-                  >
-                    <DeleteOutlineIcon fontSize='small' />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            ) : (
-              <EmptyPlaceholder text='تصویری یافت نشد' width={200} height={200} />
-            )}
-            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-              <ModalGallery initialSelected={selectedImage || undefined} btnLabel={selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} multi={false} onSelect={handleSelectImage}>
-                <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
-                  {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
-                </Typography>
-              </ModalGallery>
-            </Box>
+    <Card>
+      <CardHeader title='تصویر اصلی محصول' />
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+        {selectedImage ? (
+          <Box sx={{ position: 'relative', width: 200, height: 200, borderRadius: 2, overflow: 'hidden', boxShadow: 1 }}>
+            <Image src={selectedImage.fileUrl} alt={selectedImage.title || 'تصویر محصول'} fill style={{ objectFit: 'cover' }} />
+            <Tooltip title='حذف تصویر'>
+              <IconButton
+                size='small'
+                color='error'
+                onClick={handleRemove}
+                sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'rgba(255,255,255,0.8)', '&:hover': { bgcolor: 'rgba(255,0,0,0.15)' } }}
+              >
+                <DeleteOutlineIcon fontSize='small' />
+              </IconButton>
+            </Tooltip>
           </Box>
+        ) : (
+          <EmptyPlaceholder text='تصویری یافت نشد' width={200} height={200} />
         )}
-      />
-    </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <ModalGallery initialSelected={selectedImage || undefined} btnLabel={selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} multi={false} onSelect={handleSelect}>
+            <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
+              {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
+            </Typography>
+          </ModalGallery>
+        </Box>
+      </CardContent>
+    </Card>
   )
 }
 

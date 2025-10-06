@@ -10,56 +10,47 @@ import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add'
 import Typography from '@mui/material/Typography'
 import VariantAccordion from './VariantAccordion'
-import { Attribute } from '@/types/app/productAttributes.type'
 import { ProductVariant } from '@/types/app/productVariant.type'
-import { useSearchParams } from 'next/navigation'
-import { useProductVariants } from '@/hooks/reactQuery/useProductVariant'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ErrorState from '@/components/states/ErrorState'
 import CreateProductVariantModal from './CreateProductVariant'
 import { QueryKeys } from '@/types/enums/query-keys'
+import { useProductVariants } from '@/hooks/reactQuery/productVariant/useProductVariants'
 
-const updateProductVariant = (
-  variants: ProductVariant[],
-  setVariants: React.Dispatch<React.SetStateAction<ProductVariant[]>>,
-  id: string,
-  updatedFields: Partial<ProductVariant>,
-  queryClient: any
-) => {
-  setVariants(prevVariants => prevVariants.map(variant => (String(variant.id) === id ? { ...variant, ...updatedFields } : variant)))
+// const updateProductVariant = (
+//   variants: ProductVariant[],
+//   setVariants: React.Dispatch<React.SetStateAction<ProductVariant[]>>,
+//   id: string,
+//   updatedFields: Partial<ProductVariant>,
+//   queryClient: any
+// ) => {
+//   setVariants(prevVariants => prevVariants.map(variant => (String(variant.id) === id ? { ...variant, ...updatedFields } : variant)))
 
-  queryClient.setQueryData([QueryKeys.ProductVariants, { productId: variants[0]?.productId }], (oldData: any) => {
-    if (!oldData?.data?.items) return oldData
+//   queryClient.setQueryData([QueryKeys.ProductVariants, { productId: variants[0]?.productId }], (oldData: any) => {
+//     if (!oldData?.data?.items) return oldData
 
-    return {
-      ...oldData,
-      data: {
-        ...oldData.data,
-        items: oldData.data.items.map((item: ProductVariant) => (String(item.id) === id ? { ...item, ...updatedFields } : item))
-      }
-    }
-  })
-}
+//     return {
+//       ...oldData,
+//       data: {
+//         ...oldData.data,
+//         items: oldData.data.items.map((item: ProductVariant) => (String(item.id) === id ? { ...item, ...updatedFields } : item))
+//       }
+//     }
+//   })
+// }
 
-const VariableTabContent = () => {
-  const searchParams = useSearchParams()
-  const productId = searchParams.get('id')
+const VariableTabContent = ({ productId }: { productId: number }) => {
   const queryClient = useQueryClient()
 
   const { data, isLoading, isFetching, error, refetch } = useProductVariants({
     enabled: !!productId,
-    params: {
-      take: 50,
-      productId,
-      includeAttributeValues: true,
-      includeMainImage: true
-    },
-    staleTime: 10 * 60 * 1000
+    params: { take: 50, productId, includeAttributeValues: true, includeMainImage: true }
   })
 
   const ProductVariants: ProductVariant[] = useMemo(() => data?.data?.items || [], [data])
 
   const { watch, setValue } = useFormContext()
+
   const [variants, setVariants] = useState<ProductVariant[]>([])
   const [expanded, setExpanded] = useState<string | false>(false)
 
@@ -99,7 +90,7 @@ const VariableTabContent = () => {
       />
       <CardContent>
         {ProductVariants.length === 0 ? (
-          <Typography color='text.secondary'>هیچ متغیری وجود ندارد. ویژگی‌ها را انتخاب کنید و متغیر اضافه کنید.</Typography>
+          <Typography color='text.secondary'>هیچ متغیری وجود ندارد. ویژگی‌ها را انتخاب کنید و متغیر اضافه کنید</Typography>
         ) : (
           variants.map(variant => (
             <VariantAccordion
@@ -108,7 +99,8 @@ const VariableTabContent = () => {
               isDefault={variant.id === defaultVariantId}
               expanded={expanded === String(variant.id)}
               onChange={() => setExpanded(expanded === String(variant.id) ? false : String(variant.id))}
-              onUpdate={(id, updatedFields) => updateProductVariant(variants, setVariants, id, updatedFields, queryClient)}
+
+              // onUpdate={(id, updatedFields) => updateProductVariant(variants, setVariants, id, updatedFields, queryClient)}
             />
           ))
         )}

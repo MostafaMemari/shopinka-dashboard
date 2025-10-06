@@ -1,10 +1,11 @@
 'use client'
 
-import { type Control, Controller, type FieldErrors } from 'react-hook-form'
+import { type Control, type FieldErrors } from 'react-hook-form'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import CustomTextField from '@core/components/mui/TextField'
 import { type ProductVariantForm } from '@/types/app/productVariant.type'
+import Grid from '@mui/material/Grid2'
+import FormField from '@/components/form/FormField'
 
 interface Props {
   control: Control<ProductVariantForm>
@@ -17,41 +18,14 @@ const VariantPricing = ({ control, errors }: Props) => {
       <Typography variant='h6' sx={{ mb: 2 }}>
         قیمت‌گذاری
       </Typography>
-      <Controller
-        name='basePrice'
-        control={control}
-        render={({ field }) => (
-          <CustomTextField
-            {...field}
-            fullWidth
-            label='قیمت پایه'
-            placeholder='۵۰۰,۰۰۰ تومان'
-            type='number'
-            sx={{ mb: 6 }}
-            value={field.value ?? ''}
-            onChange={e => field.onChange(e.target.value ? Number(e.target.value) : null)}
-            error={!!errors.basePrice}
-            helperText={errors.basePrice?.message}
-          />
-        )}
-      />
-      <Controller
-        name='salePrice'
-        control={control}
-        render={({ field }) => (
-          <CustomTextField
-            {...field}
-            fullWidth
-            label='قیمت با تخفیف'
-            placeholder='۴۹۹,۰۰۰ تومان'
-            type='number'
-            value={field.value ?? ''}
-            onChange={e => field.onChange(e.target.value ? Number(e.target.value) : null)}
-            error={!!errors.salePrice}
-            helperText={errors.salePrice?.message}
-          />
-        )}
-      />
+      <Grid container spacing={6} className='mbe-6'>
+        <Grid size={{ xs: 12 }}>
+          <FormField name='basePrice' control={control} errors={errors} label='قیمت پایه' placeholder='لطفا قیمت پایه را وارد کنید' />
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <FormField name='salePrice' control={control} errors={errors} label='قیمت با تخفیف' placeholder='لطفا قیمت تخفیف را وارد کنید' />
+        </Grid>
+      </Grid>
     </Box>
   )
 }

@@ -25,7 +25,7 @@ const ProductFormTabs = () => {
 
   const [tabValue, setTabValue] = useState(0)
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
   }
 
@@ -85,7 +85,7 @@ const ProductFormTabs = () => {
           <Grid size={{ xs: 12 }}>
             <Grid container spacing={6}>
               <Grid size={{ xs: 12 }}>
-                <VariableTabContent />
+                <VariableTabContent productId={productId} />
               </Grid>
             </Grid>
           </Grid>

@@ -9,14 +9,26 @@ type MultiSelectAutocompleteFormFieldProps = {
   placeholder?: string
   options?: string[]
   defaultValue?: string[]
+  control?: any
+  setValue?: (name: string, value: any, options?: any) => void
+  errors?: Record<string, any>
 }
 
-const MultiSelectAutocompleteFormField: React.FC<MultiSelectAutocompleteFormFieldProps> = ({ name, label, placeholder, options = [], defaultValue = [] }) => {
-  const {
-    control,
-    setValue,
-    formState: { errors }
-  } = useFormContext()
+const MultiSelectAutocompleteFormField: React.FC<MultiSelectAutocompleteFormFieldProps> = ({
+  name,
+  label,
+  placeholder,
+  options = [],
+  defaultValue = [],
+  control: externalControl,
+  setValue: externalSetValue,
+  errors: externalErrors
+}) => {
+  const context = useFormContext()
+
+  const control = externalControl ?? context?.control
+  const setValue = externalSetValue ?? context?.setValue
+  const errors = externalErrors ?? context?.formState?.errors ?? {}
 
   const [inputValue, setInputValue] = useState('')
 
@@ -34,11 +46,13 @@ const MultiSelectAutocompleteFormField: React.FC<MultiSelectAutocompleteFormFiel
           inputValue={inputValue}
           onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
           onChange={(_, newValue) => {
-            const uniqueValues = Array.from(new Set((newValue ?? []).map(v => (typeof v === 'string' ? v.trim() : v.value)).filter(v => v.length > 0)))
+            const uniqueValues = Array.from(
+              new Set((newValue ?? []).map(v => (typeof v === 'string' ? v.trim() : (v as any).value)).filter(v => typeof v === 'string' && v.length > 0))
+            )
 
             const finalValues = uniqueValues.length > 0 ? uniqueValues : []
 
-            setValue(name, finalValues, { shouldValidate: true })
+            setValue?.(name, finalValues, { shouldValidate: true })
             field.onChange(finalValues)
           }}
           renderInput={params => (
@@ -46,8 +60,8 @@ const MultiSelectAutocompleteFormField: React.FC<MultiSelectAutocompleteFormFiel
               {...params}
               label={label}
               placeholder={placeholder}
-              error={!!fieldState.error}
-              helperText={fieldState.error?.message}
+              error={!!(fieldState.error || errors?.[name])}
+              helperText={fieldState.error?.message || errors?.[name]?.message}
               onKeyDown={e => {
                 if ((e.key === 'Enter' || e.key === ',') && inputValue.trim()) {
                   e.preventDefault()
@@ -56,7 +70,7 @@ const MultiSelectAutocompleteFormField: React.FC<MultiSelectAutocompleteFormFiel
                   if (!field.value.includes(newKeyword)) {
                     const updated = [...(field.value || []), newKeyword]
 
-                    setValue(name, updated, { shouldValidate: true })
+                    setValue?.(name, updated, { shouldValidate: true })
                     field.onChange(updated)
                   }
 

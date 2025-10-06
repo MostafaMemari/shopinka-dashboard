@@ -5,12 +5,13 @@ import Button from '@mui/material/Button'
 import FormActions from '@/components/FormActions'
 import AttributeSelector, { SelectedValue } from './AttributeSelector'
 import CustomDialog from '@/components/dialogs/CustomDialog'
-import { useProductVariantForm } from '@/hooks/reactQuery/useProductVariant'
 import { Attribute } from '@/types/app/productAttributes.type'
 import { useFormContext } from 'react-hook-form'
 import { showToast } from '@/utils/showToast'
 import { useAttribute } from '@/hooks/reactQuery/useAttribute'
 import { ProductVariantForm } from '@/types/app/productVariant.type'
+import { useProductVariantFormSubmit } from '@/hooks/reactQuery/productVariant/useProductVariantFormSubmit'
+import { useProductVariantFormFields } from '@/hooks/reactQuery/productVariant/useProductVariantFormFields'
 
 interface CreateProductVariantModalProps {
   children?: ReactNode
@@ -18,36 +19,27 @@ interface CreateProductVariantModalProps {
   existingAttributeCombinations: string[]
 }
 
-const CreateProductVariantModal = ({ children, productId, existingAttributeCombinations }: CreateProductVariantModalProps) => {
+const CreateProductVariantModal = ({ productId, existingAttributeCombinations }: CreateProductVariantModalProps) => {
   const [open, setOpen] = useState<boolean>(false)
   const { watch } = useFormContext()
 
-  const attributeIds: number[] = watch('attributeIds') || []
-
   const { data: attributeData } = useAttribute({
     enabled: true,
-    params: {
-      take: 20,
-      includeThumbnailImage: true,
-      includeChildren: true,
-      childrenDepth: 6
-    },
+    params: { take: 20, includeThumbnailImage: true, includeChildren: true, childrenDepth: 6 },
     staleTime: 5 * 60 * 1000
   })
 
+  const attributeIds: number[] = watch('attributeIds') || []
+
   const attributes: Attribute[] = (attributeData?.data?.items || []).filter((attr: Attribute) => attributeIds.includes(attr.id))
 
-  const [selectedValues, setSelectedValues] = useState<SelectedValue[]>(() =>
-    attributes.map(attr => ({
-      attributeId: attr.id,
-      valueId: null,
-      value: ''
-    }))
-  )
+  const [selectedValues, setSelectedValues] = useState<SelectedValue[]>(() => attributes.map(attr => ({ attributeId: attr.id, valueId: null, value: '' })))
 
-  const { isLoading, onSubmit, handleClose, setValue } = useProductVariantForm({
-    productId: Number(productId)
-  })
+  const { isLoading, onSubmit } = useProductVariantFormSubmit({ productId: Number(productId) })
+
+  const { methods } = useProductVariantFormFields({})
+
+  const { setValue } = methods
 
   useEffect(() => {
     const fields: (keyof ProductVariantForm)[] = ['quantity', 'basePrice', 'salePrice', 'width', 'height', 'length', 'weight']
@@ -82,8 +74,7 @@ const CreateProductVariantModal = ({ children, productId, existingAttributeCombi
         value: ''
       }))
     )
-    handleClose()
-  }, [handleClose, attributes])
+  }, [attributes])
 
   const handleSubmit = useCallback(() => {
     if (isDuplicate) {
@@ -92,18 +83,14 @@ const CreateProductVariantModal = ({ children, productId, existingAttributeCombi
       return
     }
 
-    onSubmit()
-  }, [isDuplicate, onSubmit])
+    methods.handleSubmit(onSubmit)()
+  }, [isDuplicate, methods, onSubmit])
 
   return (
     <div>
-      <div onClick={handleOpen}>
-        {children || (
-          <Button variant='contained' startIcon={<i className='tabler-plus' />}>
-            افزودن متغیر جدید
-          </Button>
-        )}
-      </div>
+      <Button onClick={handleOpen} variant='contained' startIcon={<i className='tabler-plus' />}>
+        افزودن متغیر جدید
+      </Button>
 
       <CustomDialog
         open={open}

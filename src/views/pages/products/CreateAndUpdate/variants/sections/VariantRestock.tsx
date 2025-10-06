@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import CustomTextField from '@core/components/mui/TextField'
 import { type ProductVariantForm } from '@/types/app/productVariant.type'
+import FormField from '@/components/form/FormField'
 
 interface Props {
   control: Control<ProductVariantForm>
@@ -20,99 +21,19 @@ const VariantRestock = ({ control, errors }: Props) => {
       </Typography>
       <Grid container spacing={6}>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Controller
-            name='quantity'
-            control={control}
-            render={({ field }) => (
-              <CustomTextField
-                {...field}
-                fullWidth
-                label='تعداد'
-                placeholder='۵۴'
-                type='number'
-                value={field.value ?? ''}
-                onChange={e => field.onChange(e.target.value ? Number(e.target.value) : null)}
-                error={!!errors.quantity}
-                helperText={errors.quantity?.message}
-              />
-            )}
-          />
+          <FormField control={control} errors={errors} name='quantity' label='تعداد' placeholder='لطفا تعداد را وارد کنید' />
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Controller
-            name='weight'
-            control={control}
-            render={({ field }) => (
-              <CustomTextField
-                {...field}
-                fullWidth
-                label='وزن (کیلوگرم)'
-                placeholder='۰.۵'
-                type='number'
-                value={field.value ?? ''}
-                onChange={e => field.onChange(e.target.value ? Number(e.target.value) : null)}
-                error={!!errors.weight}
-                helperText={errors.weight?.message}
-              />
-            )}
-          />
+          <FormField control={control} errors={errors} name='weight' label='وزن (کیلوگرم)' placeholder='لطفا وزن را وارد کنید' />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <Controller
-            name='width'
-            control={control}
-            render={({ field }) => (
-              <CustomTextField
-                {...field}
-                fullWidth
-                label='عرض (سانتی‌متر)'
-                placeholder='۱۰'
-                type='number'
-                value={field.value ?? ''}
-                onChange={e => field.onChange(e.target.value ? Number(e.target.value) : null)}
-                error={!!errors.width}
-                helperText={errors.width?.message}
-              />
-            )}
-          />
+          <FormField control={control} errors={errors} name='width' label='عرض (سانتی‌متر)' placeholder='لطفا عرض را وارد کنید' />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <Controller
-            name='height'
-            control={control}
-            render={({ field }) => (
-              <CustomTextField
-                {...field}
-                fullWidth
-                label='ارتفاع (سانتی‌متر)'
-                placeholder='۱۵'
-                type='number'
-                value={field.value ?? ''}
-                onChange={e => field.onChange(e.target.value ? Number(e.target.value) : null)}
-                error={!!errors.height}
-                helperText={errors.height?.message}
-              />
-            )}
-          />
+          <FormField control={control} errors={errors} name='height' label='ارتفاع (سانتی‌متر)' placeholder='لطفا ارتفاع را وارد کنید' />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <Controller
-            name='length'
-            control={control}
-            render={({ field }) => (
-              <CustomTextField
-                {...field}
-                fullWidth
-                label='طول (سانتی‌متر)'
-                placeholder='۲۰'
-                type='number'
-                value={field.value ?? ''}
-                onChange={e => field.onChange(e.target.value ? Number(e.target.value) : null)}
-                error={!!errors.length}
-                helperText={errors.length?.message}
-              />
-            )}
-          />
+          <FormField control={control} errors={errors} name='length' label='طول (سانتی‌متر)' placeholder='لطفا طول را وارد کنید' />
         </Grid>
       </Grid>
     </Box>

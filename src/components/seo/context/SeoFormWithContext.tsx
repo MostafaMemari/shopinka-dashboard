@@ -2,7 +2,6 @@ import Grid from '@mui/material/Grid2'
 import Typography from '@mui/material/Typography'
 import MenuItem from '@mui/material/MenuItem'
 import FormField from '@/components/form/FormField'
-import FormAutocompleteField from '@/components/form/FormAutocompleteField'
 
 const SeoFormWithContext: React.FC = () => {
   return (
@@ -12,8 +11,6 @@ const SeoFormWithContext: React.FC = () => {
         <FormField name='seo_title' label='عنوان سئو' placeholder='عنوان صفحه' />
         <FormField name='seo_description' label='توضیحات سئو' placeholder='توضیحات برای موتورهای جستجو' multiline rows={3} />
         <Grid size={{ xs: 12 }}>
-          {/* <FormAutocompleteField name='seo_keywords' label='کلمات کلیدی سئو' placeholder='با Enter یا , اضافه کن' /> */}
-
           <FormField name='seo_keywords' label='کلمات کلیدی سئو' type='multiselect-autocomplete' />
         </Grid>
         <FormField name='seo_robotsTag' label='دستورات ربات‌ها' select defaultValue='index, follow'>
