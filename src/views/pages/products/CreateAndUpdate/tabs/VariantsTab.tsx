@@ -46,6 +46,7 @@ const VariantsTab = () => {
               type='multiselect'
               name='attributeIds'
               label='انتخاب ویژگی'
+              placeholder='ویژگی‌ها را انتخاب کنید'
               defaultValue={attributeIds}
               options={
                 attributesData?.data?.items.map((att: AttributeValue) => ({

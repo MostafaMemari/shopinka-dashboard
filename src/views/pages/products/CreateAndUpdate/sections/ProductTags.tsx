@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo } from 'react'
 
 // MUI Imports
 import Card from '@mui/material/Card'
@@ -15,53 +15,35 @@ import Box from '@mui/material/Box'
 // Component Imports
 import { useTags } from '@/hooks/reactQuery/useTag'
 import { Tag } from '@/types/app/tag.type'
-import { useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import CreateTagModal from '@/views/pages/tags/CreateTagModal'
+import FormField from '@/components/form/FormField'
 
 const ProductTags = ({ initialTagIds }: { initialTagIds: number[] }) => {
-  const {
-    setValue,
-    formState: { errors }
-  } = useFormContext()
-
-  const [selectedTags, setSelectedTags] = useState<number[]>(initialTagIds)
-
   const { data, isLoading, isFetching, error } = useTags({
     enabled: true,
-    params: {
-      take: 200,
-      type: 'PRODUCT',
-      includeThumbnailImage: true
-    },
+    params: { take: 200, type: 'PRODUCT', includeThumbnailImage: true },
     staleTime: 5 * 60 * 1000
   })
 
   const tags: Tag[] = useMemo(() => data?.data?.items || [], [data])
 
-  useEffect(() => {
-    setValue('tagIds', selectedTags, { shouldValidate: true })
-  }, [selectedTags, setValue])
-
   return (
     <Card>
       <CardHeader title='برچسب‌ها' />
       <CardContent>
-        <Autocomplete
-          multiple
-          freeSolo={false}
-          options={tags}
-          getOptionLabel={option => option.name}
-          value={tags.filter(tag => selectedTags.includes(tag.id))}
-          onChange={(_, newValue) => {
-            const newSelectedTags = newValue.map(tag => tag.id)
-
-            setSelectedTags(newSelectedTags)
-          }}
-          disabled={isLoading || isFetching}
-          noOptionsText='برچسبی یافت نشد'
-          renderInput={params => (
-            <TextField {...params} label='انتخاب برچسب' placeholder='جستجو و انتخاب برچسب' error={!!errors.tagIds} helperText={errors.tagIds?.message?.toString()} />
-          )}
+        <FormField
+          type='multiselect'
+          name='tagIds'
+          label='انتخاب برچسب'
+          placeholder='برچسب‌ها را انتخاب کنید'
+          defaultValue={initialTagIds}
+          options={
+            tags.map((tag: Tag) => ({
+              label: tag.name,
+              value: tag.id
+            })) || []
+          }
         />
 
         {(isLoading || isFetching) && <Typography sx={{ mt: 2 }}>در حال بارگذاری...</Typography>}
@@ -70,7 +52,7 @@ const ProductTags = ({ initialTagIds }: { initialTagIds: number[] }) => {
             خطا در بارگذاری برچسب‌ها
           </Typography>
         )}
-        {!(isLoading || isFetching) && tags.length === 0 && <Typography sx={{ mt: 2 }}>برچسبی یافت نشد</Typography>}
+        {!isLoading && !isFetching && tags.length === 0 && <Typography sx={{ mt: 2 }}>برچسبی یافت نشد</Typography>}
 
         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: 3 }}>
           <CreateTagModal>

@@ -40,7 +40,6 @@ const MultiSelectAutocompleteFormField: React.FC<MultiSelectAutocompleteFormFiel
       render={({ field, fieldState }) => (
         <Autocomplete
           multiple
-          freeSolo
           options={options}
           value={field.value || []}
           inputValue={inputValue}
