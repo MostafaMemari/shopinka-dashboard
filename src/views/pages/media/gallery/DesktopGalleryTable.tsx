@@ -43,7 +43,7 @@ const DesktopGalleryTable = ({ data }: { data: Gallery[] }) => (
             <td>
               <Box display='flex' alignItems='center' gap={2}>
                 <RemoveGalleryModal id={String(row.id)} />
-                <UpdateGalleryModal initialData={row} />
+                <UpdateGalleryModal gallery={row} />
                 <Link href={`/media/${row.id}`}>
                   <IconButton size='small'>
                     <i className='tabler-eye text-gray-500 text-lg' />

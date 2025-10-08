@@ -1,7 +1,5 @@
-export type GalleryForm = {
-  title: string
-  description: string | null
-}
+import { gallerySchema } from '@/libs/validators/gallery.schema'
+import { type InferType } from 'yup'
 
 export type Gallery = {
   id: number
@@ -35,3 +33,5 @@ export interface GalleryItem {
   deletedAt: string | null
   isDeleted: boolean
 }
+
+export type GalleryFormType = InferType<typeof gallerySchema>

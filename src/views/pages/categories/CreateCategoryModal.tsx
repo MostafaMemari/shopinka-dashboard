@@ -33,7 +33,7 @@ const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
   const onSubmit = methods.handleSubmit(data => mutate(data))
 
   return (
-    <div>
+    <>
       <div onClick={handleOpen} style={{ cursor: 'pointer' }}>
         {children || (
           <Button variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />}>
@@ -53,7 +53,7 @@ const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
           <CategoryForm isLoading={isPending} />
         </FormProvider>
       </CustomDialog>
-    </div>
+    </>
   )
 }
 

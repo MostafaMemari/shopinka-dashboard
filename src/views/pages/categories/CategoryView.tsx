@@ -30,14 +30,7 @@ const CategoryView = () => {
 
   const { data, isLoading, isFetching, error, refetch } = useCategories({
     enabled: true,
-    params: {
-      page,
-      take: size,
-      includeSeoMeta: true,
-      includeThumbnailImage: true,
-      includeChildren: true,
-      childrenDepth: 6
-    },
+    params: { page, take: size, includeSeoMeta: true, includeThumbnailImage: true, includeChildren: true, childrenDepth: 6 },
     staleTime: 5 * 60 * 1000
   })
 

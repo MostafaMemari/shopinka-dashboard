@@ -29,14 +29,7 @@ function UserListView() {
 
   const { data, isLoading, isFetching, error, refetch } = useUsers({
     enabled: true,
-    params: {
-      page,
-      take: size,
-      includeAddress: true,
-      includeTransaction: true,
-      includeShippingInfo: true,
-      search: !!search ? search : undefined
-    },
+    params: { page, take: size, includeAddress: true, includeTransaction: true, includeShippingInfo: true, search: !!search ? search : undefined },
     staleTime: 5 * 60 * 1000
   })
 

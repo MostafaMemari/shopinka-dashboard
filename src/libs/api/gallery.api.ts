@@ -1,4 +1,4 @@
-import { Gallery, GalleryForm } from '@/types/app/gallery.type'
+import { Gallery, GalleryFormType } from '@/types/app/gallery.type'
 import { Response } from '@/types/response'
 import { serverApiFetch } from '@/utils/api/serverApiFetch'
 
@@ -10,15 +10,15 @@ export const getGalleries = async (params?: Record<string, string>): Promise<Res
   }
 }
 
-export const getGallery = async (id: number): Promise<{ status: number; data: GalleryForm | null }> => {
-  const res = await serverApiFetch(`/gallery/${id}}`, { method: 'DELETE' })
+export const getGallery = async (id: number): Promise<{ status: number; data: Gallery | null }> => {
+  const res = await serverApiFetch(`/gallery/${id}`, { method: 'GET' })
 
   return {
     ...res
   }
 }
 
-export const removeGallery = async (id: string): Promise<{ status: number; data: { message: string; attribute: GalleryForm } | null }> => {
+export const removeGallery = async (id: string): Promise<{ status: number; data: { message: string; attribute: Gallery } | null }> => {
   const res = await serverApiFetch(`/gallery/${id}`, { method: 'DELETE' })
 
   return {
@@ -26,7 +26,9 @@ export const removeGallery = async (id: string): Promise<{ status: number; data:
   }
 }
 
-export const updateGallery = async (id: string, data: Partial<GalleryForm>): Promise<{ status: number; data: GalleryForm | null }> => {
+export const updateGallery = async (id: string, data: Partial<GalleryFormType>): Promise<{ status: number; data: Gallery | null }> => {
+  console.log(data)
+
   const res = await serverApiFetch(`/gallery/${id}`, {
     method: 'PATCH',
     body: { ...data }
@@ -37,7 +39,7 @@ export const updateGallery = async (id: string, data: Partial<GalleryForm>): Pro
   }
 }
 
-export const createGallery = async (data: Omit<GalleryForm, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<{ status: number; data: GalleryForm | null }> => {
+export const createGallery = async (data: Omit<GalleryFormType, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<{ status: number; data: Gallery | null }> => {
   const res = await serverApiFetch('/gallery', {
     method: 'POST',
     body: { ...data }

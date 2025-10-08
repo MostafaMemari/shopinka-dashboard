@@ -5,28 +5,41 @@ import { IconButton } from '@mui/material'
 import CustomDialog from '@/components/dialogs/CustomDialog'
 import GalleryForm from './GalleryForm'
 import FormActions from '@/components/FormActions'
-import { Gallery } from '@/types/app/gallery.type'
+import { Gallery, GalleryFormType } from '@/types/app/gallery.type'
 import { useGalleryForm } from '@/hooks/reactQuery/useGallery'
+import { FormProvider, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { gallerySchema } from '@/libs/validators/gallery.schema'
 
 interface UpdateGalleryModalProps {
   children?: ReactNode
-  initialData: Gallery
+  gallery: Gallery
 }
 
-const UpdateGalleryModal = ({ children, initialData }: UpdateGalleryModalProps) => {
+const UpdateGalleryModal = ({ children, gallery }: UpdateGalleryModalProps) => {
   const [open, setOpen] = useState<boolean>(false)
 
-  const { control, errors, isLoading, onSubmit, handleClose } = useGalleryForm({
-    initialData,
-    isUpdate: true
+  const handleOpen = useCallback(() => setOpen(true), [])
+  const handleClose = useCallback(() => setOpen(false), [])
+
+  const defaultValues = {
+    title: gallery?.title ?? '',
+    description: gallery?.description ?? ''
+  }
+
+  const methods = useForm<GalleryFormType>({
+    defaultValues,
+    resolver: yupResolver(gallerySchema)
   })
 
-  const handleOpen = useCallback(() => setOpen(true), [])
+  const { mutate, isPending } = useGalleryForm({
+    initialData: gallery,
+    onSuccess: () => {
+      handleClose()
+    }
+  })
 
-  const handleModalClose = useCallback(() => {
-    setOpen(false)
-    handleClose()
-  }, [handleClose])
+  const onSubmit = methods.handleSubmit(data => mutate(data))
 
   return (
     <div>
@@ -40,12 +53,14 @@ const UpdateGalleryModal = ({ children, initialData }: UpdateGalleryModalProps) 
 
       <CustomDialog
         open={open}
-        onClose={handleModalClose}
+        onClose={handleClose}
         title='بروزرسانی گالری'
         defaultMaxWidth='xs'
-        actions={<FormActions onCancel={handleModalClose} submitText='بروزرسانی' onSubmit={onSubmit} isLoading={isLoading} />}
+        actions={<FormActions formId='gallery-form' onCancel={handleClose} submitText='بروزرسانی' onSubmit={onSubmit} isLoading={isPending} />}
       >
-        <GalleryForm control={control} errors={errors} isLoading={isLoading} />
+        <FormProvider {...methods}>
+          <GalleryForm onSubmit={onSubmit} />
+        </FormProvider>
       </CustomDialog>
     </div>
   )

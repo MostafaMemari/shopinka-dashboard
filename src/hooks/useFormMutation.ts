@@ -43,11 +43,11 @@ export function useFormMutation<T extends Record<string, any>>({
       if (isUpdate && initialData?.id && updateApi) {
         const changedData = getChangedFields(initialData as unknown as T, cleanedData, ['mainImageId', 'mainImage', 'thumbnailImageId'])
 
-        if (Object.keys(changedData).length === 0) {
-          showToast({ type: 'info', message: noChangeMessage })
+        // if (Object.keys(changedData).length === 0) {
+        //   showToast({ type: 'info', message: noChangeMessage })
 
-          return { status: 200, data: initialData }
-        }
+        //   return { status: 200, data: initialData }
+        // }
 
         return await updateApi(String(initialData.id), changedData)
       }

@@ -5,13 +5,9 @@ import { getGalleryItems } from '@/libs/api/galleyItem.api'
 import { QueryKeys } from '@/types/enums/query-keys'
 import { QueryOptions } from '@/types/queryOptions'
 import { useQuery } from '@tanstack/react-query'
-import { useCallback } from 'react'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { gallerySchema } from '@/libs/validators/gallery.schema'
-import { GalleryForm, Gallery } from '@/types/app/gallery.type'
+import { Gallery, GalleryFormType } from '@/types/app/gallery.type'
 import { errorGalleryMessage } from '@/messages/galleryMessages'
-import { useFormSubmit } from '../useFormSubmit'
+import { useFormMutation } from '../useFormMutation'
 
 export function useGalleryItems({ enabled = true, params = {}, staleTime = 1 * 60 * 1000 }: QueryOptions) {
   const fetchGalleryItems = () => getGalleryItems(params).then(res => res)
@@ -39,31 +35,13 @@ export function useGallery({ enabled = true, params = {}, staleTime = 1 * 60 * 1
 
 interface UseGalleryFormProps {
   initialData?: Gallery
-  isUpdate?: boolean
-  handleModalClose?: () => void
+  onSuccess?: () => void
 }
 
-export const useGalleryForm = ({ initialData, isUpdate = false, handleModalClose }: UseGalleryFormProps) => {
-  const defaultValues: GalleryForm = {
-    title: initialData?.title ?? '',
-    description: initialData?.description ?? ''
-  }
+export const useGalleryForm = ({ initialData, onSuccess }: UseGalleryFormProps) => {
+  const isUpdate = !!initialData
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors }
-  } = useForm<GalleryForm>({
-    defaultValues,
-    resolver: yupResolver(gallerySchema)
-  })
-
-  const handleClose = useCallback(() => {
-    reset()
-  }, [reset])
-
-  const { isLoading, onSubmit } = useFormSubmit<GalleryForm>({
+  return useFormMutation<GalleryFormType>({
     createApi: createGallery,
     updateApi: updateGallery,
     errorMessages: errorGalleryMessage,
@@ -72,14 +50,9 @@ export const useGalleryForm = ({ initialData, isUpdate = false, handleModalClose
     noChangeMessage: 'هیچ تغییری اعمال نشده است',
     errorMessage: isUpdate ? 'خطایی در ویرایش گالری رخ داد' : 'خطای سیستمی رخ داد',
     initialData: initialData ? { ...initialData, id: String(initialData.id) } : undefined,
-    isUpdate
+    isUpdate,
+    onSuccess: () => {
+      onSuccess?.()
+    }
   })
-
-  return {
-    control,
-    errors,
-    isLoading,
-    onSubmit: handleSubmit(data => onSubmit(data, handleModalClose ?? (() => {}))),
-    handleClose
-  }
 }
