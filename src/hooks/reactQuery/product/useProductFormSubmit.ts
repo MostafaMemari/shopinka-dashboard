@@ -27,7 +27,7 @@ export const useProductFormSubmit = ({ initialData, onSuccess }: UseProductFormP
     },
 
     errorMessages: errorProductMessage,
-    queryKey: [QueryKeys.Products, QueryKeys.Product],
+    queryKey: [QueryKeys.Product],
     successMessage: isUpdate ? 'محصول با موفقیت به‌روزرسانی شد' : 'محصول با موفقیت ایجاد شد',
     initialData: initialData
       ? ({

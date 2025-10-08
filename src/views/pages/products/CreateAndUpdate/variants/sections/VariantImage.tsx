@@ -21,11 +21,11 @@ interface Props {
 const VariantImage = ({ mainImage, setValue }: Props) => {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null)
 
-  useEffect(() => {
-    if (mainImage) setSelectedImage(mainImage)
+  console.log(mainImage?.fileUrl)
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  useEffect(() => {
+    setSelectedImage(mainImage || null)
+  }, [mainImage])
 
   const handleSelect = (item: GalleryItem | GalleryItem[]) => {
     const image = Array.isArray(item) ? item[0] : item

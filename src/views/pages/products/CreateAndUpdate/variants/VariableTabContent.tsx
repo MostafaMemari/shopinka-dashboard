@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { useQueryClient } from '@tanstack/react-query'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
@@ -14,34 +13,9 @@ import { ProductVariant } from '@/types/app/productVariant.type'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ErrorState from '@/components/states/ErrorState'
 import CreateProductVariantModal from './CreateProductVariant'
-import { QueryKeys } from '@/types/enums/query-keys'
 import { useProductVariants } from '@/hooks/reactQuery/productVariant/useProductVariants'
 
-// const updateProductVariant = (
-//   variants: ProductVariant[],
-//   setVariants: React.Dispatch<React.SetStateAction<ProductVariant[]>>,
-//   id: string,
-//   updatedFields: Partial<ProductVariant>,
-//   queryClient: any
-// ) => {
-//   setVariants(prevVariants => prevVariants.map(variant => (String(variant.id) === id ? { ...variant, ...updatedFields } : variant)))
-
-//   queryClient.setQueryData([QueryKeys.ProductVariants, { productId: variants[0]?.productId }], (oldData: any) => {
-//     if (!oldData?.data?.items) return oldData
-
-//     return {
-//       ...oldData,
-//       data: {
-//         ...oldData.data,
-//         items: oldData.data.items.map((item: ProductVariant) => (String(item.id) === id ? { ...item, ...updatedFields } : item))
-//       }
-//     }
-//   })
-// }
-
 const VariableTabContent = ({ productId }: { productId: number }) => {
-  const queryClient = useQueryClient()
-
   const { data, isLoading, isFetching, error, refetch } = useProductVariants({
     enabled: !!productId,
     params: { take: 50, productId, includeAttributeValues: true, includeMainImage: true }
@@ -49,20 +23,12 @@ const VariableTabContent = ({ productId }: { productId: number }) => {
 
   const ProductVariants: ProductVariant[] = useMemo(() => data?.data?.items || [], [data])
 
-  const { watch, setValue } = useFormContext()
-
   const [variants, setVariants] = useState<ProductVariant[]>([])
   const [expanded, setExpanded] = useState<string | false>(false)
-
-  const defaultVariantId = watch('defaultVariantId')
 
   useEffect(() => {
     setVariants(ProductVariants)
   }, [ProductVariants])
-
-  useEffect(() => {
-    setValue('variants', variants, { shouldValidate: true })
-  }, [variants, setValue])
 
   const existingAttributeCombinations = useMemo(() => {
     return ProductVariants.map(variant =>
@@ -96,11 +62,8 @@ const VariableTabContent = ({ productId }: { productId: number }) => {
             <VariantAccordion
               key={variant.id}
               variant={variant}
-              isDefault={variant.id === defaultVariantId}
               expanded={expanded === String(variant.id)}
               onChange={() => setExpanded(expanded === String(variant.id) ? false : String(variant.id))}
-
-              // onUpdate={(id, updatedFields) => updateProductVariant(variants, setVariants, id, updatedFields, queryClient)}
             />
           ))
         )}

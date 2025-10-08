@@ -49,8 +49,6 @@ export const useFormSubmit = <T extends Record<string, any>>({
     async (formData: T): Promise<ApiResponse<T> | undefined> => {
       setIsLoading(true)
 
-      console.log(formData)
-
       try {
         const processedData = preprocessData ? preprocessData(formData) : formData
 

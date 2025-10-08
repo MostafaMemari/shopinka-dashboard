@@ -25,13 +25,11 @@ const ProductForm = ({ product }: { product?: Product; refetch: () => void }) =>
       case 'draft':
         methods.setValue('status', ProductStatus.DRAFT)
         methods.handleSubmit(onSubmit)()
-        window.location.reload()
 
         break
       case 'publish':
         methods.setValue('status', ProductStatus.PUBLISHED)
         methods.handleSubmit(onSubmit)()
-        window.location.reload()
 
         break
     }

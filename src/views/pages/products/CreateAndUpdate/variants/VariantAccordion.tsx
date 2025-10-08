@@ -21,16 +21,24 @@ import { useDefaultVariant } from '@/hooks/reactQuery/useDefaultVariant'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import StarIcon from '@mui/icons-material/Star'
 import { useProductVariantFormFields } from '@/hooks/reactQuery/productVariant/useProductVariantFormFields'
+import { useEffect, useState } from 'react'
+import { useProductContext } from '../ProductContext'
 
 type VariantAccordionProps = {
   variant: ProductVariant
-  isDefault: boolean
   expanded: boolean
   onChange: (id: string) => void
 }
 
-const VariantAccordion = ({ variant, expanded, isDefault, onChange }: VariantAccordionProps) => {
+const VariantAccordion = ({ variant, expanded, onChange }: VariantAccordionProps) => {
   const { isLoading, onSubmit } = useProductVariantFormSubmit({ productId: Number(variant.productId), initialData: variant })
+  const { product } = useProductContext()
+
+  const [isDefault, setIsDefault] = useState(variant.id === product?.defaultVariantId)
+
+  useEffect(() => {
+    setIsDefault(variant.id === product?.defaultVariantId)
+  }, [variant.id, product?.defaultVariantId])
 
   const { toggleDefaultVariant, isLoading: isSettingDefault } = useDefaultVariant({
     productId: Number(variant.productId),
@@ -38,6 +46,12 @@ const VariantAccordion = ({ variant, expanded, isDefault, onChange }: VariantAcc
   })
 
   const { methods } = useProductVariantFormFields({ initialData: variant })
+
+  useEffect(() => {
+    if (variant) {
+      methods.reset({ ...variant, attributeValueIds: variant?.attributeValues?.map(att => att.id) ?? [] } as any)
+    }
+  }, [variant, methods])
 
   const {
     control,
