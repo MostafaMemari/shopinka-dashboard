@@ -4,6 +4,7 @@ import CustomTextField from '@core/components/mui/TextField'
 type TextFormFieldProps = {
   name: string
   label: string
+  inputType?: string
   placeholder?: string
   multiline?: boolean
   rows?: number
@@ -18,6 +19,7 @@ type TextFormFieldProps = {
 const TextFormField: React.FC<TextFormFieldProps> = ({
   name,
   label,
+  inputType = 'text',
   placeholder,
   multiline,
   rows,
@@ -42,6 +44,7 @@ const TextFormField: React.FC<TextFormFieldProps> = ({
         <CustomTextField
           {...field}
           value={field.value ?? ''}
+          type={inputType}
           fullWidth
           multiline={multiline}
           rows={rows}

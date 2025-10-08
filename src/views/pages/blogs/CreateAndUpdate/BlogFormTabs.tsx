@@ -10,18 +10,21 @@ import BlogMainImage from '@/views/pages/blogs/CreateAndUpdate/sections/BlogMain
 import BlogCategories from '@/views/pages/blogs/CreateAndUpdate/sections/BlogCategories'
 import SeoTabContent from '@/views/pages/blogs/CreateAndUpdate/SeoTabContent'
 import BlogTags from './sections/BlogTags'
+import { useBlogContext } from './BlogContext'
 
 const BlogFormTabs = () => {
+  const { blog } = useBlogContext()
+
   const [tabValue, setTabValue] = useState(0)
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
   }
 
   return (
     <>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 4 }}>
-        <Tabs value={tabValue} onChange={handleTabChange} aria-label='product form tabs'>
+        <Tabs value={tabValue} onChange={handleTabChange} aria-label='blog form tabs'>
           <Tab label='اطلاعات اصلی' id='tab-0' aria-controls='tabpanel-0' />
           <Tab label='سئو' id='tab-1' aria-controls='tabpanel-1' />
         </Tabs>
@@ -39,13 +42,13 @@ const BlogFormTabs = () => {
             <Grid size={{ xs: 12, md: 4 }}>
               <Grid container spacing={6}>
                 <Grid size={{ xs: 12 }}>
-                  <BlogMainImage />
+                  <BlogMainImage mainImage={blog?.mainImage ?? null} />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <BlogCategories />
+                  <BlogCategories initialCategoryIds={blog?.categories?.map(category => category.id) ?? []} />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <BlogTags />
+                  <BlogTags initialTagIds={blog?.tags?.map(tag => tag.id) ?? []} />
                 </Grid>
               </Grid>
             </Grid>

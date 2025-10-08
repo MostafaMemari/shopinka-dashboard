@@ -16,7 +16,7 @@ import { Tag } from '@/types/app/tag.type'
 import CreateTagModal from '@/views/pages/tags/CreateTagModal'
 import FormField from '@/components/form/FormField'
 
-const ProductTags = ({ initialTagIds }: { initialTagIds: number[] }) => {
+const ProductTags = ({ initialTagIds }: { initialTagIds?: number[] }) => {
   const { data, isLoading, isFetching, error } = useTags({
     enabled: true,
     params: { take: 200, type: 'PRODUCT', includeThumbnailImage: true },

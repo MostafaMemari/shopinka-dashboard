@@ -46,6 +46,7 @@ export type Product = {
   categories: Category[] | undefined
   tags: Tag[] | undefined
 }
+
 export type ProductFormType = yup.InferType<typeof productFormSchema> & {
   defaultVariantId: number | null
 }

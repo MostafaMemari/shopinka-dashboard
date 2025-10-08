@@ -1,7 +1,13 @@
-import BlogForm from '@/views/pages/blogs/CreateAndUpdate/BlogForm'
+import BlogFetcher from '@/views/pages/blogs/CreateAndUpdate/BlogFetcher'
 
-const EditBlog = () => {
-  return <BlogForm />
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+const EditBlog = async ({ searchParams }: PageProps) => {
+  const { id } = await searchParams
+
+  return <BlogFetcher id={id ? String(id) : null} />
 }
 
 export default EditBlog

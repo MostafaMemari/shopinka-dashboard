@@ -1,32 +1,55 @@
 'use client'
 
 import { FormProvider } from 'react-hook-form'
-import { useSearchParams } from 'next/navigation'
 import Grid from '@mui/material/Grid2'
-import BlogAddHeader from '@/views/pages/blogs/CreateAndUpdate/sections/BlogAddHeader'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import { useBlogForm } from '@/hooks/reactQuery/useBlog'
 import BlogFormTabs from './BlogFormTabs'
+import BlogAddHeader from './sections/BlogAddHeader'
+import { useRouter } from 'next/navigation'
+import { useBlogFormSubmit } from '@/hooks/reactQuery/blog/useBlogFormSubmit'
+import { useBlogFormFields } from '@/hooks/reactQuery/blog/useBlogFormFields'
+import { Blog, BlogStatus } from '@/types/app/blog.type'
+import { BlogProvider } from './BlogContext'
 
-const BlogForm = () => {
-  const searchParams = useSearchParams()
-  const id = searchParams.get('id') ? Number(searchParams.get('id')) : null
+const BlogForm = ({ blog }: { blog?: Blog; refetch: () => void }) => {
+  const { isLoading, onSubmit } = useBlogFormSubmit({ initialData: blog })
+  const { methods } = useBlogFormFields({ initialData: blog })
 
-  const { isLoading, handleButtonClick, isUpdate, methods } = useBlogForm({ id })
+  const router = useRouter()
+
+  const handleHeaderButtonClick = (buttonType: 'cancel' | 'draft' | 'publish') => {
+    switch (buttonType) {
+      case 'cancel':
+        router.push('/blogs')
+        break
+      case 'draft':
+        methods.setValue('status', BlogStatus.DRAFT)
+        methods.handleSubmit(onSubmit)()
+
+        break
+      case 'publish':
+        methods.setValue('status', BlogStatus.PUBLISHED)
+        methods.handleSubmit(onSubmit)()
+
+        break
+    }
+  }
 
   if (isLoading) return <LoadingSpinner />
 
   return (
-    <FormProvider {...methods}>
-      <Grid container spacing={6}>
-        <Grid size={{ xs: 12 }}>
-          <BlogAddHeader onButtonClick={handleButtonClick} isLoading={isLoading} isUpdate={isUpdate} />
+    <BlogProvider blog={blog}>
+      <FormProvider {...methods}>
+        <Grid container spacing={6}>
+          <Grid size={{ xs: 12 }}>
+            <BlogAddHeader isUpdate={!!blog} isLoading={isLoading} onButtonClick={handleHeaderButtonClick} />
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <BlogFormTabs />
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12 }}>
-          <BlogFormTabs />
-        </Grid>
-      </Grid>
-    </FormProvider>
+      </FormProvider>
+    </BlogProvider>
   )
 }
 

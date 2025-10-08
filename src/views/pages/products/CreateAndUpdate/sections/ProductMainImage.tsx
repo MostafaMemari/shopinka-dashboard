@@ -57,29 +57,14 @@ const ProductMainImage = ({ mainImage }: { mainImage?: GalleryItem | null }) => 
             return (
               <>
                 {selectedImage ? (
-                  <Box
-                    sx={{
-                      position: 'relative',
-                      width: 200,
-                      height: 200,
-                      borderRadius: 2,
-                      overflow: 'hidden',
-                      boxShadow: 1
-                    }}
-                  >
+                  <Box sx={{ position: 'relative', width: 200, height: 200, borderRadius: 2, overflow: 'hidden', boxShadow: 1 }}>
                     <Image src={selectedImage.fileUrl} alt={selectedImage.title || 'تصویر محصول'} fill style={{ objectFit: 'cover' }} />
                     <Tooltip title='حذف تصویر'>
                       <IconButton
                         size='small'
                         color='error'
                         onClick={handleRemove}
-                        sx={{
-                          position: 'absolute',
-                          top: 8,
-                          right: 8,
-                          bgcolor: 'rgba(255,255,255,0.8)',
-                          '&:hover': { bgcolor: 'rgba(255,0,0,0.15)' }
-                        }}
+                        sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'rgba(255,255,255,0.8)', '&:hover': { bgcolor: 'rgba(255,0,0,0.15)' } }}
                       >
                         <DeleteOutlineIcon fontSize='small' />
                       </IconButton>

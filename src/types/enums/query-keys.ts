@@ -8,6 +8,7 @@ export enum QueryKeys {
   ProductVariants = 'productVariants',
   Galleries = 'galleries',
   Comments = 'comments',
+  Blog = 'blog',
   Blogs = 'blogs',
   Tags = 'tags',
   Orders = 'orders',

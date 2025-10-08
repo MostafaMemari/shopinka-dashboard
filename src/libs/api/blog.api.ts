@@ -1,5 +1,5 @@
 import { generateBlogSeoDescription } from '@/hooks/reactQuery/seoDescriptionGenerators'
-import { Blog } from '@/types/app/blog.type'
+import { Blog, BlogFormType } from '@/types/app/blog.type'
 import { Response } from '@/types/response'
 import { serverApiFetch } from '@/utils/api/serverApiFetch'
 import { blogFormSchema } from '../validators/blog.schema'
@@ -31,24 +31,20 @@ export const getBlogById = async (id: number): Promise<{ status: number; data: B
   }
 }
 
-export const updateBlog = async (id: number, data: Partial<Blog>): Promise<{ status: number; data: Blog | null }> => {
+export const updateBlog = async (id: number, data: Partial<BlogFormType>): Promise<{ status: number; data: Blog | null }> => {
   const res = await serverApiFetch(`/blog/${id}`, {
     method: 'PATCH',
     body: { ...data }
   })
 
-  if (id) {
-    await handleSeo(Number(id), data, true)
-  } else {
-    showToast({ type: 'error', message: 'خطا در دریافت آیدی وبلاگ' })
-  }
+  if (res.status === 200) await handleSeo(Number(id), data, true)
 
   return {
     ...res
   }
 }
 
-export const createBlog = async (data: Blog): Promise<{ status: number; data: { blog: (Blog & { id: number }) | null } }> => {
+export const createBlog = async (data: BlogFormType): Promise<{ status: number; data: { blog: (Blog & { id: number }) | null } }> => {
   const res = await serverApiFetch('/blog', {
     method: 'POST',
     body: { ...data }

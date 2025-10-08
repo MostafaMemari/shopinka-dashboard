@@ -27,4 +27,4 @@ export type Blog = {
   tags: Tag[] | undefined
 }
 
-export type BlogForm = InferType<typeof blogFormSchema>
+export type BlogFormType = InferType<typeof blogFormSchema>
