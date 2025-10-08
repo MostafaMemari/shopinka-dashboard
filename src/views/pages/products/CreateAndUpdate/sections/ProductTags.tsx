@@ -7,15 +7,12 @@ import { useMemo } from 'react'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
-import Autocomplete from '@mui/material/Autocomplete'
-import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
 // Component Imports
 import { useTags } from '@/hooks/reactQuery/useTag'
 import { Tag } from '@/types/app/tag.type'
-import { Controller, useFormContext } from 'react-hook-form'
 import CreateTagModal from '@/views/pages/tags/CreateTagModal'
 import FormField from '@/components/form/FormField'
 
