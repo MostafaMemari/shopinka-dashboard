@@ -42,8 +42,6 @@ export const defaultVariantProduct = async (id: number, variantId: number | null
 }
 
 export const updateProduct = async (id: number, data: Partial<ProductFormType>): Promise<{ status: number; data: Product | null }> => {
-  console.log(data)
-
   const res = await serverApiFetch(`/product/${id}`, {
     method: 'PATCH',
     body: { ...data }
@@ -81,8 +79,6 @@ export const removeProduct = async (id: string): Promise<{ status: number; data:
 }
 
 const handleSeo = async (productId: number, data: Partial<ProductFormType>, isUpdate?: boolean) => {
-  console.log(data)
-
   const seoData = isUpdate
     ? {
         seo_title: data.seo_title,
@@ -98,8 +94,6 @@ const handleSeo = async (productId: number, data: Partial<ProductFormType>, isUp
         seo_canonicalUrl: data.seo_canonicalUrl || data.slug,
         seo_robotsTag: data.seo_robotsTag
       }
-
-  console.log(seoData)
 
   const seoResponse = await handleSeoSave(SeoMetaTargetType.product, productId, seoData as SeoForm)
 

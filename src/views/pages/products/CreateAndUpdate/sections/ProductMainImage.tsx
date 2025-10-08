@@ -21,10 +21,8 @@ const ProductMainImage = ({ mainImage }: { mainImage?: GalleryItem | null }) => 
   const { setValue } = useFormContext()
 
   useEffect(() => {
-    if (mainImage) setSelectedImage(mainImage)
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    setSelectedImage(mainImage || null)
+  }, [mainImage])
 
   const handleSelect = (item: GalleryItem | GalleryItem[]) => {
     const image = Array.isArray(item) ? item[0] : item

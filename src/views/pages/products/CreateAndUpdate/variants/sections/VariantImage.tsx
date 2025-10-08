@@ -21,8 +21,6 @@ interface Props {
 const VariantImage = ({ mainImage, setValue }: Props) => {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null)
 
-  console.log(mainImage?.fileUrl)
-
   useEffect(() => {
     setSelectedImage(mainImage || null)
   }, [mainImage])

@@ -23,6 +23,7 @@ import StarIcon from '@mui/icons-material/Star'
 import { useProductVariantFormFields } from '@/hooks/reactQuery/productVariant/useProductVariantFormFields'
 import { useEffect, useState } from 'react'
 import { useProductContext } from '../ProductContext'
+import { Button } from '@mui/material'
 
 type VariantAccordionProps = {
   variant: ProductVariant
@@ -67,27 +68,38 @@ const VariantAccordion = ({ variant, expanded, onChange }: VariantAccordionProps
   return (
     <Accordion expanded={expanded} onChange={() => onChange(String(variant.id ?? ''))} sx={{ mb: 2, border: '1px solid', borderColor: 'divider' }}>
       <AccordionSummary expandIcon={<i className='tabler-chevron-down' />} sx={{ display: 'flex', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', flex: 1 }}>
-          <RemoveProductVariantModal id={Number(variant.id)}>
-            <Tooltip title='حذف متغیر'>
-              <IconButton size='small' color='error'>
-                <DeleteOutlineIcon fontSize='small' />
+        <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'space-between' }}>
+          {/* سمت راست */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <RemoveProductVariantModal id={Number(variant.id)}>
+              <Tooltip title='حذف متغیر'>
+                <IconButton size='small' color='error'>
+                  <DeleteOutlineIcon fontSize='small' />
+                </IconButton>
+              </Tooltip>
+            </RemoveProductVariantModal>
+
+            <Tooltip title={isDefault ? 'حذف از پیش‌فرض' : 'تنظیم به‌عنوان پیش‌فرض'}>
+              <IconButton
+                size='small'
+                color={isDefault ? 'warning' : 'default'}
+                onClick={() => toggleDefaultVariant(isDefault ?? false)}
+                disabled={isSettingDefault}
+                sx={{ mr: 2 }}
+              >
+                {isDefault ? <StarIcon fontSize='small' /> : <StarBorderIcon fontSize='small' />}
               </IconButton>
             </Tooltip>
-          </RemoveProductVariantModal>
-          <Tooltip title={isDefault ? 'حذف از پیش‌فرض' : 'تنظیم به‌عنوان پیش‌فرض'}>
-            <IconButton size='small' color={isDefault ? 'warning' : 'default'} onClick={() => toggleDefaultVariant(isDefault ?? false)} disabled={isSettingDefault} sx={{ mr: 2 }}>
-              {isDefault ? <StarIcon fontSize='small' /> : <StarBorderIcon fontSize='small' />}
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='بروزرسانی متغیر'>
-            <IconButton size='small' color='primary' onClick={handleUpdateProductVariant} sx={{ mr: 2 }} disabled={isLoading}>
-              <SaveIcon fontSize='small' />
-            </IconButton>
-          </Tooltip>
-          <Typography>{(variant.attributeValues ?? []).map(av => av.name).join(', ') || 'متغیر جدید'}</Typography>
+
+            <Typography>{(variant.attributeValues ?? []).map(av => av.name).join(', ') || 'متغیر جدید'}</Typography>
+          </Box>
+
+          <Button variant='outlined' color='primary' size='small' onClick={handleUpdateProductVariant} disabled={isLoading}>
+            ثبت تغییرات
+          </Button>
         </Box>
       </AccordionSummary>
+
       <AccordionDetails>
         <Grid container spacing={6}>
           <Grid size={{ xs: 12, md: 8 }}>
