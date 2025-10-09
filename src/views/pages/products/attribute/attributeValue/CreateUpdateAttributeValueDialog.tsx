@@ -2,11 +2,11 @@
 
 import { useState, useCallback, ReactNode } from 'react'
 import CustomDialog from '@/components/dialogs/CustomDialog'
-import AttributeValueForm from './AttributeValueForm'
 import FormActions from '@/components/FormActions'
 import { Attribute, AttributeValue } from '@/types/app/productAttributes.type'
 import { useAttributeValueFormFields } from '@/hooks/reactQuery/attributeValue/useAttributeValueFormFields'
 import { useAttributeValueFormSubmit } from '@/hooks/reactQuery/attributeValue/useAttributeValueFormSubmit'
+import AttributeValueForm from './AttributeValueForm'
 
 interface Props {
   trigger?: ReactNode
@@ -16,6 +16,7 @@ interface Props {
 
 const CreateUpdateAttributeValueDialog = ({ attributeValue, attribute, trigger }: Props) => {
   const [open, setOpen] = useState<boolean>(false)
+  const isUpdate = !!attributeValue
 
   const handleOpen = useCallback(() => setOpen(true), [])
   const handleClose = useCallback(() => setOpen(false), [])
@@ -24,17 +25,22 @@ const CreateUpdateAttributeValueDialog = ({ attributeValue, attribute, trigger }
 
   const {
     control,
+    reset,
     formState: { errors }
   } = methods
 
   const { isPending, mutate } = useAttributeValueFormSubmit({
     initialData: attributeValue,
     onSuccess: () => {
+      reset()
       handleClose()
     }
   })
 
   const onSubmit = methods.handleSubmit(data => mutate(data))
+
+  const title = isUpdate ? 'بروزرسانی متغیر' : 'ثبت متغیر'
+  const submitText = isUpdate ? 'بروزرسانی' : 'ثبت'
 
   return (
     <>
@@ -47,11 +53,11 @@ const CreateUpdateAttributeValueDialog = ({ attributeValue, attribute, trigger }
       <CustomDialog
         open={open}
         onClose={handleClose}
-        title={`ثبت متغیر ویژگی برای ${attribute.name}`}
+        title={`${title} - ${attribute.name}`}
         defaultMaxWidth='xs'
-        actions={<FormActions onCancel={handleClose} onSubmit={onSubmit} isLoading={isPending} />}
+        actions={<FormActions formId='create-update-attribute-value' onCancel={handleClose} onSubmit={onSubmit} isLoading={isPending} submitText={submitText} />}
       >
-        <AttributeValueForm control={control} errors={errors} attributeType={attribute.type} />
+        <AttributeValueForm control={control} errors={errors} onSubmit={onSubmit} attributeType={attribute.type} />
       </CustomDialog>
     </>
   )

@@ -23,7 +23,7 @@ interface AttributeValueChipProps {
   onDelete: () => void
 }
 
-const AttributeValueChip = ({ attribute, item, onDelete }: AttributeValueChipProps) => {
+const AttributeValueChip = ({ attribute, item }: AttributeValueChipProps) => {
   const colorDot = useMemo(
     () =>
       attribute.type === AttributeType.COLOR ? (
@@ -45,7 +45,7 @@ const AttributeValueChip = ({ attribute, item, onDelete }: AttributeValueChipPro
       label={
         <Box display='flex' alignItems='center' gap={1}>
           {colorDot}
-          <CreateUpdateAttributeValueDialog attribute={attribute} attributeValue={item} trigger={<span>{item.name}</span>} />
+          <CreateUpdateAttributeValueDialog attribute={attribute} attributeValue={item} trigger={<span className='cursor-pointer'>{item.name}</span>} />
           <div className='mt-1'>
             <RemoveAttributeValueModal id={item.id} />
           </div>

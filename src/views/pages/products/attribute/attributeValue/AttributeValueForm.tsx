@@ -9,11 +9,12 @@ interface AttributeValueFormProps {
   control: Control<AttributeValueFormType>
   errors: FieldErrors<AttributeValueFormType>
   attributeType: AttributeType
+  onSubmit?: () => void
 }
 
-const AttributeValueForm = ({ control, errors, attributeType }: AttributeValueFormProps) => {
+const AttributeValueForm = ({ control, errors, attributeType, onSubmit }: AttributeValueFormProps) => {
   return (
-    <form className='flex flex-col gap-5'>
+    <form onSubmit={onSubmit} id='create-update-attribute-value' className='flex flex-col gap-5'>
       <FormField control={control} name='name' label='نام ویژگی' helperText={errors.name?.message} />
 
       <FormField control={control} name='slug' label='نامک' helperText={errors.slug?.message} />

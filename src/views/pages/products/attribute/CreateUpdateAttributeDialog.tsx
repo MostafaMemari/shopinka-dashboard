@@ -25,6 +25,7 @@ const CreateUpdateAttributeDialog = ({ attribute, trigger }: CreateUpdateAttribu
   const { isPending, mutate } = useAttributeFormSubmit({
     initialData: attribute,
     onSuccess: () => {
+      methods.reset()
       handleClose()
     }
   })
@@ -47,7 +48,7 @@ const CreateUpdateAttributeDialog = ({ attribute, trigger }: CreateUpdateAttribu
         onClose={handleClose}
         title={title}
         defaultMaxWidth='xs'
-        actions={<FormActions formId='create-update-attribute-form' onCancel={handleClose} submitText={submitText} onSubmit={onSubmit} isLoading={isPending} />}
+        actions={<FormActions formId='create-update-attribute' onCancel={handleClose} submitText={submitText} onSubmit={onSubmit} isLoading={isPending} />}
       >
         <AttributeForm control={methods.control} errors={methods.formState.errors} onSubmit={onSubmit} />
       </CustomDialog>
