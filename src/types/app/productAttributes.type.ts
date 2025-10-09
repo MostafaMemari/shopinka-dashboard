@@ -33,15 +33,7 @@ export type AttributeValue = {
 }
 
 export type AttributeFormType = yup.InferType<typeof attributeSchema>
-export type AttributeValueForm = yup.InferType<typeof AttributeValueSchema>
-
-// export type AttributeValueForm = {
-//   name: string
-//   slug: string
-//   colorCode: string | null
-//   buttonLabel: string | null
-//   attributeId: string
-// }
+export type AttributeValueFormType = yup.InferType<typeof AttributeValueSchema>
 
 export type VariantCombination = {
   [key: string]: string

@@ -7,7 +7,7 @@ import { QueryOptions } from '@/types/queryOptions'
 import { useQuery } from '@tanstack/react-query'
 import { Gallery, GalleryFormType } from '@/types/app/gallery.type'
 import { errorGalleryMessage } from '@/messages/galleryMessages'
-import { useFormMutation } from '../useFormMutation'
+import { useFormMutation } from '../../useFormMutation'
 
 export function useGalleryItems({ enabled = true, params = {}, staleTime = 1 * 60 * 1000 }: QueryOptions) {
   const fetchGalleryItems = () => getGalleryItems(params).then(res => res)

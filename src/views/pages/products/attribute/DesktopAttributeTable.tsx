@@ -2,11 +2,10 @@
 
 // MUI Imports
 import Typography from '@mui/material/Typography'
-import { Box, Chip } from '@mui/material'
+import { Box, Chip, IconButton } from '@mui/material'
 
 // Component Imports
 import RemoveAttributeModal from './RemoveAttributeModal'
-import UpdateAttributeModal from './UpdateAttributeModal'
 import RemoveAttributeValueModal from './attributeValue/RemoveAttributeValueModal'
 import CreateAttributeValueModal from './attributeValue/CreateAttributeValueModal'
 
@@ -17,6 +16,7 @@ import tableStyles from '@core/styles/table.module.css'
 import { AttributeType, Attribute } from '@/types/app/productAttributes.type'
 import UpdateAttributeValuesModal from './attributeValue/UpdateAttributeValuesModal'
 import { Fragment } from 'react'
+import CreateUpdateAttributeDialog from './CreateUpdateAttributeDialog'
 
 const DesktopAttributeTable = ({ data }: { data: Attribute[] }) => {
   return (
@@ -122,7 +122,14 @@ const DesktopAttributeTable = ({ data }: { data: Attribute[] }) => {
                   <Box display='flex' alignItems='center' gap={2}>
                     <RemoveAttributeModal id={row.id} />
 
-                    <UpdateAttributeModal initialData={row} />
+                    <CreateUpdateAttributeDialog
+                      trigger={
+                        <IconButton size='small'>
+                          <i className='tabler-edit text-gray-500 text-lg' />
+                        </IconButton>
+                      }
+                      attribute={row}
+                    />
                   </Box>
                 </td>
               </tr>
