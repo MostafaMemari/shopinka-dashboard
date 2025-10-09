@@ -46,7 +46,7 @@ const PageListView = () => {
           ثبت برگه جدید
         </Button>
 
-        <CustomTextField id='form-props-search' placeholder='جستجوی تگ' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
+        <CustomTextField id='form-props-search' placeholder='جستجو برگه' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>
       {isLoading || isFetching ? (
         <TableListSkeleton />
