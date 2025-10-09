@@ -4,6 +4,7 @@ import MultiSelectFormField from './MultiSelectFormField'
 import MultiSelectAutocompleteFormField from './MultiSelectAutocompleteFormField' // نسخه freeSolo
 import ColorPickerFormField from './ColorPickerFormField'
 import GradientPickerFormField from './GradientPickerFormField'
+import SwitchFormField from './SwitchFormField'
 
 type FormFieldProps =
   | ({ type?: 'text' } & React.ComponentProps<typeof TextFormField>)
@@ -12,6 +13,7 @@ type FormFieldProps =
   | ({ type: 'multiselect-autocomplete' } & React.ComponentProps<typeof MultiSelectAutocompleteFormField>)
   | ({ type: 'color' } & React.ComponentProps<typeof ColorPickerFormField>)
   | ({ type: 'gradient' } & React.ComponentProps<typeof GradientPickerFormField>)
+  | ({ type: 'switch' } & React.ComponentProps<typeof SwitchFormField>)
 
 const FormField: React.FC<FormFieldProps> = props => {
   switch (props.type) {
@@ -25,6 +27,8 @@ const FormField: React.FC<FormFieldProps> = props => {
       return <ColorPickerFormField {...props} />
     case 'gradient':
       return <GradientPickerFormField {...props} />
+    case 'switch':
+      return <SwitchFormField {...props} />
     default:
       return <TextFormField {...props} />
   }

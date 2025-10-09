@@ -1,6 +1,7 @@
+import { shippingSchema } from '@/libs/validators/shipping.schema'
 import { User } from './user.type'
+import * as yup from 'yup'
 
-// در فایل src/types/app/shipping.type.ts
 export type Shipping = {
   id: number
   userId: number
@@ -13,9 +14,4 @@ export type Shipping = {
   user?: User | null
 }
 
-export type ShippingForm = {
-  name: string
-  price: number | null
-  estimatedDays: number | null
-  isActive: boolean
-}
+export type ShippingFormType = yup.InferType<typeof shippingSchema>

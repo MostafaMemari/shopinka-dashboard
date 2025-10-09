@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
 import { Box } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
@@ -14,18 +14,21 @@ import { useComments } from '@/hooks/reactQuery/useComment'
 import { Comment } from '@/types/app/comment.type'
 import EmptyCommentState from './EmptyCommentState'
 import { TableListSkeleton } from '@/components/TableSkeleton'
+import { useQueryState } from 'nuqs'
 
 const CommentView = () => {
-  const { page, size, setPage, setSize } = usePaginationParams()
-  const { search, setSearch } = useSearch()
+  const [page, setPage] = useQueryState('page', { defaultValue: 1, parse: Number, scroll: true })
+  const [size, setSize] = useQueryState('limit', { defaultValue: 10, parse: Number, scroll: true })
+  const [search, setSearch] = useQueryState('search', { defaultValue: '', parse: String, scroll: true })
 
   const [inputValue, setInputValue] = useState(search)
   const debounceDelay = 500
   const debouncedInputValue = useDebounce(inputValue, debounceDelay)
 
-  useMemo(() => {
+  useEffect(() => {
+    setPage(1)
     setSearch(debouncedInputValue)
-  }, [debouncedInputValue, setSearch])
+  }, [debouncedInputValue, setSearch, setPage])
 
   const { data, isLoading, isFetching, error, refetch } = useComments({
     enabled: true,
@@ -46,7 +49,7 @@ const CommentView = () => {
       <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 4, p: 6 }}>
         <div></div>
 
-        <CustomTextField id='form-props-search' placeholder='جستجوی کامنت' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
+        <CustomTextField id='form-props-search' placeholder='جستجوی نظر' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>
       {isLoading || isFetching ? (
         <TableListSkeleton />

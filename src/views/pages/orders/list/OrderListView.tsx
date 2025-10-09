@@ -1,31 +1,32 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
 import { Box } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
-import { usePaginationParams } from '@/hooks/usePaginationParams'
 import { useDebounce } from '@/hooks/useDebounce'
 import ErrorState from '@/components/states/ErrorState'
-import { useSearch } from '@/hooks/useSearchQuery'
 import CustomTextField from '@/@core/components/mui/TextField'
 import DesktopOrderTable from './DesktopOrderTable'
 import { Order } from '@/types/app/order.type'
 import EmptyOrderState from './EmptyOrderState'
 import { useOrders } from '@/hooks/reactQuery/useOrder'
 import { TableListSkeleton } from '@/components/TableSkeleton'
+import { useQueryState } from 'nuqs'
 
 const OrderListView = () => {
-  const { page, size, setPage, setSize } = usePaginationParams()
-  const { search, setSearch } = useSearch()
+  const [page, setPage] = useQueryState('page', { defaultValue: 1, parse: Number, scroll: true })
+  const [size, setSize] = useQueryState('limit', { defaultValue: 10, parse: Number, scroll: true })
+  const [search, setSearch] = useQueryState('search', { defaultValue: '', parse: String, scroll: true })
 
   const [inputValue, setInputValue] = useState(search)
   const debounceDelay = 500
   const debouncedInputValue = useDebounce(inputValue, debounceDelay)
 
-  useMemo(() => {
+  useEffect(() => {
+    setPage(1)
     setSearch(debouncedInputValue)
-  }, [debouncedInputValue, setSearch])
+  }, [debouncedInputValue, setSearch, setPage])
 
   const { data, isLoading, isFetching, error, refetch } = useOrders({
     enabled: true,

@@ -1,6 +1,7 @@
-import { Shipping, ShippingForm } from '@/types/app/shipping.type'
+import { Shipping, ShippingFormType } from '@/types/app/shipping.type'
 import { Response } from '@/types/response'
 import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { ShippingForm } from '@/views/pages/shipping/DesktopShippingTable'
 
 export const getShippings = async (params?: Record<string, string>): Promise<Response<Shipping[]>> => {
   const res = await serverApiFetch('/shipping', { method: 'GET', query: { ...params } })
@@ -10,7 +11,7 @@ export const getShippings = async (params?: Record<string, string>): Promise<Res
   }
 }
 
-export const getShipping = async (id: number): Promise<{ status: number; data: ShippingForm | null }> => {
+export const getShipping = async (id: number): Promise<{ status: number; data: ShippingFormType | null }> => {
   const res = await serverApiFetch(`/shipping/${id}}`, { method: 'DELETE' })
 
   return {
@@ -18,7 +19,7 @@ export const getShipping = async (id: number): Promise<{ status: number; data: S
   }
 }
 
-export const removeShipping = async (id: string): Promise<{ status: number; data: { message: string; attribute: ShippingForm } | null }> => {
+export const removeShipping = async (id: string): Promise<{ status: number; data: { message: string; shipping: ShippingForm } | null }> => {
   const res = await serverApiFetch(`/shipping/${id}`, { method: 'DELETE' })
 
   return {
@@ -26,7 +27,7 @@ export const removeShipping = async (id: string): Promise<{ status: number; data
   }
 }
 
-export const updateShipping = async (id: string, data: Partial<ShippingForm>): Promise<{ status: number; data: ShippingForm | null }> => {
+export const updateShipping = async (id: string, data: Partial<ShippingFormType>): Promise<{ status: number; data: ShippingForm | null }> => {
   const res = await serverApiFetch(`/shipping/${id}`, {
     method: 'PATCH',
     body: { ...data }
@@ -37,11 +38,15 @@ export const updateShipping = async (id: string, data: Partial<ShippingForm>): P
   }
 }
 
-export const createShipping = async (data: Omit<ShippingForm, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<{ status: number; data: ShippingForm | null }> => {
+export const createShipping = async (data: Omit<ShippingFormType, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<{ status: number; data: ShippingForm | null }> => {
+  console.log(data)
+
   const res = await serverApiFetch('/shipping', {
     method: 'POST',
     body: { ...data }
   })
+
+  console.log(res)
 
   return {
     ...res

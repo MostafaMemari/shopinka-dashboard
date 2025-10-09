@@ -1,17 +1,15 @@
 'use client'
 
 import { Box, Typography } from '@mui/material'
-import { useRouter } from 'next/navigation'
 import tableStyles from '@core/styles/table.module.css'
 import { Comment } from '@/types/app/comment.type'
 import RemoveCommentModal from './RemoveCommentModal'
 import CommentDetailsModal from './CommentDetailsModal' // New component
-import { stripHtml, truncateText } from '@/utils/formatters'
+import { truncateText } from '@/utils/formatters'
 import CommentStatusToggle from './CommentStatusToggle.tsx'
+import Link from 'next/link'
 
 const DesktopCommentTable = ({ comments }: { comments: Comment[] }) => {
-  const router = useRouter()
-
   return (
     <div className='overflow-x-auto'>
       <table className={tableStyles.table}>
@@ -20,9 +18,7 @@ const DesktopCommentTable = ({ comments }: { comments: Comment[] }) => {
             <th>تصویر محصول</th>
             <th>عنوان نظر</th>
             <th>محصول</th>
-            <th>محتوا</th>
             <th>کاربر</th>
-            <th>امتیاز</th>
             <th>عملیات</th>
           </tr>
         </thead>
@@ -53,21 +49,11 @@ const DesktopCommentTable = ({ comments }: { comments: Comment[] }) => {
                     {truncateText(comment.product?.name || '-', 30)}
                   </Typography>
                 </td>
-                <td>
-                  <Typography className='font-medium line-clamp-2 max-w-[250px] text-ellipsis overflow-hidden' color='text.primary'>
-                    {truncateText(stripHtml(comment.content || '-'), 50)}
-                  </Typography>
+
+                <td className='text-sky-300 dark:text-sky-600'>
+                  <Link href={`/users/${comment.userId}`}>{truncateText(comment.user?.fullName || comment.user?.mobile || '-', 20)}</Link>
                 </td>
-                <td>
-                  <Typography className='font-medium' color='text.primary'>
-                    {truncateText(comment.user?.fullName || comment.user?.mobile || '-', 20)}
-                  </Typography>
-                </td>
-                <td>
-                  <Typography className='font-medium' color='text.primary'>
-                    {comment.rate || '-'}
-                  </Typography>
-                </td>
+
                 <td>
                   <Box display='flex' alignItems='center' gap={1}>
                     <CommentStatusToggle id={comment.id} isActive={comment.isActive} />

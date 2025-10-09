@@ -12,8 +12,9 @@ import { Shipping } from '@/types/app/shipping.type'
 import Link from 'next/link'
 
 // Component Imports
-import UpdateShippingModal from './UpdateShippingModal'
 import RemoveShippingModal from './RemoveShippingModal'
+import CreateUpdateAttributeDialog from '../products/attribute/CreateUpdateAttributeDialog'
+import CreateUpdateShippingDialog from './CreateUpdateShippingDialog'
 
 export type ShippingForm = {
   id?: string
@@ -60,7 +61,15 @@ const DesktopShippingTable = ({ data }: { data: Shipping[] }) => {
               <td>
                 <Box display='flex' alignItems='center' gap={2}>
                   <RemoveShippingModal id={String(row.id)} />
-                  <UpdateShippingModal initialData={row} />
+
+                  <CreateUpdateShippingDialog
+                    trigger={
+                      <IconButton size='small'>
+                        <i className='tabler-edit text-gray-500 text-lg' />
+                      </IconButton>
+                    }
+                    shipping={row}
+                  />
                 </Box>
               </td>
             </tr>
