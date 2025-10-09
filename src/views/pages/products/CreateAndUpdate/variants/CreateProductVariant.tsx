@@ -8,10 +8,10 @@ import CustomDialog from '@/components/dialogs/CustomDialog'
 import { Attribute } from '@/types/app/productAttributes.type'
 import { useFormContext } from 'react-hook-form'
 import { showToast } from '@/utils/showToast'
-import { useAttribute } from '@/hooks/reactQuery/useAttribute'
 import { ProductVariantForm } from '@/types/app/productVariant.type'
 import { useProductVariantFormSubmit } from '@/hooks/reactQuery/productVariant/useProductVariantFormSubmit'
 import { useProductVariantFormFields } from '@/hooks/reactQuery/productVariant/useProductVariantFormFields'
+import { useAttribute } from '@/hooks/reactQuery/attribute/useAttribute'
 
 interface CreateProductVariantModalProps {
   children?: ReactNode

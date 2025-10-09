@@ -3,13 +3,14 @@
 import { Box, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import MenuItem from '@mui/material/MenuItem'
-import useVariants from '@/hooks/useVariants'
 import { AttributeValue } from '@/types/app/productAttributes.type'
-import CreateAttributeModal from '../../attribute/CreateAttributeModal'
 import FormField from '@/components/form/FormField'
 import { useProductContext } from '../ProductContext'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
+import CreateUpdateAttributeDialog from '../../attribute/CreateUpdateAttributeDialog'
+import { useProductVariants } from '@/hooks/reactQuery/productVariant/useProductVariants'
+import { useAttribute } from '@/hooks/reactQuery/attribute/useAttribute'
 
 const VariantsTab = () => {
   const { product } = useProductContext()
@@ -21,7 +22,7 @@ const VariantsTab = () => {
 
   const formType = watch('type')
 
-  const { attributesData, isLoadingAttributes, isFetchingAttributes, errorAttributes } = useVariants(formType, attributeIds)
+  const { data, isLoading, error } = useAttribute({})
 
   return (
     <Grid container spacing={4} sx={{ p: 4 }}>
@@ -37,9 +38,9 @@ const VariantsTab = () => {
       </Grid>
       {formType === 'VARIABLE' && (
         <Grid size={{ xs: 12 }}>
-          {isLoadingAttributes || isFetchingAttributes ? (
+          {isLoading ? (
             <Typography color='text.secondary'>در حال بارگذاری...</Typography>
-          ) : errorAttributes ? (
+          ) : error ? (
             <Typography color='error'>خطا در بارگذاری ویژگی‌ها</Typography>
           ) : (
             <FormField
@@ -49,7 +50,7 @@ const VariantsTab = () => {
               placeholder='ویژگی‌ها را انتخاب کنید'
               defaultValue={attributeIds}
               options={
-                attributesData?.data?.items.map((att: AttributeValue) => ({
+                data?.data?.items.map((att: AttributeValue) => ({
                   label: att.name,
                   value: att.id
                 })) || []
@@ -66,52 +67,16 @@ const VariantsTab = () => {
           width: '100%'
         }}
       >
-        <CreateAttributeModal>
-          <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
-            ثبت ویژگی جدید
-          </Typography>
-        </CreateAttributeModal>
+        <CreateUpdateAttributeDialog
+          trigger={
+            <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
+              ثبت ویژگی جدید
+            </Typography>
+          }
+        />
       </Box>
     </Grid>
   )
 }
 
 export default VariantsTab
-
-// <Controller
-//   name='attributeIds'
-//   control={control}
-//   render={({ field, fieldState }) => (
-//     <Autocomplete
-//       multiple
-//       options={attributesData?.data?.items?.map((attr: Attribute) => attr.id) || []}
-//       defaultValue={[attributesData?.data?.items[0]]}
-//       getOptionLabel={option => attributesData?.data?.items?.find((attr: Attribute) => attr.id === option)?.name || ''}
-//       value={field.value || []}
-//       onChange={(_, newValue) => {
-//         const uniqueValues = Array.from(new Set(newValue))
-
-//         field.onChange(uniqueValues)
-//       }}
-//       renderInput={params => (
-//         <CustomTextField
-//           {...params}
-//           label='ویژگی‌ها'
-//           placeholder='ویژگی‌ها را انتخاب کنید'
-//           error={!!fieldState.error}
-//           helperText={fieldState.error?.message || 'انتخاب ویژگی‌ها اختیاری است'}
-//         />
-//       )}
-//       renderOption={(props, option) => {
-//         const attr = attributesData?.data?.items?.find((attr: Attribute) => attr.id === option)
-
-//         return (
-//           <li {...props} key={option}>
-//             {attr?.name}
-//           </li>
-//         )
-//       }}
-//       noOptionsText='هیچ ویژگی‌ای یافت نشد'
-//     />
-//   )}
-// />

@@ -11,4 +11,4 @@ export type Page = {
   updatedAt: string
 }
 
-export type PageForm = yup.InferType<typeof pageSchema>
+export type PageFormType = yup.InferType<typeof pageSchema>

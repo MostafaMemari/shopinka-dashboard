@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation'
 import { useProductFormSubmit } from '@/hooks/reactQuery/product/useProductFormSubmit'
 import { useProductFormFields } from '@/hooks/reactQuery/product/useProductFormFields'
 
-const ProductForm = ({ product }: { product?: Product; refetch: () => void }) => {
+const ProductForm = ({ product }: { product?: Product; refetch?: () => void }) => {
   const { isLoading, onSubmit } = useProductFormSubmit({ initialData: product })
   const { methods } = useProductFormFields({ initialData: product })
 

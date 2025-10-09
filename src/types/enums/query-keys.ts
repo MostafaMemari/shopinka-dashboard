@@ -14,6 +14,7 @@ export enum QueryKeys {
   Orders = 'orders',
   Shippings = 'shippings',
   Pages = 'pages',
+  Page = 'page',
   Contacts = 'contacts',
   Banners = 'banners',
   Users = 'users'

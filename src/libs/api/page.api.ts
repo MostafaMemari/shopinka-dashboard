@@ -1,4 +1,4 @@
-import { Page, PageForm } from '@/types/app/page.type'
+import { Page, PageFormType } from '@/types/app/page.type'
 import { Response } from '@/types/response'
 import { serverApiFetch } from '@/utils/api/serverApiFetch'
 
@@ -13,7 +13,17 @@ export const getPages = async (params?: Record<string, string>): Promise<Respons
   }
 }
 
-export const updatePage = async (id: string, data: Partial<PageForm>): Promise<{ status: number; data: Page | null }> => {
+export const getPageById = async (id: number): Promise<{ status: number; data: Page | null }> => {
+  const res = await serverApiFetch(`/page/${id}`, {
+    method: 'GET'
+  })
+
+  return {
+    ...res
+  }
+}
+
+export const updatePage = async (id: number, data: Partial<PageFormType>): Promise<{ status: number; data: Page | null }> => {
   const res = await serverApiFetch(`/page/${id}`, {
     method: 'PATCH',
     body: { ...data }
@@ -24,7 +34,7 @@ export const updatePage = async (id: string, data: Partial<PageForm>): Promise<{
   }
 }
 
-export const createPage = async (data: PageForm): Promise<{ status: number; data: Page | null }> => {
+export const createPage = async (data: PageFormType): Promise<{ status: number; data: { page: Page | null } }> => {
   const res = await serverApiFetch('/page', {
     method: 'POST',
     body: { ...data }
@@ -36,7 +46,7 @@ export const createPage = async (data: PageForm): Promise<{ status: number; data
   }
 }
 
-export const removePage = async (id: string): Promise<{ status: number; data: { message: string; page: PageForm } | null }> => {
+export const removePage = async (id: string): Promise<{ status: number; data: { message: string; page: Page } | null }> => {
   const res = await serverApiFetch(`/page/${id}`, { method: 'DELETE' })
 
   return {

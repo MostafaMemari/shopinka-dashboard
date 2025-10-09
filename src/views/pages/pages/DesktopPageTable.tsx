@@ -2,12 +2,14 @@
 
 import { Box, IconButton, Typography } from '@mui/material'
 import tableStyles from '@core/styles/table.module.css'
-import UpdatePageModal from './UpdatePageModal'
 import RemovePageModal from './RemovePageModal'
 import { stripHtml, truncateText } from '@/utils/formatters'
 import { Page } from '@/types/app/page.type'
+import { useRouter } from 'next/navigation'
 
 const DesktopPageTable = ({ pages }: { pages: Page[] }) => {
+  const router = useRouter()
+
   return (
     <div className='overflow-x-auto'>
       <table className={tableStyles.table}>
@@ -51,11 +53,9 @@ const DesktopPageTable = ({ pages }: { pages: Page[] }) => {
                         <i className='tabler-trash text-gray-500 text-lg' />
                       </IconButton>
                     </RemovePageModal>
-                    <UpdatePageModal initialData={page}>
-                      <IconButton size='small'>
-                        <i className='tabler-edit text-gray-500 text-lg' />
-                      </IconButton>
-                    </UpdatePageModal>
+                    <IconButton onClick={() => router.push(`/pages/edit?id=${page.id}`)} size='small'>
+                      <i className='tabler-edit text-gray-500 text-lg' />
+                    </IconButton>
                   </Box>
                 </td>
               </tr>

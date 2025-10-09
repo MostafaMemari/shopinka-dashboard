@@ -10,7 +10,7 @@ interface UseFormMutationProps<T extends Record<string, any>> {
   createApi?: (data: T) => Promise<{ status: number; data?: any }>
   updateApi?: (id: string, data: Partial<T>) => Promise<{ status: number; data?: any }>
   errorMessages: Record<number, string>
-  queryKey: QueryKeys | QueryKeys[]
+  queryKey?: QueryKeys | QueryKeys[]
   successMessage: string
   noChangeMessage?: string
   errorMessage?: string
@@ -69,7 +69,7 @@ export function useFormMutation<T extends Record<string, any>>({
 
       if (response.status === 200 || response.status === 201) {
         showToast({ type: 'success', message: successMessage })
-        invalidate(queryKey)
+        if (queryKey) invalidate(queryKey)
         onSuccess?.(response)
       }
     },
