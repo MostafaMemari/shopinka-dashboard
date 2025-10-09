@@ -36,6 +36,7 @@ const OrderListView = () => {
       includeAddress: true,
       includeTransaction: true,
       includeShippingInfo: true,
+      includeUser: true,
       name: search ?? undefined
     },
     staleTime: 5 * 60 * 1000

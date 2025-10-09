@@ -20,6 +20,7 @@ export type Order = {
   status: OrderStatus
   createdAt: string
   updatedAt: string
+  user?: User
   address?: Address
   transaction?: Transaction
   shippingInfo?: ShippingInfo

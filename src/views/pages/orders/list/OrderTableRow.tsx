@@ -40,10 +40,16 @@ const OrderTableRow = ({ order, refetch }: OrderTableRowProps) => {
         <Link href={`/orders/${order.id}`}>{order.id}#</Link>
       </td>
       <td>
-        <Typography className='font-medium' color='text.primary'>
-          {order.address?.fullName}
+        <Link href={`/users/${order.userId}`} className='no-underline'>
+          <Typography variant='body2' className='text-sky-300 dark:text-sky-600 font-semibold block'>
+            {order.user?.fullName}
+          </Typography>
+        </Link>
+        <Typography variant='caption' className='text-sky-300 dark:text-sky-600 block'>
+          {order.user?.mobile}
         </Typography>
       </td>
+
       <td>
         <div className='flex items-center gap-1'>
           <i className={classNames('tabler-circle-filled bs-2.5 is-2.5', transactionStatus.colorClassName)} />
