@@ -4,6 +4,7 @@ import { useFormMutation } from '@/hooks/useFormMutation'
 import { createTag, updateTag } from '@/libs/api/tag.api'
 import { errorTagMessage } from '@/messages/tagMessages'
 import { Tag, TagFormType } from '@/types/app/tag.type'
+import { QueryKeys } from '@/types/enums/query-keys'
 
 interface Props {
   initialData?: Tag
@@ -23,6 +24,7 @@ export const useTagFormSubmit = ({ initialData, onSuccess }: Props) => {
     updateApi: async (tagId: string, formData: Partial<TagFormType>) => {
       return updateTag(Number(tagId), formData as Partial<TagFormType>)
     },
+    queryKey: [QueryKeys.Tag, QueryKeys.Tags],
     errorMessages: errorTagMessage,
     successMessage: isUpdate ? 'تگ با موفقیت به‌روزرسانی شد' : 'تگ با موفقیت ایجاد شد',
     initialData: initialData ? ({ ...initialData, id: String(initialData.id) } as any) : undefined,

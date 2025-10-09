@@ -16,7 +16,7 @@ const TagFetcher = ({ id }: Props) => {
     isLoading,
     error
   } = useQuery({
-    queryKey: [QueryKeys.Page, id],
+    queryKey: [QueryKeys.Tag, id],
     queryFn: () => getTagById(Number(id)),
     enabled: !!id,
     staleTime: 5 * 60 * 1000

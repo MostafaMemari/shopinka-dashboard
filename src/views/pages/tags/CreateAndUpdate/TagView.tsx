@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation'
 import FormField from '@/components/form/FormField'
 import { Controller } from 'react-hook-form'
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor'
-import CustomTextField from '../../products/CreateAndUpdate/variants/TextField'
 import TagMainImage from './TagMainImage'
 
 const TagView = ({ tag }: { tag?: Tag }) => {
@@ -24,6 +23,8 @@ const TagView = ({ tag }: { tag?: Tag }) => {
     control,
     formState: { errors }
   } = methods
+
+  console.log(tag?.thumbnailImageId)
 
   const onSubmit = methods.handleSubmit(data =>
     mutate(data, {
@@ -76,7 +77,7 @@ const TagView = ({ tag }: { tag?: Tag }) => {
         </Grid>
 
         <Grid size={{ xs: 12, md: 4 }}>
-          <TagMainImage control={control} />
+          <TagMainImage control={control} mainImage={tag?.thumbnailImage} />
         </Grid>
       </Grid>
     </Grid>

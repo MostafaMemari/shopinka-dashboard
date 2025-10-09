@@ -1,12 +1,16 @@
 'use client'
 
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, Chip, IconButton, Typography } from '@mui/material'
 import tableStyles from '@core/styles/table.module.css'
 import RemoveTagModal from './RemoveTagModal'
 import { stripHtml, truncateText } from '@/utils/formatters'
 import { Tag } from '@/types/app/tag.type'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 const DesktopTagTable = ({ tags }: { tags: Tag[] }) => {
+  const router = useRouter()
+
   return (
     <div className='overflow-x-auto'>
       <table className={tableStyles.table}>
@@ -15,7 +19,7 @@ const DesktopTagTable = ({ tags }: { tags: Tag[] }) => {
             <th>تصویر</th>
             <th>نام تگ</th>
             <th>نامک تگ</th>
-            <th>توضیحات</th>
+            <th>نوع تگ</th>
             <th>عملیات</th>
           </tr>
         </thead>
@@ -31,7 +35,13 @@ const DesktopTagTable = ({ tags }: { tags: Tag[] }) => {
               <tr key={tag.id}>
                 <td>
                   {tag.thumbnailImageId && tag.thumbnailImage?.thumbnailUrl ? (
-                    <img src={tag.thumbnailImage.thumbnailUrl} alt={tag.name || 'تصویر تگ'} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                    <Image
+                      src={tag.thumbnailImage.thumbnailUrl}
+                      alt={tag.name || 'تصویر تگ'}
+                      style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                      width={50}
+                      height={50}
+                    />
                   ) : (
                     <Typography color='text.secondary'>-</Typography>
                   )}
@@ -47,9 +57,7 @@ const DesktopTagTable = ({ tags }: { tags: Tag[] }) => {
                   </Typography>
                 </td>
                 <td>
-                  <Typography className='font-medium line-clamp-2 max-w-[300px] text-ellipsis overflow-hidden' color='text.primary'>
-                    {truncateText(stripHtml(tag.description || '-'))}
-                  </Typography>
+                  <Chip label={tag.type === 'PRODUCT' ? 'محصول' : 'وبلاگ'} color={tag.type === 'PRODUCT' ? 'primary' : 'success'} size='small' variant='outlined' />
                 </td>
                 <td>
                   <Box display='flex' alignItems='center' gap={2}>
@@ -58,7 +66,7 @@ const DesktopTagTable = ({ tags }: { tags: Tag[] }) => {
                         <i className='tabler-trash text-gray-500 text-lg' />
                       </IconButton>
                     </RemoveTagModal>
-                    <IconButton size='small'>
+                    <IconButton onClick={() => router.push(`/tags/edit?id=${tag.id}`)} size='small'>
                       <i className='tabler-edit text-gray-500 text-lg' />
                     </IconButton>
                   </Box>
