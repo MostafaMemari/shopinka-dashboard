@@ -3,9 +3,9 @@
 import { useState, useCallback, ReactNode } from 'react'
 import Button from '@mui/material/Button'
 import CustomDialog from '@/components/dialogs/CustomDialog'
-import TagForm from './TagForm'
 import FormActions from '@/components/FormActions'
-import { useTagForm } from '@/hooks/reactQuery/useTag'
+import { useTagFormSubmit } from '@/hooks/reactQuery/tag/useTagFormSubmit'
+import { useTagFormFields } from '@/hooks/reactQuery/tag/useTagFormFields'
 
 interface CreateTagModalProps {
   children?: ReactNode
@@ -17,7 +17,16 @@ const CreateTagModal = ({ children }: CreateTagModalProps) => {
   const handleOpen = useCallback(() => setOpen(true), [])
   const handleClose = useCallback(() => setOpen(false), [])
 
-  const { control, errors, setValue, isLoading, onSubmit } = useTagForm({ handleModalClose: handleClose })
+  const { isPending, mutate } = useTagFormSubmit({})
+  const { methods } = useTagFormFields({})
+
+  const onSubmit = methods.handleSubmit(data =>
+    mutate(data, {
+      onSuccess: () => {
+        setOpen(false)
+      }
+    })
+  )
 
   return (
     <div>
@@ -34,9 +43,9 @@ const CreateTagModal = ({ children }: CreateTagModalProps) => {
         onClose={handleClose}
         title='ثبت برچسب جدید'
         defaultMaxWidth='md'
-        actions={<FormActions submitText='ثبت' onCancel={handleClose} onSubmit={onSubmit} isLoading={isLoading} />}
+        actions={<FormActions submitText='ثبت' onCancel={handleClose} onSubmit={onSubmit} isLoading={isPending} />}
       >
-        <TagForm control={control} errors={errors} setValue={setValue} isLoading={isLoading} />
+        {/* <TagForm control={methods.control} errors={methods.formState.errors} /> */}
       </CustomDialog>
     </div>
   )

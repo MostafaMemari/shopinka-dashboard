@@ -1,4 +1,4 @@
-import PageListView from '@/views/pages/pages/CreateAndUpdate/PagesView'
+import PageListView from '@/views/pages/pages/PagesListView'
 
 const Page = async () => {
   return <PageListView />

@@ -9,8 +9,8 @@ import ErrorState from '@/components/states/ErrorState'
 import CustomTextField from '@/@core/components/mui/TextField'
 import { usePages } from '@/hooks/reactQuery/page/usePage'
 import { Page } from '@/types/app/page.type'
-import EmptyPageState from '../EmptyPageState'
-import DesktopPageTable from '../DesktopPageTable'
+import EmptyPageState from './EmptyPageState'
+import DesktopPageTable from './DesktopPageTable'
 import { TableListSkeleton } from '@/components/TableSkeleton'
 import { useQueryState } from 'nuqs'
 import { useRouter } from 'next/navigation'
@@ -27,8 +27,9 @@ const PageListView = () => {
   const debouncedInputValue = useDebounce(inputValue, debounceDelay)
 
   useEffect(() => {
+    setPage(1)
     setSearch(debouncedInputValue)
-  }, [debouncedInputValue, setSearch])
+  }, [debouncedInputValue, setSearch, setPage])
 
   const { data, isLoading, isFetching, error, refetch } = usePages({
     enabled: true,

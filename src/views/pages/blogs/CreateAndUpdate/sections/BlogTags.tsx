@@ -13,7 +13,7 @@ import Box from '@mui/material/Box'
 // Component Imports
 import { useTags } from '@/hooks/reactQuery/useTag'
 import { Tag } from '@/types/app/tag.type'
-import CreateTagModal from '@/views/pages/tags/CreateTagModal'
+import CreateTagModal from '@/views/pages/tags/CreateAndUpdate/CreateTagDialog'
 import FormField from '@/components/form/FormField'
 
 const BlogTags = ({ initialTagIds }: { initialTagIds?: number[] }) => {

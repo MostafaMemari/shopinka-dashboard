@@ -26,7 +26,7 @@ export type Tag = {
   type: TagType
 }
 
-export type TagForm = yup.InferType<typeof tagFormSchema>
+export type TagFormType = yup.InferType<typeof tagFormSchema>
 
 export enum TagType {
   PRODUCT = 'PRODUCT',

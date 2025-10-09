@@ -1,8 +1,8 @@
-import PageView from '@/views/pages/pages/CreateAndUpdate/pageView'
+import PageView from '@/views/pages/pages/CreateAndUpdate/PageView'
 import React from 'react'
 
-function page() {
+function Page() {
   return <PageView />
 }
 
-export default page
+export default Page

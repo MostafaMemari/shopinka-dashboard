@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { QueryKeys } from '@/types/enums/query-keys'
 import { getPageById } from '@/libs/api/page.api'
-import PageView from './CreateAndUpdate/pageView'
+import PageView from './CreateAndUpdate/PageView'
 
 interface PageFetcherProps {
   id: string | null
@@ -14,8 +14,7 @@ const PageFetcher = ({ id }: PageFetcherProps) => {
   const {
     data: page,
     isLoading,
-    error,
-    refetch
+    error
   } = useQuery({
     queryKey: [QueryKeys.Page, id],
     queryFn: () => getPageById(Number(id)),

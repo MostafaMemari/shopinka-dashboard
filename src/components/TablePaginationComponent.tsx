@@ -28,7 +28,15 @@ const TablePaginationComponent = ({ currentPage, totalPages, totalCount, rowsPer
       <div className='flex items-center gap-2 max-sm:flex-col sm:flex-row'>
         <div className='flex items-center gap-2'>
           <Typography className='text-sm text-gray-600 whitespace-nowrap'>تعداد در صفحه:</Typography>
-          <CustomTextField select value={rowsPerPage} onChange={e => onRowsPerPageChange(Number(e.target.value))} className='flex-auto max-sm:w-full sm:w-[70px]'>
+          <CustomTextField
+            select
+            value={rowsPerPage}
+            onChange={e => {
+              onPageChange(1)
+              onRowsPerPageChange(Number(e.target.value))
+            }}
+            className='flex-auto max-sm:w-full sm:w-[70px]'
+          >
             <MenuItem value={10}>10</MenuItem>
             <MenuItem value={15}>15</MenuItem>
             <MenuItem value={25}>25</MenuItem>

@@ -62,7 +62,6 @@ const ProductListView = () => {
   }, [data?.data.items])
 
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   const products: Product[] = useMemo(() => tableData, [tableData])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])

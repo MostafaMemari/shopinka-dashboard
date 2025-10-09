@@ -29,22 +29,13 @@ const BlogListView = () => {
     setSearch(debouncedInputValue)
   }, [debouncedInputValue, setSearch])
 
-  const handleAddBlog = () => {
-    router.push('/blogs/add')
-  }
+  const handleAddBlog = () => router.push('/blogs/add')
 
   const { data, isLoading, isFetching, error, refetch } = useBlogs({
     enabled: true,
-    params: {
-      page,
-      take: size,
-      includeMainImage: true,
-      name: search ?? undefined
-    },
+    params: { page, take: size, includeMainImage: true, name: search ?? undefined },
     staleTime: 5 * 60 * 1000
   })
-
-  const theme = useTheme()
 
   const blogs: Blog[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])

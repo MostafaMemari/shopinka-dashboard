@@ -1,7 +1,7 @@
-import TagsView from '@/views/pages/tags/TagView'
+import TagListView from '@/views/pages/tags/TagListView'
 
 const Media = async () => {
-  return <TagsView />
+  return <TagListView />
 }
 
 export default Media

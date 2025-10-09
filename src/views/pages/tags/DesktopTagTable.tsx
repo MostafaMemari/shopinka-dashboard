@@ -2,7 +2,6 @@
 
 import { Box, IconButton, Typography } from '@mui/material'
 import tableStyles from '@core/styles/table.module.css'
-import UpdateTagModal from './UpdateTagModal'
 import RemoveTagModal from './RemoveTagModal'
 import { stripHtml, truncateText } from '@/utils/formatters'
 import { Tag } from '@/types/app/tag.type'
@@ -59,11 +58,9 @@ const DesktopTagTable = ({ tags }: { tags: Tag[] }) => {
                         <i className='tabler-trash text-gray-500 text-lg' />
                       </IconButton>
                     </RemoveTagModal>
-                    <UpdateTagModal initialData={tag}>
-                      <IconButton size='small'>
-                        <i className='tabler-edit text-gray-500 text-lg' />
-                      </IconButton>
-                    </UpdateTagModal>
+                    <IconButton size='small'>
+                      <i className='tabler-edit text-gray-500 text-lg' />
+                    </IconButton>
                   </Box>
                 </td>
               </tr>

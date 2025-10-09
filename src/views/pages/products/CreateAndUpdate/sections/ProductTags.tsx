@@ -11,10 +11,10 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
 // Component Imports
-import { useTags } from '@/hooks/reactQuery/useTag'
 import { Tag } from '@/types/app/tag.type'
-import CreateTagModal from '@/views/pages/tags/CreateTagModal'
+import CreateTagModal from '@/views/pages/tags/CreateAndUpdate/CreateTagDialog'
 import FormField from '@/components/form/FormField'
+import { useTags } from '@/hooks/reactQuery/tag/useTag'
 
 const ProductTags = ({ initialTagIds }: { initialTagIds?: number[] }) => {
   const { data, isLoading, isFetching, error } = useTags({
