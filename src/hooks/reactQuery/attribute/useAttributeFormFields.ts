@@ -8,7 +8,7 @@ interface UseAttributeFormFieldsProps {
 }
 
 export const useAttributeFormFields = ({ initialData }: UseAttributeFormFieldsProps) => {
-  const defaults: AttributeFormType = {
+  const defaultValues: AttributeFormType = {
     name: initialData?.name ?? '',
     slug: initialData?.slug ?? '',
     type: initialData?.type ?? AttributeType.COLOR,
@@ -16,7 +16,7 @@ export const useAttributeFormFields = ({ initialData }: UseAttributeFormFieldsPr
   }
 
   const methods = useForm<AttributeFormType>({
-    defaultValues: defaults,
+    defaultValues,
     resolver: yupResolver(attributeSchema)
   })
 

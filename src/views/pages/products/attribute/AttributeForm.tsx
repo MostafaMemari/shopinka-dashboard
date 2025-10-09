@@ -13,7 +13,7 @@ interface Props {
 
 const AttributeForm = ({ control, errors, onSubmit }: Props) => {
   return (
-    <form onSubmit={onSubmit} className='flex flex-col gap-5'>
+    <form onSubmit={onSubmit} id='create-update-attribute-form' className='flex flex-col gap-5'>
       <FormField control={control} errors={errors} name='name' label='نام ویژگی' placeholder='لطفا نام ویژگی را وارد کنید' />
 
       <FormField control={control} errors={errors} name='slug' label='نامک' placeholder='لطفا نامک ویژگی را وارد کنید' />

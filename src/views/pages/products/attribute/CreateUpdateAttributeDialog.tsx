@@ -5,8 +5,8 @@ import CustomDialog from '@/components/dialogs/CustomDialog'
 import AttributeForm from './AttributeForm'
 import FormActions from '@/components/FormActions'
 import { Attribute } from '@/types/app/productAttributes.type'
-import { useAttributeFormFields } from '@/hooks/reactQuery/attributeValue/useAttributeFormFields'
-import { useAttributeFormSubmit } from '@/hooks/reactQuery/attributeValue/useAttributeFormSubmit'
+import { useAttributeFormFields } from '@/hooks/reactQuery/attribute/useAttributeFormFields'
+import { useAttributeFormSubmit } from '@/hooks/reactQuery/attribute/useAttributeFormSubmit'
 
 interface CreateUpdateAttributeDialogProps {
   attribute?: Attribute
@@ -37,7 +37,7 @@ const CreateUpdateAttributeDialog = ({ attribute, trigger }: CreateUpdateAttribu
   return (
     <>
       {trigger && (
-        <div onClick={handleOpen} role='button' tabIndex={0} onKeyDown={e => e.key === 'Enter' && handleOpen()} aria-label='باز کردن فرم ویرایش ویژگی'>
+        <div onClick={handleOpen} role='button' tabIndex={0} onKeyDown={e => e.key === 'Enter' && handleOpen()}>
           {trigger}
         </div>
       )}
@@ -47,7 +47,7 @@ const CreateUpdateAttributeDialog = ({ attribute, trigger }: CreateUpdateAttribu
         onClose={handleClose}
         title={title}
         defaultMaxWidth='xs'
-        actions={<FormActions onCancel={handleClose} submitText={submitText} onSubmit={onSubmit} isLoading={isPending} />}
+        actions={<FormActions formId='create-update-attribute-form' onCancel={handleClose} submitText={submitText} onSubmit={onSubmit} isLoading={isPending} />}
       >
         <AttributeForm control={methods.control} errors={methods.formState.errors} onSubmit={onSubmit} />
       </CustomDialog>

@@ -13,7 +13,7 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { useSearch } from '@/hooks/useSearchQuery'
 import CustomTextField from '@/@core/components/mui/TextField'
 import { TableListSkeleton } from '@/components/TableSkeleton'
-import { useAttribute } from '@/hooks/reactQuery/attributeValue/useAttribute'
+import { useAttribute } from '@/hooks/reactQuery/attribute/useAttribute'
 import CreateUpdateAttributeDialog from './CreateUpdateAttributeDialog'
 
 const ProductAttributeView = () => {
