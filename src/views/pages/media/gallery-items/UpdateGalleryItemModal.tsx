@@ -1,9 +1,8 @@
 import { useState, useCallback, ReactNode } from 'react'
-import CustomTextField from '@core/components/mui/TextField'
 import CustomDialog from '@/components/dialogs/CustomDialog'
-import { Controller, useForm } from 'react-hook-form'
-import { IconButton, DialogContent } from '@mui/material'
-import { type GalleryItemForm, type GalleryForm } from '@/types/app/gallery.type'
+import { useForm } from 'react-hook-form'
+import { IconButton } from '@mui/material'
+import { GalleryFormType, type GalleryItemForm } from '@/types/app/gallery.type'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { showToast } from '@/utils/showToast'
 import { handleApiError } from '@/utils/handleApiError'
@@ -16,6 +15,7 @@ import { useInvalidateQuery } from '@/hooks/useInvalidateQuery'
 import { QueryKeys } from '@/types/enums/query-keys'
 import { cleanObject } from '@/utils/formatters'
 import FormActions from '@/components/FormActions'
+import FormField from '@/components/form/FormField'
 
 interface UpdateGalleryItemModalProps {
   initialData: Partial<GalleryItemForm>
@@ -49,7 +49,7 @@ const UpdateGalleryItemModal = ({ initialData, galleryItemId, children }: Update
   }, [reset])
 
   const onSubmit = useCallback(
-    async (formData: GalleryForm) => {
+    async (formData: GalleryFormType) => {
       setIsLoading(true)
 
       try {
@@ -107,40 +107,12 @@ const UpdateGalleryItemModal = ({ initialData, galleryItemId, children }: Update
         onClose={handleClose}
         title='بروزرسانی فایل'
         defaultMaxWidth='xs'
-        actions={
-          <>
-            <FormActions onCancel={handleClose} submitText='بروزرسانی' onSubmit={handleSubmit(onSubmit)} isLoading={isLoading} />
-          </>
-        }
+        actions={<FormActions formId='update-gallery-item-form' onCancel={handleClose} submitText='بروزرسانی' onSubmit={handleSubmit(onSubmit)} isLoading={isLoading} />}
       >
-        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
-          <Controller
-            name='title'
-            control={control}
-            disabled={isLoading}
-            render={({ field }) => (
-              <CustomTextField {...field} fullWidth label='نام فایل' placeholder='لطفا نام فایل را وارد کنید' error={!!errors.title} helperText={errors.title?.message} />
-            )}
-          />
-          <Controller
-            name='description'
-            control={control}
-            disabled={isLoading}
-            render={({ field }) => (
-              <CustomTextField
-                {...field}
-                value={field.value ?? ''}
-                fullWidth
-                multiline
-                rows={4}
-                label='توضیحات'
-                placeholder='لطفا توضیحات فایل را وارد کنید'
-                error={!!errors.description}
-                helperText={errors.description?.message}
-                onChange={e => field.onChange(e.target.value || null)}
-              />
-            )}
-          />
+        <form onSubmit={handleSubmit(onSubmit)} id='update-gallery-item-form' className='flex flex-col gap-5'>
+          <FormField name='title' label='نام فایل' placeholder='لطفا نام فایل را وارد کنید' control={control} errors={errors} />
+
+          <FormField name='description' label='توضیحات' placeholder='لطفا توضیحات فایل را وارد کنید' control={control} errors={errors} multiline rows={4} />
         </form>
       </CustomDialog>
     </div>

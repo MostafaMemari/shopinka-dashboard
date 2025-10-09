@@ -7,44 +7,32 @@ import TablePaginationComponent from '@/components/TablePaginationComponent'
 import DesktopMediaGallery from './DesktopMediaGallery'
 import CreateMediaModal from './CreateMediaModal'
 import RemoveGalleryItemModal from './RemoveMediaModal'
-import LoadingSpinner from '@/components/LoadingSpinner'
 import { useGalleryItems } from '@/hooks/reactQuery/gallery/useGallery'
 import { GalleryItem } from '@/types/app/gallery.type'
-import { usePaginationParams } from '@/hooks/usePaginationParams'
 import ErrorState from '@/components/states/ErrorState'
 import EmptyGalleryItemsState from './EmptyGalleryItemsState'
-import { useSearch } from '@/hooks/useSearchQuery'
 import CustomTextField from '@/@core/components/mui/TextField'
-import { GalleryItemSkeleton, TableListSkeleton } from '@/components/TableSkeleton'
+import { GalleryItemSkeleton } from '@/components/TableSkeleton'
+import { useQueryState } from 'nuqs'
+import { useDebounce } from '@/hooks/useDebounce'
 
 const GalleryItemView = ({ galleryId }: { galleryId: string }) => {
-  const { page, size, setPage, setSize } = usePaginationParams()
-  const { search, setSearch } = useSearch()
+  const [page, setPage] = useQueryState('page', { defaultValue: 1, parse: Number, scroll: true })
+  const [size, setSize] = useQueryState('limit', { defaultValue: 10, parse: Number, scroll: true })
+  const [search, setSearch] = useQueryState('search', { defaultValue: '', parse: String, scroll: true })
 
   const [selected, setSelected] = useState<string[]>([])
 
   const [inputValue, setInputValue] = useState(search)
   const debounceDelay = 500
-  const [debouncedValue, setDebouncedValue] = useState(inputValue)
+  const debouncedInputValue = useDebounce(inputValue, debounceDelay)
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedValue(inputValue)
-    }, debounceDelay)
-
-    return () => clearTimeout(timer)
-  }, [inputValue, debounceDelay])
-
-  useEffect(() => {
-    setSearch(debouncedValue)
-  }, [debouncedValue, setSearch])
+    setSearch(debouncedInputValue)
+  }, [debouncedInputValue, setSearch])
 
   const { data, isLoading, isFetching, error, refetch } = useGalleryItems({
-    params: {
-      galleryId,
-      page,
-      take: size
-    },
+    params: { galleryId, page, take: size },
     enabled: !!galleryId,
     staleTime: 5 * 60 * 1000
   })
@@ -74,11 +62,14 @@ const GalleryItemView = ({ galleryId }: { galleryId: string }) => {
     <Card sx={{ bgcolor: 'background.paper', borderColor: 'divider' }}>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 4, p: 6 }}>
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <CreateMediaModal>
-            <Button variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />}>
-              ثبت رسانه جدید
-            </Button>
-          </CreateMediaModal>
+          <CreateMediaModal
+            galleryId={galleryId}
+            trigger={
+              <Button variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />}>
+                آپلود فایل جدید
+              </Button>
+            }
+          />
           {selected.length > 0 && <RemoveGalleryItemModal selectedImages={selected} onClearSelection={handleClearSelection} />}
         </Box>
         <CustomTextField id='form-props-search' placeholder='جستجوی رسانه' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />

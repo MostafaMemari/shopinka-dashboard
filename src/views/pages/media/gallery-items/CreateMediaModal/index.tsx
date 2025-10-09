@@ -16,10 +16,11 @@ import { useInvalidateQuery } from '@/hooks/useInvalidateQuery'
 import { QueryKeys } from '@/types/enums/query-keys'
 
 interface CreateMediaModalProps {
-  children?: ReactNode
+  galleryId?: string
+  trigger?: ReactNode
 }
 
-const CreateMediaModal = ({ children }: CreateMediaModalProps) => {
+const CreateMediaModal = ({ galleryId, trigger }: CreateMediaModalProps) => {
   const [openUpload, setOpenUpload] = useState(false)
   const [openGallerySelect, setOpenGallerySelect] = useState(false)
   const [files, setFiles] = useState<File[]>([])
@@ -28,8 +29,6 @@ const CreateMediaModal = ({ children }: CreateMediaModalProps) => {
   const maxFiles = 5
 
   const { invalidate } = useInvalidateQuery()
-
-  const { id: galleryId } = useParams<{ id: string }>()
 
   const handleOpen = () => {
     if (galleryId) {
@@ -107,12 +106,8 @@ const CreateMediaModal = ({ children }: CreateMediaModalProps) => {
 
   return (
     <>
-      <div onClick={handleOpen}>
-        {children || (
-          <Button variant='contained' className='max-sm:w-middle' startIcon={<i className='tabler-plus' />} sx={{ flex: { xs: '1 1 100%', sm: '0 0 auto' } }}>
-            آپلود فایل جدید
-          </Button>
-        )}
+      <div onClick={handleOpen} role='button' tabIndex={0} onKeyDown={e => e.key === 'Enter' && handleOpen()}>
+        {trigger}
       </div>
 
       <GallerySelectModal open={openGallerySelect} selectedGalleryId={selectedGalleryId} onClose={handleCloseGallerySelect} onChange={handleGalleryChange} />
