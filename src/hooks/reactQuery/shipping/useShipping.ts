@@ -1,7 +1,6 @@
 import { QueryKeys } from '@/types/enums/query-keys'
 import { QueryOptions } from '@/types/queryOptions'
 import { useQuery } from '@tanstack/react-query'
-import { getPages } from '@/libs/api/page.api'
 import { getShippings } from '@/libs/api/shipping.api'
 
 export function useShippings({ enabled = true, params = {}, staleTime = 5 * 60 * 1000 }: QueryOptions) {

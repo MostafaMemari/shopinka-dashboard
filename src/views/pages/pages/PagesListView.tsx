@@ -58,15 +58,7 @@ const PageListView = () => {
       ) : (
         <>
           <DesktopPageTable pages={pages} />
-          <TablePaginationComponent
-            currentPage={page}
-            totalPages={paginationData.totalPages}
-            totalCount={paginationData.totalCount}
-            rowsPerPage={size}
-            onPageChange={setPage}
-            onRowsPerPageChange={setSize}
-            currentPageItemCount={pages.length}
-          />
+          <TablePaginationComponent paginationData={paginationData} rowsPerPage={size} onPageChange={setPage} onRowsPerPageChange={setSize} currentPageItemCount={pages.length} />
         </>
       )}
     </Card>

@@ -4,18 +4,18 @@ import Typography from '@mui/material/Typography'
 import MenuItem from '@mui/material/MenuItem'
 import CustomTextField from '@/@core/components/mui/TextField'
 import { type Theme, useMediaQuery } from '@mui/material'
+import { Pager } from '@/types/response'
 
 type TablePaginationProps = {
-  currentPage: number
-  totalPages: number
-  totalCount: number
   rowsPerPage: number
+  paginationData: Pager
   onPageChange: (page: number) => void
   onRowsPerPageChange: (rows: number) => void
   currentPageItemCount: number
 }
 
-const TablePaginationComponent = ({ currentPage, totalPages, totalCount, rowsPerPage, onPageChange, onRowsPerPageChange, currentPageItemCount }: TablePaginationProps) => {
+const TablePaginationComponent = ({ paginationData, rowsPerPage, onPageChange, onRowsPerPageChange, currentPageItemCount }: TablePaginationProps) => {
+  const { currentPage, totalCount, totalPages } = paginationData
   const from = totalCount === 0 ? 0 : (currentPage - 1) * rowsPerPage + 1
   const to = from + currentPageItemCount - 1
 
