@@ -37,10 +37,12 @@ const OrderTableRow = ({ order, refetch }: OrderTableRowProps) => {
   return (
     <tr>
       <td className='text-sky-300 dark:text-sky-600'>
-        <Link href={`/orders/${order.id}`}>{order.id}#</Link>
+        <Link target='_blank' rel='noopener noreferrer' href={`/orders/${order.id}`}>
+          {order.id}#
+        </Link>
       </td>
       <td>
-        <Link href={`/users/${order.userId}`} className='no-underline'>
+        <Link href={`/users/${order.userId}`} target='_blank' rel='noopener noreferrer' className='no-underline'>
           <Typography variant='body2' className='text-sky-300 dark:text-sky-600 font-semibold block'>
             {order.user?.fullName}
           </Typography>
