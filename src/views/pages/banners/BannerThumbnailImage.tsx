@@ -1,117 +1,91 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Controller, type Control, type FieldErrors } from 'react-hook-form'
-import Box from '@mui/material/Box'
+import { useEffect, useState } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
+
+// MUI Imports
+
 import IconButton from '@mui/material/IconButton'
+import Box from '@mui/material/Box'
 import Tooltip from '@mui/material/Tooltip'
-import Image from 'next/image'
-import { Typography, Button } from '@mui/material'
+import Typography from '@mui/material/Typography'
+
+// Icons & Components
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-
-import { Banner, BannerFormType } from '@/types/app/banner.type'
-import { GalleryItem } from '@/types/app/gallery.type'
+import Image from 'next/image'
 import ModalGallery from '@/components/Gallery/ModalGallery/ModalGallery'
-import ImagePlaceholder from '@/components/EmptyPlaceholder'
+import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 
-interface BannerThumbnailImageProps {
-  control: Control<BannerFormType>
-  errors: FieldErrors<BannerFormType>
-  isLoading: boolean
-  setValue: (name: keyof BannerFormType, value: number | null, options?: { shouldValidate?: boolean }) => void
-  banner?: Banner
+// Types
+import { type GalleryFormType, GalleryItem } from '@/types/app/gallery.type'
+
+interface Props {
+  mainImage?: GalleryItem | null
+  control?: any
 }
 
-const BannerThumbnailImage = ({ control, errors, isLoading, setValue, banner }: BannerThumbnailImageProps) => {
-  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null)
+const BannerThumbnailImage = ({ mainImage, control: externalControl }: Props) => {
+  const context = useFormContext<GalleryFormType>()
+
+  const control = externalControl ?? context?.control
+
+  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(mainImage || null)
 
   useEffect(() => {
-    if (banner?.imageId && banner?.image) {
-      setSelectedImage({
-        id: banner.imageId,
-        galleryId: 0,
-        title: 'Thumbnail',
-        description: null,
-        fileUrl: banner.image.fileUrl,
-        fileKey: '',
-        thumbnailUrl: banner.image.fileUrl,
-        thumbnailKey: '',
-        mimetype: 'image/jpeg',
-        size: 0,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        deletedAt: null,
-        isDeleted: false
-      })
-      setValue('imageId', banner.imageId, { shouldValidate: true })
+    if ((mainImage && mainImage.id !== selectedImage?.id) || (!mainImage && selectedImage !== null)) {
+      setSelectedImage(mainImage || null)
     }
-  }, [banner, setValue])
 
-  const handleSelect = (item: GalleryItem | GalleryItem[]) => {
-    const image = Array.isArray(item) ? item[0] : item
-
-    setSelectedImage(image)
-
-    const imageId = typeof image.id === 'number' && image.id > 0 ? image.id : null
-
-    setValue('imageId', imageId, { shouldValidate: true })
-  }
-
-  const handleRemove = () => {
-    setSelectedImage(null)
-    setValue('imageId', null, { shouldValidate: true })
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mainImage])
 
   return (
     <Controller
       name='imageId'
       control={control}
-      render={() => (
-        <Box display='flex' flexDirection='column' alignItems='center' gap={2}>
-          <Typography variant='body2' sx={{ fontWeight: 'medium', color: 'text.primary' }}>
-            تصویر بندانگشتی (اختیاری)
-          </Typography>
+      render={({ field: { onChange } }) => {
+        const handleSelect = (item: GalleryItem | GalleryItem[]) => {
+          const image = Array.isArray(item) ? item[0] : item
 
-          <Box sx={{ position: 'relative', width: 120, height: 120 }}>
+          setSelectedImage(image)
+          onChange(image?.id || null)
+        }
+
+        const handleRemove = () => {
+          setSelectedImage(null)
+          onChange(null)
+        }
+
+        return (
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, marginBottom: 2 }}>
             {selectedImage ? (
-              <>
-                <Image src={selectedImage.fileUrl} alt={selectedImage.title} fill style={{ objectFit: 'cover', borderRadius: 8 }} />
+              <Box sx={{ position: 'relative', width: 200, height: 200, borderRadius: 2, overflow: 'hidden', boxShadow: 1 }}>
+                <Image src={selectedImage.fileUrl} alt={selectedImage.title || 'تصویر محصول'} fill style={{ objectFit: 'cover' }} />
                 <Tooltip title='حذف تصویر'>
                   <IconButton
                     size='small'
                     color='error'
                     onClick={handleRemove}
-                    disabled={isLoading}
-                    sx={{
-                      position: 'absolute',
-                      top: 4,
-                      right: 4,
-                      bgcolor: 'rgba(255,255,255,0.8)',
-                      '&:hover': { bgcolor: 'rgba(255,0,0,0.1)' }
-                    }}
+                    sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'rgba(255,255,255,0.8)', '&:hover': { bgcolor: 'rgba(255,0,0,0.15)' } }}
                   >
                     <DeleteOutlineIcon fontSize='small' />
                   </IconButton>
                 </Tooltip>
-              </>
+              </Box>
             ) : (
-              <ImagePlaceholder width={120} height={120} />
+              <EmptyPlaceholder text='تصویری یافت نشد' width={200} height={200} />
             )}
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: 2 }}>
+              <ModalGallery initialSelected={selectedImage || undefined} btnLabel={selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} multi={false} onSelect={handleSelect}>
+                <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
+                  {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
+                </Typography>
+              </ModalGallery>
+            </Box>
           </Box>
-
-          <ModalGallery initialSelected={selectedImage || undefined} multi={false} onSelect={handleSelect}>
-            <Button variant='outlined' color='primary' fullWidth>
-              {selectedImage ? 'تغییر تصویر بندانگشتی' : 'انتخاب تصویر بندانگشتی'}
-            </Button>
-          </ModalGallery>
-
-          {errors.imageId && (
-            <Typography variant='caption' color='error' id='imageId-error'>
-              {errors.imageId.message}
-            </Typography>
-          )}
-        </Box>
-      )}
+        )
+      }}
     />
   )
 }

@@ -26,7 +26,7 @@ export const removeBanner = async (id: string): Promise<{ status: number; data: 
   }
 }
 
-export const updateBanner = async (id: string, data: Partial<BannerFormType>): Promise<{ status: number; data: Banner | null }> => {
+export const updateBanner = async (id: number, data: Partial<BannerFormType>): Promise<{ status: number; data: Banner | null }> => {
   const res = await serverApiFetch(`/banner/${id}`, {
     method: 'PATCH',
     body: { ...data }

@@ -2,7 +2,7 @@
 
 import { Box, IconButton, Typography } from '@mui/material'
 import tableStyles from '@core/styles/table.module.css'
-import UpdateBannerModal from './UpdateBannerModal'
+import UpdateBannerModal from './CreateUpdateBannerDialog'
 import RemoveBannerModal from './RemoveBannerModal'
 import { stripHtml, truncateText } from '@/utils/formatters'
 import { Banner } from '@/types/app/banner.type'
@@ -59,11 +59,14 @@ const DesktopBannerTable = ({ banners }: { banners: Banner[] }) => {
                         <i className='tabler-trash text-gray-500 text-lg' />
                       </IconButton>
                     </RemoveBannerModal>
-                    <UpdateBannerModal initialData={banner}>
-                      <IconButton size='small'>
-                        <i className='tabler-edit text-gray-500 text-lg' />
-                      </IconButton>
-                    </UpdateBannerModal>
+                    <UpdateBannerModal
+                      trigger={
+                        <IconButton size='small'>
+                          <i className='tabler-edit text-gray-500 text-lg' />
+                        </IconButton>
+                      }
+                      banner={banner}
+                    ></UpdateBannerModal>
                   </Box>
                 </td>
               </tr>

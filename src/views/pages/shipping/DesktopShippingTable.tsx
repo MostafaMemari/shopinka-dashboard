@@ -9,11 +9,9 @@ import tableStyles from '@core/styles/table.module.css'
 
 // Type Imports
 import { Shipping } from '@/types/app/shipping.type'
-import Link from 'next/link'
 
 // Component Imports
 import RemoveShippingModal from './RemoveShippingModal'
-import CreateUpdateAttributeDialog from '../products/attribute/CreateUpdateAttributeDialog'
 import CreateUpdateShippingDialog from './CreateUpdateShippingDialog'
 
 export type ShippingForm = {
