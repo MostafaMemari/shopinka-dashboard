@@ -4,7 +4,7 @@ import { getProductById, getProducts } from '@/libs/api/product.api'
 import { QueryKeys } from '@/types/enums/query-keys'
 
 export function useProducts({ enabled = true, params = {}, staleTime = 1 * 60 * 1000 }: QueryOptions) {
-  const fetchProducts = () => getProducts(params).then(res => res)
+  const fetchProducts = () => getProducts({ ...params, includeMainImage: true }).then(res => res)
 
   return useQuery<any, Error>({
     queryKey: [QueryKeys.Products, params],

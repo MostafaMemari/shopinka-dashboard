@@ -10,6 +10,7 @@ import FormField from '@/components/form/FormField'
 import Grid from '@mui/material/Grid2'
 import { MenuItem } from '@mui/material'
 import BannerThumbnailImage from './BannerThumbnailImage'
+import FormImagePicker from '@/components/form/FormImagePicker'
 
 interface Props {
   trigger?: ReactNode
@@ -63,7 +64,7 @@ const CreateUpdateBannerDialog = ({ banner, trigger }: Props) => {
       >
         <Grid container spacing={6}>
           <Grid size={{ xs: 12 }}>
-            <BannerThumbnailImage control={control} mainImage={banner?.image} />
+            <FormImagePicker name='imageId' control={control} mainImage={banner?.image} />
 
             <Grid container spacing={6}>
               <Grid size={{ xs: 12, sm: 6 }}>

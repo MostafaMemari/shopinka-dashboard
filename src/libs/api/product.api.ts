@@ -9,7 +9,7 @@ import { generateProductSeoDescription } from '@/hooks/reactQuery/seoDescription
 import { SeoMetaTargetType, type SeoForm } from '@/types/app/seo.type'
 import { serverApiFetch } from '../serverApiFetch'
 
-export const getProducts = async (params?: Record<string, string>): Promise<Response<Product[]>> => {
+export const getProducts = async (params?: Record<string, string | boolean>): Promise<Response<Product[]>> => {
   const res = await serverApiFetch('/product/admin', {
     method: 'GET',
     query: { ...params }

@@ -31,37 +31,32 @@ const ProductListView = () => {
   })
 
   const [inputValue, setInputValue] = useState(filters.state.search || '')
+
   const debouncedInputValue = useDebounce(inputValue, 500)
 
   const queryParams = useMemo(
     () => ({
-      name: debouncedInputValue || undefined,
+      name: filters.state.search || undefined,
       type: filters.state.type || undefined,
       categoryIds: filters.state.categoryIds.length ? filters.state.categoryIds : undefined,
       tagIds: filters.state.tagIds.length ? filters.state.tagIds : undefined,
       page: filters.state.page,
       take: filters.state.take
     }),
-    [debouncedInputValue, filters.state.page, filters.state.take, filters.state.type, filters.state.categoryIds, filters.state.tagIds]
+    [filters.state]
   )
 
-  const { data, isLoading, isFetching, error, refetch } = useProducts({
-    enabled: true,
-    params: { ...queryParams, includeMainImage: true },
-    staleTime: 5 * 60 * 1000
-  })
+  const { data, isLoading, isFetching, error, refetch } = useProducts({ params: { ...queryParams } })
 
   useEffect(() => {
     if (debouncedInputValue !== filters.state.search) {
-      filters.setState({ search: debouncedInputValue })
+      filters.setState({ search: debouncedInputValue, page: 1 })
     }
-  }, [filters, debouncedInputValue])
+  }, [debouncedInputValue, filters])
 
   useEffect(() => {
     setTableData(data?.data.items || [])
   }, [data?.data.items])
-
-  const theme = useTheme()
 
   const products: Product[] = useMemo(() => tableData, [tableData])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
@@ -94,9 +89,7 @@ const ProductListView = () => {
         <>
           <DesktopProductTable products={products} />
           <TablePaginationComponent
-            currentPage={filters.state.page}
-            totalPages={paginationData.totalPages}
-            totalCount={paginationData.totalCount}
+            paginationData={paginationData}
             rowsPerPage={filters.state.take}
             onPageChange={handlePageChange}
             onRowsPerPageChange={handlePerPageChange}

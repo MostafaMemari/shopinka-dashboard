@@ -38,7 +38,7 @@ const OrderTableRow = ({ order, refetch }: OrderTableRowProps) => {
     <tr>
       <td className='text-sky-300 dark:text-sky-600'>
         <Link target='_blank' rel='noopener noreferrer' href={`/orders/${order.id}`}>
-          {order.id}#
+          {order.id}# - {order.orderNumber}
         </Link>
       </td>
       <td>

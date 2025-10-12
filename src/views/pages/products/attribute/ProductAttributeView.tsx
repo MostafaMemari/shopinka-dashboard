@@ -10,7 +10,6 @@ import { usePaginationParams } from '@/hooks/usePaginationParams'
 import ErrorState from '@/components/states/ErrorState'
 import EmptyAttributeState from './EmptyAttributeState'
 import { useDebounce } from '@/hooks/useDebounce'
-import { useSearch } from '@/hooks/useSearchQuery'
 import CustomTextField from '@/@core/components/mui/TextField'
 import { TableListSkeleton } from '@/components/TableSkeleton'
 import { useAttribute } from '@/hooks/reactQuery/attribute/useAttribute'
@@ -18,7 +17,6 @@ import CreateUpdateAttributeDialog from './CreateUpdateAttributeDialog'
 
 const ProductAttributeView = () => {
   const { page, size, setPage, setSize } = usePaginationParams()
-  const { search, setSearch } = useSearch()
 
   const [inputValue, setInputValue] = useState(search)
   const debouncedInputValue = useDebounce(inputValue, 500)
@@ -60,9 +58,7 @@ const ProductAttributeView = () => {
         <>
           <DesktopAttributeTable data={attributes} />
           <TablePaginationComponent
-            currentPage={page}
-            totalPages={paginationData.totalPages}
-            totalCount={paginationData.totalCount}
+            paginationData={paginationData}
             rowsPerPage={size}
             onPageChange={setPage}
             onRowsPerPageChange={setSize}

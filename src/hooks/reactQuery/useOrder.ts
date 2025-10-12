@@ -5,7 +5,7 @@ import { showToast } from '@/utils/showToast'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export function useOrders({ enabled = true, params = {}, staleTime = 1 * 60 * 1000 }: QueryOptions) {
-  const fetchOrders = () => getOrders(params).then(res => res)
+  const fetchOrders = () => getOrders({ ...params, includeAddress: true, includeTransaction: true, includeShippingInfo: true, includeUser: true }).then(res => res)
 
   return useQuery<any, Error>({
     queryKey: [QueryKeys.Orders, params],

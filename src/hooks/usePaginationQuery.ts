@@ -9,21 +9,14 @@ export function usePaginationQuery() {
 
   const handlePageChange = useCallback(
     (newPage: number) => {
-      setQuery(prev => ({
-        ...prev,
-        page: newPage
-      }))
+      setQuery(prev => ({ ...prev, page: newPage }))
     },
     [setQuery]
   )
 
   const handleRowsPerPageChange = useCallback(
     (newLimit: number) => {
-      setQuery(prev => ({
-        ...prev,
-        limit: newLimit,
-        page: 1
-      }))
+      setQuery(prev => ({ ...prev, limit: newLimit, page: 1 }))
     },
     [setQuery]
   )
@@ -31,6 +24,7 @@ export function usePaginationQuery() {
   return {
     page,
     limit,
+    setQuery,
     handlePageChange,
     handleRowsPerPageChange
   }
