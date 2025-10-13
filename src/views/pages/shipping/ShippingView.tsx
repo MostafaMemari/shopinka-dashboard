@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
 import { Box, Button } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
@@ -12,21 +12,18 @@ import EmptyShippingState from './EmptyShippingState'
 import { TableListSkeleton } from '@/components/TableSkeleton'
 import CreateUpdateShippingDialog from './CreateUpdateShippingDialog'
 import { useShippings } from '@/hooks/reactQuery/shipping/useShipping'
-import { usePaginationQuery } from '@/hooks/usePaginationQuery'
-import { useSearchQuery } from '@/hooks/useSearchQuery'
+import { useShippingFilters } from '@/hooks/reactQuery/shipping/useShippingFilters'
+import { useDebounce } from '@/hooks/useDebounce'
 
 const ShippingView = () => {
-  const { page, limit, handlePageChange, handleRowsPerPageChange } = usePaginationQuery()
-  const { search, inputValue, setInputValue } = useSearchQuery(500)
+  const { filters, queryParams } = useShippingFilters()
+  const [inputValue, setInputValue] = useState(filters.state.search || '')
+  const debouncedInputValue = useDebounce(inputValue, 500)
 
   useEffect(() => {
-    handlePageChange(1)
-  }, [search, handlePageChange])
-
-  const { data, isLoading, isFetching, error, refetch } = useShippings({
-    enabled: true,
-    params: { page, take: limit, name: search || undefined }
-  })
+    if (debouncedInputValue !== filters.state.search) filters.setState({ search: debouncedInputValue, page: 1 })
+  }, [debouncedInputValue, filters])
+  const { data, isLoading, isFetching, error, refetch } = useShippings({ params: { ...queryParams, name: queryParams.search } })
 
   const shippings: Shipping[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
@@ -49,16 +46,16 @@ const ShippingView = () => {
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : shippings.length === 0 ? (
-        <EmptyShippingState isSearch={!!search} searchQuery={inputValue} />
+        <EmptyShippingState isSearch={!!filters.state.search} searchQuery={filters.state.search} />
       ) : (
         <>
           <DesktopShippingTable data={shippings} />
 
           <TablePaginationComponent
             paginationData={paginationData}
-            rowsPerPage={limit}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleRowsPerPageChange}
+            rowsPerPage={filters.state.take}
+            onPageChange={(page: number) => filters.setState({ page })}
+            onRowsPerPageChange={(take: number) => filters.setState({ take, page: 1 })}
             currentPageItemCount={shippings.length}
           />
         </>
