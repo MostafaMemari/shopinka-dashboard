@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
 import { Box, Button } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
@@ -10,24 +10,21 @@ import CustomTextField from '@/@core/components/mui/TextField'
 import EmptyBannerState from './EmptyBannerState'
 import { Banner } from '@/types/app/banner.type'
 import { TableListSkeleton } from '@/components/TableSkeleton'
-import { usePaginationQuery } from '@/hooks/usePaginationQuery'
-import { useSearchQuery } from '@/hooks/useSearchQuery'
 import { useBanners } from '@/hooks/reactQuery/banner/useBanner'
 import CreateUpdateBannerDialog from './CreateUpdateBannerDialog'
+import { useDebounce } from '@/hooks/useDebounce'
+import { useBannerFilters } from '@/hooks/reactQuery/banner/useBannerFilters'
 
 const BannerListView = () => {
-  const { page, limit, handlePageChange, handleRowsPerPageChange } = usePaginationQuery()
-  const { search, inputValue, setInputValue } = useSearchQuery(500)
+  const { filters, queryParams } = useBannerFilters()
+  const [inputValue, setInputValue] = useState(filters.state.search || '')
+  const debouncedInputValue = useDebounce(inputValue, 500)
 
   useEffect(() => {
-    handlePageChange(1)
-  }, [search, handlePageChange])
+    if (debouncedInputValue !== filters.state.search) filters.setState({ search: debouncedInputValue, page: 1 })
+  }, [debouncedInputValue, filters])
 
-  const { data, isLoading, isFetching, error, refetch } = useBanners({
-    enabled: true,
-    params: { page, take: limit, includeImage: true, name: search || undefined },
-    staleTime: 5 * 60 * 1000
-  })
+  const { data, isLoading, isFetching, error, refetch } = useBanners({ params: { ...queryParams, title: queryParams.search } })
 
   const banners: Banner[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
@@ -50,15 +47,15 @@ const BannerListView = () => {
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : banners.length === 0 ? (
-        <EmptyBannerState isSearch={!!search} searchQuery={search} />
+        <EmptyBannerState isSearch={!!filters.state.search} searchQuery={filters.state.search} />
       ) : (
         <>
           <DesktopBannerTable banners={banners} />
           <TablePaginationComponent
             paginationData={paginationData}
-            rowsPerPage={limit}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleRowsPerPageChange}
+            rowsPerPage={filters.state.take}
+            onPageChange={(page: number) => filters.setState({ page })}
+            onRowsPerPageChange={(take: number) => filters.setState({ take, page: 1 })}
             currentPageItemCount={banners.length}
           />
         </>

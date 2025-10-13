@@ -2,7 +2,7 @@ import { Banner, BannerFormType } from '@/types/app/banner.type'
 import { Response } from '@/types/response'
 import { serverApiFetch } from '@/utils/api/serverApiFetch'
 
-export const getBanners = async (params?: Record<string, string>): Promise<Response<Banner[]>> => {
+export const getBanners = async (params?: Record<string, string | boolean>): Promise<Response<Banner[]>> => {
   const res = await serverApiFetch('/banner?includeValues=true', { method: 'GET', query: { ...params } })
 
   return {

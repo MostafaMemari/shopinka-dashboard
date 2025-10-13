@@ -39,7 +39,7 @@ const DesktopBannerTable = ({ banners }: { banners: Banner[] }) => {
                 </td>
                 <td>
                   <Typography className='font-medium' color='text.primary'>
-                    {banner.image.title || '-'}
+                    {banner.image?.title || '-'}
                   </Typography>
                 </td>
                 <td>
