@@ -6,7 +6,7 @@ import { serverApiFetch } from '@/utils/api/serverApiFetch'
 import { handleSeoSave } from '../services/seo/seo.service'
 import { showToast } from '@/utils/showToast'
 
-export const getTags = async (params?: Record<string, string>): Promise<Response<Tag[]>> => {
+export const getTags = async (params?: Record<string, string | boolean>): Promise<Response<Tag[]>> => {
   const res = await serverApiFetch('/tag', {
     method: 'GET',
     query: { ...params }

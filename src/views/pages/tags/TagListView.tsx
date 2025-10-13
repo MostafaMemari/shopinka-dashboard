@@ -5,39 +5,29 @@ import Card from '@mui/material/Card'
 import { Box, Button } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import DesktopTagTable from './DesktopTagTable'
-import { usePaginationParams } from '@/hooks/usePaginationParams'
 import { useDebounce } from '@/hooks/useDebounce'
 import ErrorState from '@/components/states/ErrorState'
-import { useSearch } from '@/hooks/useSearchQuery'
 import CustomTextField from '@/@core/components/mui/TextField'
 import { Tag } from '@/types/app/tag.type'
 import EmptyTagState from './EmptyTagState'
-import CreateTagModal from './CreateAndUpdate/CreateTagDialog'
 import { TableListSkeleton } from '@/components/TableSkeleton'
-import { useQueryState } from 'nuqs'
 import { useTags } from '@/hooks/reactQuery/tag/useTag'
 import { useRouter } from 'next/navigation'
+import { useTagFilters } from '@/hooks/reactQuery/tag/useTagFilters'
 
 const TagListView = () => {
   const router = useRouter()
 
-  const [page, setPage] = useQueryState('page', { defaultValue: 1, parse: Number, scroll: true })
-  const [size, setSize] = useQueryState('limit', { defaultValue: 10, parse: Number, scroll: true })
-  const [search, setSearch] = useQueryState('search', { defaultValue: '', parse: String, scroll: true })
-
-  const [inputValue, setInputValue] = useState(search)
-  const debounceDelay = 500
-  const debouncedInputValue = useDebounce(inputValue, debounceDelay)
+  const { filters, queryParams } = useTagFilters()
+  const [inputValue, setInputValue] = useState(filters.state.search || '')
+  const debouncedInputValue = useDebounce(inputValue, 500)
 
   useEffect(() => {
-    setPage(1)
-    setSearch(debouncedInputValue)
-  }, [debouncedInputValue, setSearch, setPage])
+    if (debouncedInputValue !== filters.state.search) filters.setState({ search: debouncedInputValue, page: 1 })
+  }, [debouncedInputValue, filters])
 
   const { data, isLoading, isFetching, error, refetch } = useTags({
-    enabled: true,
-    params: { page, take: size, name: search ?? undefined, includeThumbnailImage: true },
-    staleTime: 5 * 60 * 1000
+    params: { ...queryParams, name: debouncedInputValue ?? undefined }
   })
 
   const tags: Tag[] = useMemo(() => data?.data?.items || [], [data])
@@ -57,17 +47,15 @@ const TagListView = () => {
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : tags.length === 0 ? (
-        <EmptyTagState isSearch={!!search} searchQuery={search} />
+        <EmptyTagState isSearch={!!filters.state.search} searchQuery={filters.state.search} />
       ) : (
         <>
           <DesktopTagTable tags={tags} />
           <TablePaginationComponent
-            currentPage={page}
-            totalPages={paginationData.totalPages}
-            totalCount={paginationData.totalCount}
-            rowsPerPage={size}
-            onPageChange={setPage}
-            onRowsPerPageChange={setSize}
+            paginationData={paginationData}
+            rowsPerPage={filters.state.take}
+            onPageChange={(page: number) => filters.setState({ page })}
+            onRowsPerPageChange={(take: number) => filters.setState({ take, page: 1 })}
             currentPageItemCount={tags.length}
           />
         </>
