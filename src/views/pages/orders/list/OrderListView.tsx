@@ -23,7 +23,7 @@ const OrderListView = () => {
     if (debouncedInputValue !== filters.state.search) filters.setState({ search: debouncedInputValue, page: 1 })
   }, [debouncedInputValue, filters])
 
-  const { data, isLoading, isFetching, error, refetch } = useOrders({ params: { ...queryParams } })
+  const { data, isLoading, isFetching, error, refetch } = useOrders({ params: { ...queryParams, orderNumber: queryParams.search } })
   const orders: Order[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
 
