@@ -11,26 +11,19 @@ import DesktopContactTable from './DesktopContactTable'
 import { Contact } from '@/types/app/contact.type'
 import { useContacts } from '@/hooks/reactQuery/useContact'
 import { TableListSkeleton } from '@/components/TableSkeleton'
-import { useQueryState } from 'nuqs'
+import { useContactFilters } from '@/hooks/reactQuery/contact/useContactFilters'
 
 const ContactView = () => {
-  const [page, setPage] = useQueryState('page', { defaultValue: 1, parse: Number, scroll: true })
-  const [size, setSize] = useQueryState('limit', { defaultValue: 10, parse: Number, scroll: true })
-  const [search, setSearch] = useQueryState('search', { defaultValue: '', parse: String, scroll: true })
-
-  const [inputValue, setInputValue] = useState(search)
-  const debounceDelay = 500
-  const debouncedInputValue = useDebounce(inputValue, debounceDelay)
+  const { filters, queryParams } = useContactFilters()
+  const [inputValue, setInputValue] = useState(filters.state.search || '')
+  const debouncedInputValue = useDebounce(inputValue, 500)
 
   useEffect(() => {
-    setPage(1)
-    setSearch(debouncedInputValue)
-  }, [debouncedInputValue, setSearch, setPage])
+    if (debouncedInputValue !== filters.state.search) filters.setState({ search: debouncedInputValue, page: 1 })
+  }, [debouncedInputValue, filters])
 
   const { data, isLoading, isFetching, error, refetch } = useContacts({
-    enabled: true,
-    params: { page, take: size },
-    staleTime: 60 * 1000
+    params: { ...queryParams }
   })
 
   const contacts: Contact[] = useMemo(() => data?.data?.items || [], [data])
@@ -48,17 +41,15 @@ const ContactView = () => {
       ) : error ? (
         <ErrorState onRetry={refetch} />
       ) : contacts.length === 0 ? (
-        <EmptyContactState isSearch={!!search} searchQuery={search} />
+        <EmptyContactState isSearch={!!filters.state.search} searchQuery={filters.state.search} />
       ) : (
         <>
           <DesktopContactTable contacts={contacts} />
           <TablePaginationComponent
-            currentPage={paginationData.currentPage}
-            totalPages={paginationData.totalPages}
-            totalCount={paginationData.totalCount}
-            rowsPerPage={size}
-            onPageChange={setPage}
-            onRowsPerPageChange={setSize}
+            paginationData={paginationData}
+            rowsPerPage={filters.state.take}
+            onPageChange={(page: number) => filters.setState({ page })}
+            onRowsPerPageChange={(take: number) => filters.setState({ take, page: 1 })}
             currentPageItemCount={contacts.length}
           />
         </>
