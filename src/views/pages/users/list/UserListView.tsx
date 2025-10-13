@@ -7,30 +7,24 @@ import TablePaginationComponent from '@/components/TablePaginationComponent'
 import { useDebounce } from '@/hooks/useDebounce'
 import ErrorState from '@/components/states/ErrorState'
 import CustomTextField from '@/@core/components/mui/TextField'
-import { useUsers } from '@/hooks/reactQuery/useUser'
+import { useUsers } from '@/hooks/reactQuery/user/useUser'
 import { TableListSkeleton } from '@/components/TableSkeleton'
 import DesktopUserTable from './DesktopUsersTable'
 import EmptyUserState from '../../users/list/EmptyUserState'
 import { type User } from '@/types/app/user.type'
-import { useQueryState } from 'nuqs'
+import { useUserFilters } from '@/hooks/reactQuery/user/useUserFilters'
 
 function UserListView() {
-  const [page, setPage] = useQueryState('page', { defaultValue: 1, parse: Number, scroll: true })
-  const [size, setSize] = useQueryState('limit', { defaultValue: 10, parse: Number, scroll: true })
-  const [search, setSearch] = useQueryState('search', { defaultValue: '', parse: String, scroll: true })
-
-  const [inputValue, setInputValue] = useState(search)
-  const debounceDelay = 500
-  const debouncedInputValue = useDebounce(inputValue, debounceDelay)
+  const { filters, queryParams } = useUserFilters()
+  const [inputValue, setInputValue] = useState(filters.state.search || '')
+  const debouncedInputValue = useDebounce(inputValue, 500)
 
   useEffect(() => {
-    setSearch(debouncedInputValue)
-  }, [debouncedInputValue, setSearch])
+    if (debouncedInputValue !== filters.state.search) filters.setState({ search: debouncedInputValue, page: 1 })
+  }, [debouncedInputValue, filters])
 
   const { data, isLoading, isFetching, error, refetch } = useUsers({
-    enabled: true,
-    params: { page, take: size, includeAddress: true, includeTransaction: true, includeShippingInfo: true, search: !!search ? search : undefined },
-    staleTime: 5 * 60 * 1000
+    params: { ...queryParams }
   })
 
   const users: User[] = useMemo(() => data?.data?.items || [], [data])
@@ -49,18 +43,16 @@ function UserListView() {
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : users.length === 0 ? (
-        <EmptyUserState isSearch={!!search} searchQuery={search} />
+        <EmptyUserState isSearch={!!filters.state.search} searchQuery={filters.state.search} />
       ) : (
         <>
           <DesktopUserTable users={users} />
 
           <TablePaginationComponent
-            currentPage={page}
-            totalPages={paginationData.totalPages}
-            totalCount={paginationData.totalCount}
-            rowsPerPage={size}
-            onPageChange={setPage}
-            onRowsPerPageChange={setSize}
+            paginationData={paginationData}
+            rowsPerPage={filters.state.take}
+            onPageChange={(page: number) => filters.setState({ page })}
+            onRowsPerPageChange={(take: number) => filters.setState({ take, page: 1 })}
             currentPageItemCount={users.length}
           />
         </>
