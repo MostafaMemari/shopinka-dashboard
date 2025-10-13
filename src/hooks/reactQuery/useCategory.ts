@@ -8,7 +8,7 @@ import { errorCategoryMessage } from '@/messages/categoryMessages'
 import { useFormMutation } from '../useFormMutation'
 
 export function useCategories({ enabled = true, params = {}, staleTime = 1 * 60 * 1000 }: QueryOptions) {
-  const fetchCategory = () => getCategories(params).then(res => res)
+  const fetchCategory = () => getCategories({ ...params, includeChildren: true, childrenDepth: 6 }).then(res => res)
 
   return useQuery<any, Error>({
     queryKey: [QueryKeys.Categories, params],

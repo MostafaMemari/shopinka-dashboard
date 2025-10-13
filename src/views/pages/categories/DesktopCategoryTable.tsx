@@ -11,6 +11,7 @@ import { Category } from '@/types/app/category.type'
 import UpdateCategoryModal from './UpdateCategoryModal'
 import RemoveCategoryModal from './RemoveCategoryModal'
 import { stripHtml, truncateText } from '@/utils/formatters'
+import Image from 'next/image'
 
 const DesktopCategoryTable = ({ categories }: { categories: Category[] }) => {
   const renderCategoryRow = (category: Category, level: number = 0): JSX.Element[] => {
@@ -20,7 +21,7 @@ const DesktopCategoryTable = ({ categories }: { categories: Category[] }) => {
       <tr key={category.id}>
         <td>
           {category.thumbnailImageId ? (
-            <img src={category?.thumbnailImage?.thumbnailUrl} alt={category.name || 'تصویر دسته‌بندی'} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+            <Image src={category?.thumbnailImage?.thumbnailUrl} alt={category.name || 'تصویر دسته‌بندی'} width={50} height={50} style={{ objectFit: 'cover' }} />
           ) : (
             <Typography color='text.secondary'>-</Typography>
           )}
@@ -91,7 +92,7 @@ const DesktopCategoryTable = ({ categories }: { categories: Category[] }) => {
               </td>
             </tr>
           ) : (
-            categories.filter(cat => cat.parentId === null).flatMap(cat => renderCategoryRow(cat))
+            categories.flatMap(cat => renderCategoryRow(cat))
           )}
         </tbody>
       </table>

@@ -7,7 +7,7 @@ import { showToast } from '@/utils/showToast'
 import { CategoryFormType } from '../validators/category.schema'
 import { SeoForm, SeoMetaTargetType } from '@/types/app/seo.type'
 
-export const getCategories = async (params?: Record<string, string>): Promise<Response<Category[]>> => {
+export const getCategories = async (params?: Record<string, string | boolean | number>): Promise<Response<Category[]>> => {
   const res = await serverApiFetch('/category', {
     method: 'GET',
     query: { ...params }
