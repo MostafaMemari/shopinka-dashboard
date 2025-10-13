@@ -4,7 +4,7 @@ import { QueryOptions } from '@/types/queryOptions'
 import { useQuery } from '@tanstack/react-query'
 
 export function useComments({ enabled = true, params = {}, staleTime = 1 * 60 * 1000 }: QueryOptions) {
-  const fetchCategory = () => getComments(params).then(res => res)
+  const fetchCategory = () => getComments({ ...params, includeUser: true, includeProduct: true }).then(res => res)
 
   return useQuery<any, Error>({
     queryKey: [QueryKeys.Comments, params],
