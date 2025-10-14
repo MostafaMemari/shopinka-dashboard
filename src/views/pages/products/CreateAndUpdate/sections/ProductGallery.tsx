@@ -39,15 +39,11 @@ const ProductGallery = ({ galleryImages }: { galleryImages?: GalleryItem[] }) =>
             const handleSelect = (items: GalleryItem | GalleryItem[]) => {
               const newItems = Array.isArray(items) ? items : [items]
 
-              setLocalImages(prev => {
-                const merged = [...prev, ...newItems]
-
-                return merged.filter((img, index, arr) => arr.findIndex(i => i.id === img.id) === index)
-              })
+              setLocalImages(newItems)
 
               const validIds = newItems.map(item => item.id).filter(id => typeof id === 'number' && id > 0)
 
-              onChange(Array.from(new Set([...value, ...validIds])))
+              onChange(validIds)
             }
 
             const handleRemove = (id: number) => {

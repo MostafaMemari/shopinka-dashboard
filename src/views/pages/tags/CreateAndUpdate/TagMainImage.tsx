@@ -15,12 +15,12 @@ import Typography from '@mui/material/Typography'
 // Icons & Components
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import Image from 'next/image'
-import ModalGallery from '@/components/Gallery/GalleryDialog'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 
 // Types
-import { GalleryItem } from '@/types/app/gallery.type'
 import { TagFormType } from '@/types/app/tag.type'
+import GalleryDialog from '@/components/Gallery/GalleryDialog'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 interface Props {
   control: Control<TagFormType>
@@ -80,11 +80,17 @@ const TagMainImage = ({ control, mainImage }: Props) => {
                 )}
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                  <ModalGallery initialSelected={selectedImage || undefined} btnLabel={selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} multi={false} onSelect={handleSelect}>
-                    <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
-                      {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
-                    </Typography>
-                  </ModalGallery>
+                  <GalleryDialog
+                    initialSelected={selectedImage || undefined}
+                    btnLabel={selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'}
+                    multi={false}
+                    onSelect={handleSelect}
+                    trigger={
+                      <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
+                        {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
+                      </Typography>
+                    }
+                  />
                 </Box>
               </>
             )
