@@ -2,6 +2,7 @@
 
 import { useQuerySetState } from '@/hooks/useQuerySetState'
 import { parseAsArrayOf, parseAsInteger, parseAsString } from 'nuqs'
+import { useMemo } from 'react'
 
 export const useProductFilters = () => {
   const filters = useQuerySetState({
@@ -13,14 +14,17 @@ export const useProductFilters = () => {
     take: parseAsInteger.withDefault(10)
   })
 
-  const queryParams = {
-    name: filters.state.search || undefined,
-    type: filters.state.type || undefined,
-    categoryIds: filters.state.categoryIds.length ? filters.state.categoryIds : undefined,
-    tagIds: filters.state.tagIds.length ? filters.state.tagIds : undefined,
-    page: filters.state.page,
-    take: filters.state.take
-  }
+  const queryParams = useMemo(
+    () => ({
+      name: filters.state.search || undefined,
+      type: filters.state.type || undefined,
+      categoryIds: filters.state.categoryIds.length ? filters.state.categoryIds : undefined,
+      tagIds: filters.state.tagIds.length ? filters.state.tagIds : undefined,
+      page: filters.state.page,
+      take: filters.state.take
+    }),
+    [filters.state]
+  )
 
   return { filters, queryParams }
 }
