@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CircularProgress from '@mui/material/CircularProgress'
 import Image from 'next/image'
-import { GalleryItem } from '@/types/app/gallery.type'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 interface Props {
   galleryItems: GalleryItem[]

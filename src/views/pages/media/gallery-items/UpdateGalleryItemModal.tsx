@@ -2,7 +2,7 @@ import { useState, useCallback, ReactNode } from 'react'
 import CustomDialog from '@/components/dialogs/CustomDialog'
 import { useForm } from 'react-hook-form'
 import { IconButton } from '@mui/material'
-import { GalleryFormType, type GalleryItemForm } from '@/types/app/gallery.type'
+import { GalleryFormType } from '@/types/app/gallery.type'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { showToast } from '@/utils/showToast'
 import { handleApiError } from '@/utils/handleApiError'
@@ -16,9 +16,10 @@ import { QueryKeys } from '@/types/enums/query-keys'
 import { cleanObject } from '@/utils/formatters'
 import FormActions from '@/components/FormActions'
 import FormField from '@/components/form/FormField'
+import { GalleryItemFormType } from '@/types/app/galleryItem.type'
 
 interface UpdateGalleryItemModalProps {
-  initialData: Partial<GalleryItemForm>
+  initialData: Partial<GalleryItemFormType>
   galleryItemId: string
   children?: ReactNode
 }
@@ -66,7 +67,7 @@ const UpdateGalleryItemModal = ({ initialData, galleryItemId, children }: Update
             return
           }
 
-          const { status } = await updateGalleryItem(galleryItemId, changedData)
+          const { status } = await updateGalleryItem(Number(galleryItemId), changedData)
 
           const errorMessage = handleApiError(status, errorGalleryMessage)
 

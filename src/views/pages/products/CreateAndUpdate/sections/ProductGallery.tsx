@@ -6,8 +6,8 @@ import Image from 'next/image'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { Controller, useFormContext } from 'react-hook-form'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
-import { GalleryItem } from '@/types/app/gallery.type'
 import GalleryDialog from '@/components/Gallery/GalleryDialog'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 const ProductGallery = ({ galleryImages }: { galleryImages?: GalleryItem[] }) => {
   const { control, setValue } = useFormContext()

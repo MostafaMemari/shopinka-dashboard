@@ -19,7 +19,7 @@ import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 import GalleryDialog from '@/components/Gallery/GalleryDialog'
 
 // Types
-import { GalleryItem } from '@/types/app/gallery.type'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 const ProductMainImage = ({ mainImage }: { mainImage?: GalleryItem | null }) => {
   const { control } = useFormContext()

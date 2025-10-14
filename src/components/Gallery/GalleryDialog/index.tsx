@@ -4,13 +4,13 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { debounce, type SelectChangeEvent } from '@mui/material'
-import { GalleryItem } from '@/types/app/gallery.type'
 import { useGalleryItems } from '@/hooks/reactQuery/gallery/useGallery'
 import GalleryItemDetails from './GalleryItemDetails'
 import CustomDialog from '@/components/dialogs/CustomDialog'
 import { showToast } from '@/utils/showToast'
 import GalleryHeader from './GalleryHeader'
 import GalleryContent from './GalleryContent'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 interface Props {
   btnLabel?: string
@@ -164,7 +164,7 @@ const GalleryDialog = ({ btnLabel, multi = false, onSelect, initialSelected, tri
               }}
               onRetry={refetchItems}
             />
-            <GalleryItemDetails activeItem={activeItem} setActiveItem={setActiveItem} multi={multi} selectedItems={selectedItems} />
+            <GalleryItemDetails activeItem={activeItem} multi={multi} selectedItems={selectedItems} />
           </Box>
         </Box>
       </CustomDialog>

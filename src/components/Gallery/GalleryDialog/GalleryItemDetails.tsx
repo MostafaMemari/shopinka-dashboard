@@ -1,16 +1,15 @@
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import { GalleryItem } from '@/types/app/gallery.type'
+import GalleryItemForm from './GalleryItemForm'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 interface Props {
   activeItem: GalleryItem | null
-  setActiveItem: (item: GalleryItem | null) => void
   multi: boolean
   selectedItems: GalleryItem[]
 }
 
-const GalleryItemDetails = ({ activeItem, setActiveItem, multi, selectedItems }: Props) => {
+const GalleryItemDetails = ({ activeItem, multi, selectedItems }: Props) => {
   return (
     <Box
       sx={{
@@ -26,15 +25,8 @@ const GalleryItemDetails = ({ activeItem, setActiveItem, multi, selectedItems }:
       <Typography variant='h6'>جزئیات تصویر</Typography>
       {activeItem ? (
         <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField label='عنوان' value={activeItem.title} onChange={e => setActiveItem({ ...activeItem, title: e.target.value })} fullWidth />
-          <TextField
-            label='توضیحات'
-            value={activeItem.description || ''}
-            onChange={e => setActiveItem({ ...activeItem, description: e.target.value })}
-            multiline
-            rows={4}
-            fullWidth
-          />
+          <GalleryItemForm activeItem={activeItem} />
+
           <Typography variant='body2'>
             <strong>شناسه:</strong> {activeItem.id}
           </Typography>

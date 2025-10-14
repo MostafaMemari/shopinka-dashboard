@@ -8,13 +8,13 @@ import DesktopMediaGallery from './DesktopMediaGallery'
 import CreateMediaModal from './UploadMediaDoalog'
 import RemoveGalleryItemModal from './RemoveMediaModal'
 import { useGalleryItems } from '@/hooks/reactQuery/gallery/useGallery'
-import { GalleryItem } from '@/types/app/gallery.type'
 import ErrorState from '@/components/states/ErrorState'
 import EmptyGalleryItemsState from './EmptyGalleryItemsState'
 import CustomTextField from '@/@core/components/mui/TextField'
 import { GalleryItemSkeleton } from '@/components/TableSkeleton'
 import { useDebounce } from '@/hooks/useDebounce'
-import { useGalleryItemFilters } from '@/hooks/reactQuery/gallery/useGalleryItemFilters'
+import { useGalleryItemFilters } from '@/hooks/reactQuery/gallery/galleryItem/useGalleryItemFilters'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 const GalleryItemView = ({ galleryId }: { galleryId: string }) => {
   const [selected, setSelected] = useState<string[]>([])

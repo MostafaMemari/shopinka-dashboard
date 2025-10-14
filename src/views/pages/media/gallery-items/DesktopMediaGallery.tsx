@@ -3,8 +3,7 @@ import Image from 'next/image'
 import Checkbox from '@mui/material/Checkbox'
 import UpdateGalleryItemModal from './UpdateGalleryItemModal'
 import DetailMediaModal from './DetailMediaModal'
-
-import { GalleryItem } from '@/types/app/gallery.type'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 interface MediaGridProps {
   data: GalleryItem[]
