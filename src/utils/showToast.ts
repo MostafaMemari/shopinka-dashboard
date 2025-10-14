@@ -11,7 +11,7 @@ interface ToastOptions {
   message: string
   type?: ToastType
   position?: ToastPosition
-  autoClose?: number
+  autoClose?: number | false
   hideProgressBar?: boolean
   closeOnClick?: boolean
   pauseOnHover?: boolean

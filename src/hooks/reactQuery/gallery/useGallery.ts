@@ -17,7 +17,9 @@ export function useGalleryItems({ enabled = true, params = {}, staleTime = 1 * 6
     queryFn: fetchGalleryItems,
     enabled,
     staleTime,
-    refetchOnWindowFocus: false
+    refetchOnMount: true
+
+    // refetchOnWindowFocus: false
   })
 }
 

@@ -10,7 +10,7 @@ import { Typography, Button } from '@mui/material'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 
 import { GalleryItem } from '@/types/app/gallery.type'
-import ModalGallery from '@/components/Gallery/ModalGallery/ModalGallery'
+import ModalGallery from '@/components/Gallery/GalleryDialog'
 import ImagePlaceholder from '@/components/EmptyPlaceholder'
 import { Category } from '@/types/app/category.type'
 import { CategoryFormType } from '@/libs/validators/category.schema'

@@ -3,10 +3,8 @@
 import React, { ReactNode, useState } from 'react'
 import { Button } from '@mui/material'
 import CustomDialog from '@/components/dialogs/CustomDialog'
-import { useParams, useRouter } from 'next/navigation'
 import { showToast } from '@/utils/showToast'
 import { createGalleryItem } from '@/libs/api/galleyItem.api'
-import { useQueryClient } from '@tanstack/react-query'
 import { type SelectChangeEvent } from '@mui/material'
 import GallerySelectModal from './GallerySelectModal'
 import DropzoneSection from './DropzoneSection'
@@ -14,13 +12,14 @@ import FileList from './FileList'
 import FormActions from '@/components/FormActions'
 import { useInvalidateQuery } from '@/hooks/useInvalidateQuery'
 import { QueryKeys } from '@/types/enums/query-keys'
+import { toast } from 'react-toastify'
 
-interface CreateMediaModalProps {
+interface Props {
   galleryId?: string
   trigger?: ReactNode
 }
 
-const CreateMediaModal = ({ galleryId, trigger }: CreateMediaModalProps) => {
+const UploadMediaDoalog = ({ galleryId, trigger }: Props) => {
   const [openUpload, setOpenUpload] = useState(false)
   const [openGallerySelect, setOpenGallerySelect] = useState(false)
   const [files, setFiles] = useState<File[]>([])
@@ -80,6 +79,17 @@ const CreateMediaModal = ({ galleryId, trigger }: CreateMediaModalProps) => {
       return
     }
 
+    handleCloseUpload()
+
+    const uploadToastId = toast.info('در حال آپلود فایل‌ها...', {
+      autoClose: false,
+      hideProgressBar: false,
+      position: 'top-left',
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true
+    })
+
     setIsSubmitting(true)
 
     try {
@@ -90,10 +100,11 @@ const CreateMediaModal = ({ galleryId, trigger }: CreateMediaModalProps) => {
 
       const res = await createGalleryItem(formData)
 
+      toast.dismiss(uploadToastId)
+
       if (res?.status === 200 || res?.status === 201) {
         showToast({ type: 'success', message: 'آپلود فایل با موفقیت انجام شد' })
         invalidate(QueryKeys.GalleryItems)
-        handleCloseUpload()
       } else {
         showToast({ type: 'error', message: 'خطایی در آپلود رخ داد!' })
       }
@@ -136,4 +147,4 @@ const CreateMediaModal = ({ galleryId, trigger }: CreateMediaModalProps) => {
   )
 }
 
-export default CreateMediaModal
+export default UploadMediaDoalog

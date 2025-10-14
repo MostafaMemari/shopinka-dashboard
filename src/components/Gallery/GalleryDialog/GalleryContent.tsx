@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Image from 'next/image'
 import { GalleryItem } from '@/types/app/gallery.type'
 
-interface GalleryContentProps {
+interface Props {
   galleryItems: GalleryItem[]
   isLoading: boolean
   error: any
@@ -16,15 +16,9 @@ interface GalleryContentProps {
   hasMore?: boolean
 }
 
-const GalleryContent = ({ galleryItems, isLoading, error, selectedItems, onShowMore, onItemClick, onRetry, hasMore = true }: GalleryContentProps) => {
+const GalleryContent = ({ galleryItems, isLoading, error, selectedItems, onShowMore, onItemClick, onRetry, hasMore = true }: Props) => {
   return (
-    <Box
-      sx={{
-        flex: 1,
-        overflowY: 'auto',
-        p: { xs: 2, sm: 4 }
-      }}
-    >
+    <Box sx={{ flex: 1, overflowY: 'auto', p: { xs: 2, sm: 4 } }}>
       {isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
           <CircularProgress />

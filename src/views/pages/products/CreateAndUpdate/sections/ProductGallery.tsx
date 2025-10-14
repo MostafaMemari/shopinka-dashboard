@@ -5,9 +5,9 @@ import { Card, CardHeader, CardContent, IconButton, Box, Tooltip, Typography } f
 import Image from 'next/image'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { Controller, useFormContext } from 'react-hook-form'
-import ModalGallery from '@/components/Gallery/ModalGallery/ModalGallery'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 import { GalleryItem } from '@/types/app/gallery.type'
+import GalleryDialog from '@/components/Gallery/GalleryDialog'
 
 const ProductGallery = ({ galleryImages }: { galleryImages?: GalleryItem[] }) => {
   const { control, setValue } = useFormContext()
@@ -89,11 +89,17 @@ const ProductGallery = ({ galleryImages }: { galleryImages?: GalleryItem[] }) =>
                 </Box>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                  <ModalGallery btnLabel='انتخاب تصاویر' multi initialSelected={selectedImages} onSelect={handleSelect}>
-                    <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
-                      انتخاب تصاویر از گالری
-                    </Typography>
-                  </ModalGallery>
+                  <GalleryDialog
+                    btnLabel='انتخاب تصاویر'
+                    multi
+                    initialSelected={selectedImages}
+                    onSelect={handleSelect}
+                    trigger={
+                      <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
+                        انتخاب تصاویر از گالری
+                      </Typography>
+                    }
+                  />
                 </Box>
               </>
             )

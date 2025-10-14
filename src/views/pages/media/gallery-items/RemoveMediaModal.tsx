@@ -6,6 +6,7 @@ import { Button } from '@mui/material'
 import { useInvalidateQuery } from '@/hooks/useInvalidateQuery'
 import { QueryKeys } from '@/types/enums/query-keys'
 import FormActions from '@/components/FormActions'
+import { toast } from 'react-toastify'
 
 interface RemoveGalleryItemModalProps {
   selectedImages: string[]
@@ -25,10 +26,24 @@ const RemoveGalleryItemModal = ({ selectedImages, onClearSelection }: RemoveGall
 
   const handleConfirm = async () => {
     if (!galleryItemIds || isDeleting) return
+
+    setOpen(false)
+
+    const deleteToastId = toast.info('در حال حذف فایل‌ها...', {
+      autoClose: false,
+      hideProgressBar: false,
+      position: 'top-left',
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true
+    })
+
     setIsDeleting(true)
 
     try {
       const res = await removeGalleryItem(galleryItemIds)
+
+      toast.dismiss(deleteToastId)
 
       if (res.status === 200) {
         showToast({ type: 'success', message: 'حذف فایل با موفقیت انجام شد' })
@@ -40,9 +55,9 @@ const RemoveGalleryItemModal = ({ selectedImages, onClearSelection }: RemoveGall
         showToast({ type: 'error', message: 'شما دسترسی حذف این فایل را ندارید' })
       }
 
-      setOpen(false)
       setGalleryItemIds(null)
     } catch (error) {
+      toast.dismiss(deleteToastId)
       showToast({ type: 'error', message: 'خطای سیستمی' })
     } finally {
       setIsDeleting(false)

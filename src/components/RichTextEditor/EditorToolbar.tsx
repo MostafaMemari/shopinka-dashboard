@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import CustomIconButton from '@core/components/mui/IconButton'
 
 // Components Imports
-import ModalGallery from '../Gallery/ModalGallery/ModalGallery'
+import GalleryDialog from '../Gallery/GalleryDialog'
 
 // Types
 import { EditorToolbarProps } from './types'
@@ -111,11 +111,18 @@ const EditorToolbar = ({ editor, openLinkDialog, toggleFullScreen, isFullScreen,
       <CustomIconButton variant='tonal' size='small' onClick={() => editor.chain().focus().redo().run()} {...(!editor.can().chain().focus().redo().run() && { disabled: true })}>
         <i className='tabler-arrow-forward-up' />
       </CustomIconButton>
-      <ModalGallery btnLabel='انتخاب تصاویر' multi initialSelected={selectedImages} onSelect={handleSelect}>
-        <CustomIconButton variant='tonal' size='small'>
-          <i className={classnames('tabler-photo', 'text-textSecondary')} />
-        </CustomIconButton>
-      </ModalGallery>
+      <GalleryDialog
+        btnLabel='انتخاب تصاویر'
+        multi
+        initialSelected={selectedImages}
+        onSelect={handleSelect}
+        trigger={
+          <CustomIconButton variant='tonal' size='small'>
+            <i className={classnames('tabler-photo', 'text-textSecondary')} />
+          </CustomIconButton>
+        }
+      />
+
       <CustomIconButton variant='tonal' size='small' onClick={toggleFullScreen} {...(isFullScreen && { color: 'primary' })}>
         <i
           className={classnames(isFullScreen ? 'tabler-minimize' : 'tabler-maximize', {
