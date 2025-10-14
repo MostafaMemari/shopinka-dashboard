@@ -11,10 +11,10 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
 // Component Imports
-import { Tag } from '@/types/app/tag.type'
-import CreateTagModal from '@/views/pages/tags/CreateAndUpdate/CreateTagDialog'
+import { Tag, TagType } from '@/types/app/tag.type'
 import FormField from '@/components/form/FormField'
 import { useTags } from '@/hooks/reactQuery/tag/useTag'
+import CreateTagDialog from '@/views/pages/tags/CreateAndUpdate/CreateTagDialog'
 
 const ProductTags = ({ initialTagIds }: { initialTagIds?: number[] }) => {
   const { data, isLoading, isFetching, error } = useTags({
@@ -52,11 +52,14 @@ const ProductTags = ({ initialTagIds }: { initialTagIds?: number[] }) => {
         {!isLoading && !isFetching && tags.length === 0 && <Typography sx={{ mt: 2 }}>برچسبی یافت نشد</Typography>}
 
         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: 3 }}>
-          <CreateTagModal>
-            <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
-              ثبت برچسب جدید
-            </Typography>
-          </CreateTagModal>
+          <CreateTagDialog
+            type={TagType.PRODUCT}
+            trigger={
+              <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
+                ثبت برچسب جدید
+              </Typography>
+            }
+          />
         </Box>
       </CardContent>
     </Card>

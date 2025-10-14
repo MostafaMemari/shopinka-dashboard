@@ -15,9 +15,9 @@ import Box from '@mui/material/Box'
 // Component Imports
 import CustomTextField from '@core/components/mui/TextField'
 import { useCategories } from '@/hooks/reactQuery/useCategory'
-import { Category } from '@/types/app/category.type'
+import { Category, CategoryType } from '@/types/app/category.type'
 import { useFormContext, Controller } from 'react-hook-form'
-import CreateCategoryModal from '@/views/pages/categories/CreateCategoryModal'
+import CreateCategoryDialog from '@/views/pages/categories/CreateCategoryDialog'
 
 const ProductCategories = ({ initialCategoryIds }: { initialCategoryIds: number[] }) => {
   const { control } = useFormContext()
@@ -122,11 +122,14 @@ const ProductCategories = ({ initialCategoryIds }: { initialCategoryIds: number[
         />
 
         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: 3 }}>
-          <CreateCategoryModal>
-            <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
-              ثبت دسته‌بندی جدید
-            </Typography>
-          </CreateCategoryModal>
+          <CreateCategoryDialog
+            type={CategoryType.PRODUCT}
+            trigger={
+              <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
+                ثبت دسته‌بندی جدید
+              </Typography>
+            }
+          />
         </Box>
       </CardContent>
     </Card>

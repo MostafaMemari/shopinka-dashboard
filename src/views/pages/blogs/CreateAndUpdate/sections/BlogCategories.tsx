@@ -17,7 +17,7 @@ import CustomTextField from '@core/components/mui/TextField'
 import { useCategories } from '@/hooks/reactQuery/useCategory'
 import { Category } from '@/types/app/category.type'
 import { useFormContext, Controller } from 'react-hook-form'
-import CreateCategoryModal from '@/views/pages/categories/CreateCategoryModal'
+import CreateCategoryModal from '@/views/pages/categories/CreateCategoryDialog'
 
 const BlogCategories = ({ initialCategoryIds }: { initialCategoryIds: number[] }) => {
   const { control } = useFormContext()

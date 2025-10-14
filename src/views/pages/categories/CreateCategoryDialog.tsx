@@ -8,13 +8,16 @@ import { useCategoryForm } from '@/hooks/reactQuery/useCategory'
 import { CategoryFormType, categoryFormSchema } from '@/libs/validators/category.schema'
 import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import CategoryForm from './CategoryForm'
+import Grid from '@mui/material/Grid2'
+import { CategoryType } from '@/types/app/category.type'
+import FormField from '@/components/form/FormField'
 
-interface CreateCategoryModalProps {
-  children?: ReactNode
+interface Props {
+  trigger?: ReactNode
+  type: CategoryType
 }
 
-const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
+const CreateCategoryDialog = ({ trigger, type }: Props) => {
   const [open, setOpen] = useState<boolean>(false)
 
   const handleOpen = useCallback(() => setOpen(true), [])
@@ -30,12 +33,27 @@ const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
     }
   })
 
-  const onSubmit = methods.handleSubmit(data => mutate(data))
+  const {
+    control,
+    reset,
+    formState: { errors }
+  } = methods
+
+  const onSubmit = methods.handleSubmit(data =>
+    mutate(
+      { ...data, type },
+      {
+        onSuccess: () => {
+          reset(), setOpen(false)
+        }
+      }
+    )
+  )
 
   return (
     <>
       <div onClick={handleOpen} style={{ cursor: 'pointer' }}>
-        {children || (
+        {trigger || (
           <Button variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />}>
             ثبت دسته‌بندی جدید
           </Button>
@@ -46,15 +64,22 @@ const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
         open={open}
         onClose={handleClose}
         title='ثبت دسته‌بندی جدید'
-        defaultMaxWidth='md'
+        defaultMaxWidth='xs'
         actions={<FormActions submitText='ثبت' onCancel={handleClose} onSubmit={onSubmit} isLoading={isPending} />}
       >
         <FormProvider {...methods}>
-          <CategoryForm isLoading={isPending} />
+          <Grid container spacing={6}>
+            <Grid size={{ xs: 12 }}>
+              <Grid container spacing={6}>
+                <FormField control={control} errors={errors} name='name' label='عنوان دسته بندی' placeholder='نام دسته بندی را وارد کنید' />
+                <FormField control={control} errors={errors} name='slug' label='نامک (Slug)' placeholder='نامک دسته‌بندی را وارد کنید' />
+              </Grid>
+            </Grid>
+          </Grid>
         </FormProvider>
       </CustomDialog>
     </>
   )
 }
 
-export default CreateCategoryModal
+export default CreateCategoryDialog
