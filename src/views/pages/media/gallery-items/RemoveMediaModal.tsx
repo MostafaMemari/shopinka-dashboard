@@ -2,7 +2,7 @@ import { useState } from 'react'
 import CustomDialog from '@/components/dialogs/CustomDialog'
 import { removeGalleryItem } from '@/libs/api/galleyItem.api'
 import { showToast } from '@/utils/showToast'
-import { Button, CircularProgress, DialogContent, DialogContentText } from '@mui/material'
+import { Button } from '@mui/material'
 import { useInvalidateQuery } from '@/hooks/useInvalidateQuery'
 import { QueryKeys } from '@/types/enums/query-keys'
 import FormActions from '@/components/FormActions'
@@ -57,7 +57,7 @@ const RemoveGalleryItemModal = ({ selectedImages, onClearSelection }: RemoveGall
   return (
     <>
       <div>
-        <Button variant='contained' color='error' onClick={() => handleOpen(selectedImages)}>
+        <Button variant='outlined' color='error' onClick={() => handleOpen(selectedImages)}>
           حذف {selectedImages.length} مورد
         </Button>
 
@@ -66,14 +66,8 @@ const RemoveGalleryItemModal = ({ selectedImages, onClearSelection }: RemoveGall
           onClose={handleCancel}
           title='آیا از حذف فایل اطمینان دارید؟'
           defaultMaxWidth='sm'
-          actions={
-            <>
-              <FormActions submitText='حذف' submitColor='error' onCancel={handleCancel} onSubmit={handleConfirm} isLoading={isDeleting} />
-            </>
-          }
-        >
-          <></>
-        </CustomDialog>
+          actions={<FormActions submitText='حذف' submitColor='error' onCancel={handleCancel} onSubmit={handleConfirm} isLoading={isDeleting} />}
+        />
       </div>
     </>
   )

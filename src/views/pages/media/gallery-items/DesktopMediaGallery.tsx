@@ -23,13 +23,7 @@ const MediaGrid = ({ data, selected, handleCheckboxChange }: MediaGridProps) => 
             <div key={String(item.id)} className='relative'>
               <Box sx={{ position: 'absolute', top: 8, left: 8, zIndex: 2, display: 'flex', gap: 1 }}>
                 <Checkbox checked={isChecked} onChange={() => handleCheckboxChange(String(item.id))} size='small' />
-                <UpdateGalleryItemModal
-                  initialData={{
-                    ...item,
-                    galleryId: String(item.galleryId)
-                  }}
-                  galleryItemId={String(item.id)}
-                />
+                <UpdateGalleryItemModal initialData={{ ...item, galleryId: String(item.galleryId) }} galleryItemId={String(item.id)} />
                 <DetailMediaModal file={item} />
               </Box>
 

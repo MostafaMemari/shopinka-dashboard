@@ -13,28 +13,24 @@ import ErrorState from '@/components/states/ErrorState'
 import EmptyGalleryItemsState from './EmptyGalleryItemsState'
 import CustomTextField from '@/@core/components/mui/TextField'
 import { GalleryItemSkeleton } from '@/components/TableSkeleton'
-import { useQueryState } from 'nuqs'
 import { useDebounce } from '@/hooks/useDebounce'
+import { useGalleryItemFilters } from '@/hooks/reactQuery/gallery/useGalleryItemFilters'
 
 const GalleryItemView = ({ galleryId }: { galleryId: string }) => {
-  const [page, setPage] = useQueryState('page', { defaultValue: 1, parse: Number, scroll: true })
-  const [size, setSize] = useQueryState('limit', { defaultValue: 10, parse: Number, scroll: true })
-  const [search, setSearch] = useQueryState('search', { defaultValue: '', parse: String, scroll: true })
-
   const [selected, setSelected] = useState<string[]>([])
 
-  const [inputValue, setInputValue] = useState(search)
-  const debounceDelay = 500
-  const debouncedInputValue = useDebounce(inputValue, debounceDelay)
+  const { filters, queryParams } = useGalleryItemFilters()
+
+  const [inputValue, setInputValue] = useState(filters.state.search || '')
+  const debouncedInputValue = useDebounce(inputValue, 500)
 
   useEffect(() => {
-    setSearch(debouncedInputValue)
-  }, [debouncedInputValue, setSearch])
+    if (debouncedInputValue !== filters.state.search) filters.setState({ search: debouncedInputValue, page: 1 })
+  }, [debouncedInputValue, filters])
 
   const { data, isLoading, isFetching, error, refetch } = useGalleryItems({
-    params: { galleryId, page, take: size },
-    enabled: !!galleryId,
-    staleTime: 5 * 60 * 1000
+    params: { ...queryParams, galleryId },
+    enabled: !!galleryId
   })
 
   const galleryItems: GalleryItem[] = useMemo(() => data?.data?.items || [], [data])
@@ -80,18 +76,16 @@ const GalleryItemView = ({ galleryId }: { galleryId: string }) => {
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : galleryItems.length === 0 ? (
-        <EmptyGalleryItemsState isSearch={!!search} searchQuery={search} />
+        <EmptyGalleryItemsState isSearch={!!filters.state.search} searchQuery={filters.state.search} />
       ) : (
         <>
           <DesktopMediaGallery data={galleryItems} selected={selected} handleCheckboxChange={handleCheckboxChange} />
 
           <TablePaginationComponent
-            currentPage={page}
-            totalPages={paginationData.totalPages}
-            totalCount={paginationData.totalCount}
-            rowsPerPage={size}
-            onPageChange={setPage}
-            onRowsPerPageChange={setSize}
+            paginationData={paginationData}
+            rowsPerPage={filters.state.take}
+            onPageChange={(page: number) => filters.setState({ page })}
+            onRowsPerPageChange={(take: number) => filters.setState({ take, page: 1 })}
             currentPageItemCount={galleryItems.length}
           />
         </>
