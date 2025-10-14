@@ -10,7 +10,7 @@ import { SeoForm, SeoMetaTargetType } from '@/types/app/seo.type'
 
 type BlogForm = InferType<typeof blogFormSchema>
 
-export const getBlogs = async (params?: Record<string, string>): Promise<Response<Blog[]>> => {
+export const getBlogs = async (params?: Record<string, string | boolean>): Promise<Response<Blog[]>> => {
   const res = await serverApiFetch('/blog', {
     method: 'GET',
     query: { ...params }

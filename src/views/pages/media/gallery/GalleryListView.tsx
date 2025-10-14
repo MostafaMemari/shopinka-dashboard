@@ -14,26 +14,18 @@ import { Gallery } from '@/types/app/gallery.type'
 import CreateGalleryModal from './CreateGalleryModal'
 import { TableListSkeleton } from '@/components/TableSkeleton'
 import { useQueryState } from 'nuqs'
+import { useGalleryFilters } from '@/hooks/reactQuery/gallery/useGalleryFilters'
 
 const GalleryListView = () => {
-  const [page, setPage] = useQueryState('page', { defaultValue: 1, parse: Number, scroll: true })
-  const [size, setSize] = useQueryState('limit', { defaultValue: 10, parse: Number, scroll: true })
-  const [search, setSearch] = useQueryState('search', { defaultValue: '', parse: String, scroll: true })
-
-  const [inputValue, setInputValue] = useState(search)
-  const debounceDelay = 500
-  const debouncedInputValue = useDebounce(inputValue, debounceDelay)
+  const { filters, queryParams } = useGalleryFilters()
+  const [inputValue, setInputValue] = useState(filters.state.search || '')
+  const debouncedInputValue = useDebounce(inputValue, 500)
 
   useEffect(() => {
-    setSearch(debouncedInputValue)
-  }, [debouncedInputValue, setSearch])
+    if (debouncedInputValue !== filters.state.search) filters.setState({ search: debouncedInputValue, page: 1 })
+  }, [debouncedInputValue, filters])
 
-  const { data, isLoading, isFetching, error, refetch } = useGallery({
-    enabled: true,
-    params: { page, take: size, name: search ?? undefined },
-    staleTime: 5 * 60 * 1000
-  })
-
+  const { data, isLoading, isFetching, error, refetch } = useGallery({ params: { ...queryParams, title: queryParams.search } })
   const galleries: Gallery[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
 
@@ -53,18 +45,16 @@ const GalleryListView = () => {
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : galleries.length === 0 ? (
-        <EmptyGalleryState isSearch={!!search} searchQuery={search} />
+        <EmptyGalleryState isSearch={!!filters.state.search} searchQuery={filters.state.search} />
       ) : (
         <>
           <DesktopGalleryTable data={galleries} />
 
           <TablePaginationComponent
-            currentPage={page}
-            totalPages={paginationData.totalPages}
-            totalCount={paginationData.totalCount}
-            rowsPerPage={size}
-            onPageChange={setPage}
-            onRowsPerPageChange={setSize}
+            paginationData={paginationData}
+            rowsPerPage={filters.state.take}
+            onPageChange={(page: number) => filters.setState({ page })}
+            onRowsPerPageChange={(take: number) => filters.setState({ take, page: 1 })}
             currentPageItemCount={galleries.length}
           />
         </>

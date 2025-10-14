@@ -1,40 +1,34 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import DesktopBlogTable from './DesktopBlogTable'
 import { Blog } from '@/types/app/blog.type'
-import { usePaginationParams } from '@/hooks/usePaginationParams'
 import { useDebounce } from '@/hooks/useDebounce'
 import ErrorState from '@/components/states/ErrorState'
-import { useBlogs } from '@/hooks/reactQuery/useBlog'
 import { useRouter } from 'next/navigation'
-import { useSearch } from '@/hooks/useSearchQuery'
 import CustomTextField from '@/@core/components/mui/TextField'
 import EmptyBlogState from './EmptyBlogState'
 import { TableListSkeleton } from '@/components/TableSkeleton'
+import { useOrderFilters } from '@/hooks/reactQuery/order/useOrderFilters'
+import { useBlogs } from '@/hooks/reactQuery/blog/useBlog'
 
 const BlogListView = () => {
-  const { page, size, setPage, setSize } = usePaginationParams()
-  const { search, setSearch } = useSearch()
+  const { filters, queryParams } = useOrderFilters()
+  const [inputValue, setInputValue] = useState(filters.state.search || '')
+  const debouncedInputValue = useDebounce(inputValue, 500)
+
+  useEffect(() => {
+    if (debouncedInputValue !== filters.state.search) filters.setState({ search: debouncedInputValue, page: 1 })
+  }, [debouncedInputValue, filters])
+
   const router = useRouter()
-
-  const [inputValue, setInputValue] = useState(search)
-  const debounceDelay = 500
-  const debouncedInputValue = useDebounce(inputValue, debounceDelay)
-
-  useMemo(() => {
-    setSearch(debouncedInputValue)
-  }, [debouncedInputValue, setSearch])
-
   const handleAddBlog = () => router.push('/blogs/add')
 
   const { data, isLoading, isFetching, error, refetch } = useBlogs({
-    enabled: true,
-    params: { page, take: size, includeMainImage: true, name: search ?? undefined },
-    staleTime: 5 * 60 * 1000
+    params: { ...queryParams }
   })
 
   const blogs: Blog[] = useMemo(() => data?.data?.items || [], [data])
@@ -55,17 +49,16 @@ const BlogListView = () => {
       ) : error ? (
         <ErrorState onRetry={() => refetch()} />
       ) : blogs.length === 0 ? (
-        <EmptyBlogState isSearch={!!search} searchQuery={search} />
+        <EmptyBlogState isSearch={!!filters.state.search} searchQuery={filters.state.search} />
       ) : (
         <>
           <DesktopBlogTable blogs={blogs} />
+
           <TablePaginationComponent
-            currentPage={page}
-            totalPages={paginationData.totalPages}
-            totalCount={paginationData.totalCount}
-            rowsPerPage={size}
-            onPageChange={setPage}
-            onRowsPerPageChange={setSize}
+            paginationData={paginationData}
+            rowsPerPage={filters.state.take}
+            onPageChange={(page: number) => filters.setState({ page })}
+            onRowsPerPageChange={(take: number) => filters.setState({ take, page: 1 })}
             currentPageItemCount={blogs.length}
           />
         </>
