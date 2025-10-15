@@ -1,7 +1,6 @@
 import React, { useMemo, useCallback } from 'react'
 import { MenuItem, CircularProgress, Box } from '@mui/material'
 import FormField from '@/components/form/FormField'
-import Grid from '@mui/material/Grid2'
 import { Category } from '@/types/app/category.type'
 
 interface CategorySelectProps {

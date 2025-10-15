@@ -27,13 +27,18 @@ const CategoryListView = () => {
   }, [debouncedInputValue, filters])
 
   const { data, isLoading, isFetching, error, refetch } = useCategories({
-    params: { ...queryParams, name: queryParams.search, includeOnlyTopLevel: queryParams.search ? false : true, includeThumbnailImage: true, includeChildren: true }
+    params: {
+      ...queryParams,
+      name: queryParams.search,
+      includeOnlyTopLevel: queryParams.search ? false : true,
+      includeThumbnailImage: true,
+      includeChildren: true,
+      childrenDepth: 6
+    }
   })
 
   const categories: Category[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
-
-  console.log(categories)
 
   return (
     <Card sx={{ bgcolor: 'background.paper', borderColor: 'divider' }}>

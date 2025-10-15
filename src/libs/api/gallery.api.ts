@@ -27,8 +27,6 @@ export const removeGallery = async (id: string): Promise<{ status: number; data:
 }
 
 export const updateGallery = async (id: string, data: Partial<GalleryFormType>): Promise<{ status: number; data: Gallery | null }> => {
-  console.log(data)
-
   const res = await serverApiFetch(`/gallery/${id}`, {
     method: 'PATCH',
     body: { ...data }

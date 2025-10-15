@@ -122,6 +122,7 @@ const ProductCategories = ({ initialCategoryIds }: { initialCategoryIds: number[
         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: 3 }}>
           <CreateCategoryDialog
             type={CategoryType.PRODUCT}
+            categories={categories}
             trigger={
               <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
                 ثبت دسته‌بندی جدید

@@ -8,16 +8,18 @@ import { categoryFormSchema } from '@/libs/validators/category.schema'
 import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Grid from '@mui/material/Grid2'
-import { CategoryFormType, CategoryType } from '@/types/app/category.type'
+import { Category, CategoryFormType, CategoryType } from '@/types/app/category.type'
 import FormField from '@/components/form/FormField'
 import { useCategoryFormSubmit } from '@/hooks/reactQuery/category/useCategoryFormSubmit'
+import CategorySelect from './CreateAndUpdate/CategorySelect'
 
 interface Props {
+  categories?: Category[]
   trigger?: ReactNode
   type: CategoryType
 }
 
-const CreateCategoryDialog = ({ trigger, type }: Props) => {
+const CreateCategoryDialog = ({ trigger, type, categories }: Props) => {
   const [open, setOpen] = useState<boolean>(false)
 
   const handleOpen = useCallback(() => setOpen(true), [])
@@ -73,6 +75,7 @@ const CreateCategoryDialog = ({ trigger, type }: Props) => {
               <Grid container spacing={6}>
                 <FormField control={control} errors={errors} name='name' label='عنوان دسته بندی' placeholder='نام دسته بندی را وارد کنید' />
                 <FormField control={control} errors={errors} name='slug' label='نامک (Slug)' placeholder='نامک دسته‌بندی را وارد کنید' />
+                {!!categories && categories.length > 0 && <CategorySelect control={control} errors={errors} categories={categories} />}
               </Grid>
             </Grid>
           </Grid>

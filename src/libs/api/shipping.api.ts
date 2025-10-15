@@ -39,14 +39,10 @@ export const updateShipping = async (id: string, data: Partial<ShippingFormType>
 }
 
 export const createShipping = async (data: Omit<ShippingFormType, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<{ status: number; data: ShippingForm | null }> => {
-  console.log(data)
-
   const res = await serverApiFetch('/shipping', {
     method: 'POST',
     body: { ...data }
   })
-
-  console.log(res)
 
   return {
     ...res

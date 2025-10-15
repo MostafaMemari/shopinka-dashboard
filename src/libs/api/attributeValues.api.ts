@@ -21,14 +21,10 @@ export const updateAttributeValues = async (id: string, data: Partial<AttributeV
 }
 
 export const createAttributeValues = async (data: Omit<AttributeValueFormType, 'id'>): Promise<{ status: number; data: AttributeValue | null }> => {
-  console.log(data)
-
   const res = await serverApiFetch('/attribute-value', {
     method: 'POST',
     body: { ...data }
   })
-
-  console.log(res)
 
   return {
     ...res
