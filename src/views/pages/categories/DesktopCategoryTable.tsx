@@ -8,7 +8,6 @@ import tableStyles from '@core/styles/table.module.css'
 
 // API Import
 import { Category } from '@/types/app/category.type'
-import UpdateCategoryModal from './UpdateCategoryModal'
 import RemoveCategoryModal from './RemoveCategoryModal'
 import { stripHtml, truncateText } from '@/utils/formatters'
 import Image from 'next/image'
@@ -52,11 +51,9 @@ const DesktopCategoryTable = ({ categories }: { categories: Category[] }) => {
               </IconButton>
             </RemoveCategoryModal>
 
-            <UpdateCategoryModal category={category}>
-              <IconButton size='small'>
-                <i className='tabler-edit text-gray-500 text-lg' />
-              </IconButton>
-            </UpdateCategoryModal>
+            <IconButton size='small'>
+              <i className='tabler-edit text-gray-500 text-lg' />
+            </IconButton>
           </Box>
         </td>
       </tr>

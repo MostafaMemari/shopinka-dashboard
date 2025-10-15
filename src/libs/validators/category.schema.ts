@@ -23,7 +23,13 @@ export const categorySchema = yup
       .required('انتخاب نوع دسته‌بندی الزامی است')
       .default(CategoryType.PRODUCT),
 
-    parentId: yup.number().notRequired().positive().default(null),
+    parentId: yup
+      .number()
+      .transform((value, originalValue) => (originalValue === '' ? null : value))
+      .nullable()
+      .notRequired()
+      .positive()
+      .default(null),
 
     thumbnailImageId: yup.number().positive().notRequired().default(null),
 

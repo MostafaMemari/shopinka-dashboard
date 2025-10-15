@@ -2,7 +2,7 @@ import * as yup from 'yup'
 import { tagFormSchema } from '@/libs/validators/tag.schema'
 import { Seo } from './seo.type'
 import { Category } from './category.type'
-import { GalleryItem } from './gallery.type'
+import { GalleryItem } from './galleryItem.type'
 
 export type Tag = {
   id: number

@@ -24,8 +24,6 @@ const TagView = ({ tag }: { tag?: Tag }) => {
     formState: { errors }
   } = methods
 
-  console.log(tag?.thumbnailImageId)
-
   const onSubmit = methods.handleSubmit(data =>
     mutate(data, {
       onSuccess: res => {

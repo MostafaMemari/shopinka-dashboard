@@ -14,10 +14,10 @@ import Box from '@mui/material/Box'
 
 // Component Imports
 import CustomTextField from '@core/components/mui/TextField'
-import { useCategories } from '@/hooks/reactQuery/useCategory'
 import { Category, CategoryType } from '@/types/app/category.type'
 import { useFormContext, Controller } from 'react-hook-form'
 import CreateCategoryDialog from '@/views/pages/categories/CreateCategoryDialog'
+import { useCategories } from '@/hooks/reactQuery/category/useCategory'
 
 const ProductCategories = ({ initialCategoryIds }: { initialCategoryIds: number[] }) => {
   const { control } = useFormContext()
@@ -25,9 +25,7 @@ const ProductCategories = ({ initialCategoryIds }: { initialCategoryIds: number[
   const [searchQuery, setSearchQuery] = useState('')
 
   const { data, isLoading, isFetching, error } = useCategories({
-    enabled: true,
-    params: { take: 200, includeThumbnailImage: true, includeChildren: true, type: 'PRODUCT', childrenDepth: 6 },
-    staleTime: 5 * 60 * 1000
+    params: { take: 200, includeThumbnailImage: true, includeChildren: true, type: 'PRODUCT', childrenDepth: 6 }
   })
 
   const categories: Category[] = useMemo(() => {

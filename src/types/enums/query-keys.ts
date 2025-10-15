@@ -3,6 +3,7 @@ export enum QueryKeys {
   ShippingInfo = 'shipping-info',
   GalleryItems = 'gallery-items',
   Categories = 'categories',
+  Category = 'category',
   Products = 'products',
   Product = 'product',
   ProductVariants = 'productVariants',

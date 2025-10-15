@@ -1,4 +1,4 @@
-import CategoryView from '@/views/pages/categories/CategoryView'
+import CategoryView from '@/views/pages/categories/CategoryListView'
 
 const categories = async () => {
   return <CategoryView />

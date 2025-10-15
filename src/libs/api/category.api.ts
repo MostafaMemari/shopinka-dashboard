@@ -1,10 +1,9 @@
 import { generateCategorySeoDescription } from '@/hooks/reactQuery/seoDescriptionGenerators'
-import { Category } from '@/types/app/category.type'
+import { Category, CategoryFormType } from '@/types/app/category.type'
 import { Response } from '@/types/response'
 import { serverApiFetch } from '@/utils/api/serverApiFetch'
 import { handleSeoSave } from '../services/seo/seo.service'
 import { showToast } from '@/utils/showToast'
-import { CategoryFormType } from '../validators/category.schema'
 import { SeoForm, SeoMetaTargetType } from '@/types/app/seo.type'
 
 export const getCategories = async (params?: Record<string, string | boolean | number>): Promise<Response<Category[]>> => {
@@ -26,7 +25,7 @@ export const getCategoryById = async (id: number): Promise<{ status: number; dat
   }
 }
 
-export const updateCategory = async (id: string, data: Partial<CategoryFormType>): Promise<{ status: number; data: Category | null }> => {
+export const updateCategory = async (id: number, data: Partial<CategoryFormType>): Promise<{ status: number; data: Category | null }> => {
   const res = await serverApiFetch(`/category/${id}`, {
     method: 'PATCH',
     body: { ...data }
@@ -43,7 +42,7 @@ export const updateCategory = async (id: string, data: Partial<CategoryFormType>
   }
 }
 
-export const createCategory = async (data: CategoryFormType): Promise<{ status: number; data: Category | null }> => {
+export const createCategory = async (data: CategoryFormType): Promise<{ status: number; data: { category: Category | null } }> => {
   const res = await serverApiFetch('/category', {
     method: 'POST',
     body: { ...data }

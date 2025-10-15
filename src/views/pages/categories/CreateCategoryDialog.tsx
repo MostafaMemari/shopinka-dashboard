@@ -4,13 +4,13 @@ import { useState, useCallback, ReactNode } from 'react'
 import Button from '@mui/material/Button'
 import CustomDialog from '@/components/dialogs/CustomDialog'
 import FormActions from '@/components/FormActions'
-import { useCategoryForm } from '@/hooks/reactQuery/useCategory'
-import { CategoryFormType, categoryFormSchema } from '@/libs/validators/category.schema'
+import { categoryFormSchema } from '@/libs/validators/category.schema'
 import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Grid from '@mui/material/Grid2'
-import { CategoryType } from '@/types/app/category.type'
+import { CategoryFormType, CategoryType } from '@/types/app/category.type'
 import FormField from '@/components/form/FormField'
+import { useCategoryFormSubmit } from '@/hooks/reactQuery/category/useCategoryFormSubmit'
 
 interface Props {
   trigger?: ReactNode
@@ -27,7 +27,7 @@ const CreateCategoryDialog = ({ trigger, type }: Props) => {
     resolver: yupResolver(categoryFormSchema)
   })
 
-  const { mutate, isPending } = useCategoryForm({
+  const { mutate, isPending } = useCategoryFormSubmit({
     onSuccess: () => {
       handleClose()
     }
