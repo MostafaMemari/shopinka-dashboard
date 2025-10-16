@@ -1,10 +1,10 @@
 import { Category } from './category.type'
-import { GalleryItem } from './gallery.type'
 import { Attribute } from './productAttributes.type'
 import { Seo } from './seo.type'
 import { Tag } from './tag.type'
 import * as yup from 'yup'
 import { productFormSchema } from '@/libs/validators/product.schema'
+import { GalleryItem } from './galleryItem.type'
 
 export enum ProductStatus {
   DRAFT = 'DRAFT',

@@ -8,5 +8,5 @@ export const bannerSchema = yup.object({
 
   imageId: yup.number().positive().notRequired().default(null),
 
-  isActive: yup.boolean().default(true)
+  isActive: yup.boolean().default(false)
 })

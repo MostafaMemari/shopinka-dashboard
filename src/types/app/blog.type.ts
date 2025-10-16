@@ -1,9 +1,9 @@
 import { type InferType } from 'yup'
 import { Category } from './category.type'
-import { GalleryItem } from './gallery.type'
 import { Seo } from './seo.type'
 import { blogFormSchema } from '@/libs/validators/blog.schema'
 import { Tag } from './tag.type'
+import { GalleryItem } from './galleryItem.type'
 
 export enum BlogStatus {
   DRAFT = 'DRAFT',
