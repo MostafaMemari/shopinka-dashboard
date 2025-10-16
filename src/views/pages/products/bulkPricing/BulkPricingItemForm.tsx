@@ -29,7 +29,15 @@ const BulkPricingItemForm = ({ item, productId, variantId, onDelete }: BulkPrici
 
   const handleToggleEdit = handleSubmit(values => {
     if (editable) {
-      mutate({ ...values, productId: productId ?? null, variantId: variantId ?? null })
+      mutate({
+        ...values,
+        productId: productId ?? null,
+        variantId: variantId ?? null,
+        minQty: values.minQty,
+        type: values.type,
+        isGlobal: values.isGlobal ?? false
+      })
+
       setEditable(false)
     } else {
       setEditable(true)

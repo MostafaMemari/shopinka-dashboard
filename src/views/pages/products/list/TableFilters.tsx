@@ -10,11 +10,7 @@ import { Category } from '@/types/app/category.type'
 import { useCategories } from '@/hooks/reactQuery/category/useCategory'
 
 const TableFilters = ({ filters }: { filters: ReturnType<typeof useQuerySetState> }) => {
-  const { data: categories } = useCategories({
-    enabled: true,
-    params: { take: 200, type: 'PRODUCT' },
-    staleTime: 5 * 60 * 1000
-  })
+  const { data: categories } = useCategories({ params: { take: 200, type: 'PRODUCT' } })
 
   return (
     <CardContent>
