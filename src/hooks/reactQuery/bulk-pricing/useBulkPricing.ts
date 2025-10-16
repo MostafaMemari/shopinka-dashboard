@@ -1,13 +1,13 @@
 import { QueryKeys } from '@/types/enums/query-keys'
 import { QueryOptions } from '@/types/queryOptions'
 import { useQuery } from '@tanstack/react-query'
-import { getPages } from '@/libs/api/page.api'
+import { getBulkPricings } from '@/libs/api/bulkPricind.api'
 
 export function useBulkPricing({ enabled = true, params = {}, staleTime = 1 * 60 * 1000 }: QueryOptions) {
-  const fetchPage = () => getPages(params).then(res => res)
+  const fetchPage = () => getBulkPricings(params).then(res => res)
 
   return useQuery<any, Error>({
-    queryKey: [QueryKeys.Pages, params],
+    queryKey: [QueryKeys.BulkPricings, params],
     queryFn: fetchPage,
     enabled,
     staleTime,

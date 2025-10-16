@@ -22,13 +22,21 @@ export const bulkPricingSchema = yup.object({
     .min(1)
     .required('مقدار حداقل سفارش الزامی است'),
 
+  type: yup.mixed<BulkPricingType>().oneOf(Object.values(BulkPricingType)).required('نوع تخفیف الزامی است'),
+
   discount: yup
     .number()
-    .transform((value, originalValue) => (originalValue === '' ? null : value))
-    .notOneOf([0])
-    .required('مقدار تخفیف باید بیشتر از 0 باشد'),
+    .transform((value, originalValue) => {
+      if (originalValue === '' || originalValue == null) return null
 
-  isGlobal: yup.boolean().default(true),
+      return Number(originalValue)
+    })
+    .typeError('مقدار تخفیف باید عدد باشد')
+    .when('type', {
+      is: BulkPricingType.PERCENT,
+      then: schema => schema.min(1, 'برای نوع درصدی باید حداقل 1 باشد').max(99, 'برای نوع درصدی باید حداکثر 99 باشد').required('مقدار تخفیف الزامی است'),
+      otherwise: schema => schema.min(1000, 'برای نوع مبلغی باید حداقل 1000 باشد').required('مقدار تخفیف الزامی است')
+    }),
 
-  type: yup.mixed<BulkPricingType>().oneOf(Object.values(BulkPricingType)).required()
+  isGlobal: yup.boolean().default(true)
 })

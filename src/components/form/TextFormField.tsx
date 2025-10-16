@@ -14,6 +14,7 @@ type TextFormFieldProps = {
   helperText?: string
   control?: any
   errors?: Record<string, any>
+  disabled?: boolean
 }
 
 const TextFormField: React.FC<TextFormFieldProps> = ({
@@ -28,7 +29,8 @@ const TextFormField: React.FC<TextFormFieldProps> = ({
   defaultValue,
   helperText,
   control: externalControl,
-  errors: externalErrors
+  errors: externalErrors,
+  disabled = false
 }) => {
   const context = useFormContext()
 
@@ -50,6 +52,7 @@ const TextFormField: React.FC<TextFormFieldProps> = ({
           rows={rows}
           select={select}
           label={label}
+          disabled={disabled}
           placeholder={placeholder}
           error={!!errors?.[name]}
           helperText={errors?.[name]?.message?.toString() || helperText}

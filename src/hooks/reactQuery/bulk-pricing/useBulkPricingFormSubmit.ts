@@ -2,31 +2,31 @@
 
 import { QueryKeys } from '@/types/enums/query-keys'
 
-import { Page, PageFormType } from '@/types/app/page.type'
-import { createPage, updatePage } from '@/libs/api/page.api'
 import { useFormMutation } from '@/hooks/useFormMutation'
-import { errorPageMessage } from '@/messages/pageMessages'
+import { createBulkPricing, updateBulkPricing } from '@/libs/api/bulkPricind.api'
+import { errorBulkPricingMessage } from '@/messages/bulkPricingMessages'
+import { BulkPricingFormType, BulkPricingItem } from '@/types/app/bulkPricing.type'
 
-interface UsePageFormProps {
-  initialData?: Page
+interface UseBulkPricingFormProps {
+  initialData?: BulkPricingItem
+  isUpdate?: boolean
   onSuccess?: () => void
 }
 
-export const useBulkPricingFormSubmit = ({ initialData, onSuccess }: UsePageFormProps) => {
-  const isUpdate = !!initialData
-
-  return useFormMutation<PageFormType & { id?: string }>({
-    createApi: async (formData: PageFormType) => {
-      const response = await createPage(formData)
+export const useBulkPricingFormSubmit = ({ initialData, onSuccess, isUpdate }: UseBulkPricingFormProps) => {
+  return useFormMutation<BulkPricingFormType & { id?: string }>({
+    createApi: async (formData: BulkPricingFormType) => {
+      const response = await createBulkPricing(formData)
 
       return { status: response.status, data: { id: response.data?.page?.id } }
     },
 
-    updateApi: async (pageId: string, formData: Partial<PageFormType>) => {
-      return updatePage(Number(pageId), formData as Partial<PageFormType>)
+    updateApi: async (pageId: string, formData: Partial<BulkPricingFormType>) => {
+      return updateBulkPricing(Number(pageId), formData as Partial<BulkPricingFormType>)
     },
-    errorMessages: errorPageMessage,
-    successMessage: isUpdate ? 'برگه با موفقیت به‌روزرسانی شد' : 'برگه با موفقیت ایجاد شد',
+    errorMessages: errorBulkPricingMessage,
+    queryKey: [QueryKeys.BulkPricing, QueryKeys.BulkPricings],
+    successMessage: isUpdate ? 'فروش عمده با موفقیت به‌روزرسانی شد' : 'فروش عمده با موفقیت ایجاد شد',
     initialData: initialData ? ({ ...initialData, id: String(initialData.id) } as any) : undefined,
     isUpdate,
     onSuccess: () => {

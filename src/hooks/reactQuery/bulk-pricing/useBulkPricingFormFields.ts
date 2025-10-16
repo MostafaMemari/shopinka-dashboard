@@ -1,12 +1,11 @@
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Page, PageFormType } from '@/types/app/page.type'
-import { pageSchema } from '@/libs/validators/page.schema'
+
 import { bulkPricingSchema } from '@/libs/validators/bulkPricing.schema'
-import { BulkPricingFormType, BulkPricingType } from '@/types/app/bulkPricing.type'
+import { BulkPricingFormType, BulkPricingItem, BulkPricingType } from '@/types/app/bulkPricing.type'
 
 interface UsePageFormProps {
-  initialData?: BulkPricingFormType
+  initialData?: BulkPricingItem
 }
 
 export const useBulkPricingFormFields = ({ initialData }: UsePageFormProps) => {
@@ -14,7 +13,7 @@ export const useBulkPricingFormFields = ({ initialData }: UsePageFormProps) => {
     productId: initialData?.productId ?? null,
     variantId: initialData?.variantId ?? null,
     minQty: initialData?.minQty ?? 1,
-    discount: initialData?.discount ?? 0,
+    discount: initialData?.discount ? Number(initialData.discount) : 0,
     isGlobal: initialData?.isGlobal ?? false,
     type: initialData?.type ?? BulkPricingType.PERCENT
   }

@@ -16,7 +16,7 @@ import VariableTabContent from '@/views/pages/products/CreateAndUpdate/variants/
 import { ProductType } from '@/types/app/product.type'
 import ProductTags from './sections/ProductTags'
 import { useProductContext } from './ProductContext'
-import BulkPricing from './tabs/BulkPricing'
+import BulkPricingList from '../bulkPricing/BulkPricingList'
 
 const ProductFormTabs = () => {
   const { product } = useProductContext()
@@ -50,9 +50,7 @@ const ProductFormTabs = () => {
                 <Grid size={{ xs: 12 }}>
                   <ProductTabs />
                 </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <BulkPricing />
-                </Grid>
+                <Grid size={{ xs: 12 }}>{typeof productId === 'number' && <BulkPricingList productId={productId} />}</Grid>
               </Grid>
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>

@@ -24,6 +24,7 @@ import { useProductVariantFormFields } from '@/hooks/reactQuery/productVariant/u
 import { useEffect, useState } from 'react'
 import { useProductContext } from '../ProductContext'
 import { Button } from '@mui/material'
+import BulkPricingListVariant from './sections/BulkPricingListVariant'
 
 type VariantAccordionProps = {
   variant: ProductVariant
@@ -69,7 +70,6 @@ const VariantAccordion = ({ variant, expanded, onChange }: VariantAccordionProps
     <Accordion expanded={expanded} onChange={() => onChange(String(variant.id ?? ''))} sx={{ mb: 2, border: '1px solid', borderColor: 'divider' }}>
       <AccordionSummary expandIcon={<i className='tabler-chevron-down' />} sx={{ display: 'flex', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'space-between' }}>
-          {/* سمت راست */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <RemoveProductVariantModal id={Number(variant.id)}>
               <Tooltip title='حذف متغیر'>
@@ -109,6 +109,9 @@ const VariantAccordion = ({ variant, expanded, onChange }: VariantAccordionProps
               </Grid>
               <Grid size={{ xs: 12 }}>
                 <VariantRestock control={control} errors={errors} />
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <BulkPricingListVariant variantId={variant.id} />
               </Grid>
             </Grid>
           </Grid>

@@ -9,7 +9,6 @@ import { useProductContext } from '../ProductContext'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import CreateUpdateAttributeDialog from '../../attribute/CreateUpdateAttributeDialog'
-import { useProductVariants } from '@/hooks/reactQuery/productVariant/useProductVariants'
 import { useAttribute } from '@/hooks/reactQuery/attribute/useAttribute'
 
 const VariantsTab = () => {
@@ -60,13 +59,7 @@ const VariantsTab = () => {
         </Grid>
       )}
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          width: '100%'
-        }}
-      >
+      <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <CreateUpdateAttributeDialog
           trigger={
             <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>

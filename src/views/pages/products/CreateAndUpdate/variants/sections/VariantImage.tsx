@@ -7,11 +7,11 @@ import Image from 'next/image'
 import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import ModalGallery from '@/components/Gallery/GalleryDialog'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 import { ProductVariantForm } from '@/types/app/productVariant.type'
-import { GalleryItem } from '@/types/app/gallery.type'
 import { Card, CardContent, CardHeader, Typography } from '@mui/material'
+import { GalleryItem } from '@/types/app/galleryItem.type'
+import GalleryDialog from '@/components/Gallery/GalleryDialog'
 
 interface Props {
   mainImage?: GalleryItem | null
@@ -61,11 +61,17 @@ const VariantImage = ({ mainImage, setValue }: Props) => {
           <EmptyPlaceholder text='تصویری یافت نشد' width={200} height={200} />
         )}
         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-          <ModalGallery initialSelected={selectedImage || undefined} btnLabel={selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} multi={false} onSelect={handleSelect}>
-            <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
-              {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
-            </Typography>
-          </ModalGallery>
+          <GalleryDialog
+            initialSelected={selectedImage || undefined}
+            btnLabel={selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'}
+            multi={false}
+            onSelect={handleSelect}
+            trigger={
+              <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
+                {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
+              </Typography>
+            }
+          />
         </Box>
       </CardContent>
     </Card>

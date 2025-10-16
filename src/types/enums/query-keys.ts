@@ -19,5 +19,8 @@ export enum QueryKeys {
   Page = 'page',
   Contacts = 'contacts',
   Banners = 'banners',
-  Users = 'users'
+  Users = 'users',
+
+  BulkPricing = 'bulkPricing',
+  BulkPricings = 'bulkPricings'
 }
