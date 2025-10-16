@@ -35,14 +35,10 @@ export const updateBulkPricing = async (id: number, data: Partial<BulkPricingFor
 }
 
 export const createBulkPricing = async (data: BulkPricingFormType): Promise<{ status: number; data: { page: any | null } }> => {
-  console.log(data)
-
   const res = await serverApiFetch('/bulk-pricing', {
     method: 'POST',
     body: { ...data }
   })
-
-  console.log(res)
 
   return {
     ...res,

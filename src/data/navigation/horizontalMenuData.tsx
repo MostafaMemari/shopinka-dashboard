@@ -50,6 +50,11 @@ const horizontalMenuData = (): HorizontalMenuDataType[] => [
     href: '/media'
   },
   {
+    label: 'فروش عمده',
+    icon: 'tabler-price',
+    href: '/bulk-pricing'
+  },
+  {
     label: 'کاربران',
     icon: 'tabler-users',
     href: '/users'

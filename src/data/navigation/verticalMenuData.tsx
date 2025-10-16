@@ -50,6 +50,11 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
     href: '/media'
   },
   {
+    label: 'فروش عمده',
+    icon: 'tabler-shopping-cart-discount',
+    href: '/bulk-pricing'
+  },
+  {
     label: 'کاربران',
     icon: 'tabler-users',
     href: '/users'
