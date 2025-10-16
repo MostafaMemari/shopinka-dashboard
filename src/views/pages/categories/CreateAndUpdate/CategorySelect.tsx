@@ -2,15 +2,21 @@ import React, { useMemo, useCallback } from 'react'
 import { MenuItem, CircularProgress, Box } from '@mui/material'
 import FormField from '@/components/form/FormField'
 import { Category } from '@/types/app/category.type'
+import { useFormContext } from 'react-hook-form'
 
 interface CategorySelectProps {
-  control: any
-  errors: any
+  control?: any
+  errors?: any
   categories: Category[]
   isLoading?: boolean
 }
 
-export default function CategorySelect({ control, errors, categories, isLoading }: CategorySelectProps) {
+export default function CategorySelect({ control: externalControl, errors: externalErrors, categories, isLoading }: CategorySelectProps) {
+  const context = useFormContext()
+
+  const control = externalControl ?? context?.control
+  const errors = externalErrors ?? context?.formState?.errors ?? {}
+
   const renderCategoryOptions = useCallback((items: Category[] = [], level = 0): JSX.Element[] => {
     if (!Array.isArray(items)) return []
 

@@ -11,10 +11,17 @@ import { Category } from '@/types/app/category.type'
 import RemoveCategoryModal from './RemoveCategoryModal'
 import { stripHtml, truncateText } from '@/utils/formatters'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 const DesktopCategoryTable = ({ categories }: { categories: Category[] }) => {
+  const router = useRouter()
+
   const renderCategoryRow = (category: Category, level: number = 0): JSX.Element[] => {
     const rows: JSX.Element[] = []
+
+    const handleEditCategory = (id: number) => {
+      router.push(`/categories/edit?id=${id}`)
+    }
 
     rows.push(
       <tr key={category.id}>
@@ -45,15 +52,15 @@ const DesktopCategoryTable = ({ categories }: { categories: Category[] }) => {
         </td>
         <td>
           <Box display='flex' alignItems='center' gap={2}>
+            <IconButton size='small' onClick={() => handleEditCategory(category.id)}>
+              <i className='tabler-edit text-gray-500 text-lg' />
+            </IconButton>
+
             <RemoveCategoryModal id={category.id}>
               <IconButton size='small'>
                 <i className='tabler-trash text-gray-500 text-lg' />
               </IconButton>
             </RemoveCategoryModal>
-
-            <IconButton size='small'>
-              <i className='tabler-edit text-gray-500 text-lg' />
-            </IconButton>
           </Box>
         </td>
       </tr>

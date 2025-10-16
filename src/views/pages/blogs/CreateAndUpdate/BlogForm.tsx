@@ -11,7 +11,7 @@ import { useBlogFormFields } from '@/hooks/reactQuery/blog/useBlogFormFields'
 import { Blog, BlogStatus } from '@/types/app/blog.type'
 import { BlogProvider } from './BlogContext'
 
-const BlogForm = ({ blog }: { blog?: Blog; refetch: () => void }) => {
+const BlogForm = ({ blog }: { blog?: Blog }) => {
   const { isLoading, onSubmit } = useBlogFormSubmit({ initialData: blog })
   const { methods } = useBlogFormFields({ initialData: blog })
 

@@ -15,12 +15,12 @@ interface AttributeValueFormProps {
 const AttributeValueForm = ({ control, errors, attributeType, onSubmit }: AttributeValueFormProps) => {
   return (
     <form onSubmit={onSubmit} id='create-update-attribute-value' className='flex flex-col gap-5'>
-      <FormField control={control} name='name' label='نام ویژگی' helperText={errors.name?.message} />
+      <FormField control={control} errors={errors} name='name' label='نام ویژگی' />
 
-      <FormField control={control} name='slug' label='نامک' helperText={errors.slug?.message} />
+      <FormField control={control} errors={errors} name='slug' label='نامک' />
 
       {attributeType === AttributeType.BUTTON ? (
-        <FormField control={control} name='buttonLabel' label='دکمه' helperText={errors.buttonLabel?.message} />
+        <FormField control={control} errors={errors} name='buttonLabel' label='دکمه' />
       ) : (
         <FormField type='color' control={control} name='colorCode' label='انتخاب رنگ' helperText={errors.colorCode?.message} />
       )}
