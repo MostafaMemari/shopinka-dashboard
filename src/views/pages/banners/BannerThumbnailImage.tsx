@@ -17,7 +17,8 @@ import ModalGallery from '@/components/Gallery/GalleryDialog'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 
 // Types
-import { type GalleryFormType, GalleryItem } from '@/types/app/gallery.type'
+import { type GalleryFormType } from '@/types/app/gallery.type'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 interface Props {
   mainImage?: GalleryItem | null
@@ -77,11 +78,17 @@ const BannerThumbnailImage = ({ mainImage, control: externalControl }: Props) =>
             )}
 
             <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: 2 }}>
-              <ModalGallery initialSelected={selectedImage || undefined} btnLabel={selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} multi={false} onSelect={handleSelect}>
-                <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
-                  {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
-                </Typography>
-              </ModalGallery>
+              <ModalGallery
+                initialSelected={selectedImage || undefined}
+                btnLabel={selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'}
+                multi={false}
+                onSelect={handleSelect}
+                trigger={
+                  <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
+                    {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
+                  </Typography>
+                }
+              />
             </Box>
           </Box>
         )

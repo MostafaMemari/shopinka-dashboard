@@ -2,13 +2,15 @@
 
 // MUI Imports
 import Typography from '@mui/material/Typography'
-import { Badge, Box } from '@mui/material'
+import { Badge, Box, IconButton } from '@mui/material'
 
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
 
 // Type Imports
 import { BulkPricingItem } from '@/types/app/bulkPricing.type'
+import CreateUpdateBulkPricingDIalog from './CreateUpdateBulkPricingDIalog'
+import RemoveBulkPricingDialog from './RemoveBulkPricingDialog'
 
 // Desktop Table Component
 const DesktopBulkPricingTable = ({ data }: { data: BulkPricingItem[] }) => (
@@ -48,9 +50,17 @@ const DesktopBulkPricingTable = ({ data }: { data: BulkPricingItem[] }) => (
 
             <td>
               <Box display='flex' alignItems='center' gap={1}>
-                {/* عملیات مثل ویرایش و حذف */}
                 {/* <EditBulkPricingModal data={row} /> */}
-                {/* <DeleteBulkPricingModal id={row.id} /> */}
+
+                <CreateUpdateBulkPricingDIalog
+                  bulkPricing={row}
+                  trigger={
+                    <IconButton size='small'>
+                      <i className='tabler-edit text-gray-500 text-lg' />
+                    </IconButton>
+                  }
+                />
+                <RemoveBulkPricingDialog id={String(row.id)} />
               </Box>
             </td>
           </tr>

@@ -15,6 +15,7 @@ import CreateGalleryModal from './CreateUpdateGalleryDialog'
 import { TableListSkeleton } from '@/components/TableSkeleton'
 import { useQueryState } from 'nuqs'
 import { useGalleryFilters } from '@/hooks/reactQuery/gallery/useGalleryFilters'
+import CreateUpdateGalleryDialog from './CreateUpdateGalleryDialog'
 
 const GalleryListView = () => {
   const { filters, queryParams } = useGalleryFilters()
@@ -32,11 +33,13 @@ const GalleryListView = () => {
   return (
     <Card sx={{ bgcolor: 'background.paper', borderColor: 'divider' }}>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 4, p: 6 }}>
-        <CreateGalleryModal>
-          <Button variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />}>
-            ثبت گالری جدید
-          </Button>
-        </CreateGalleryModal>
+        <CreateUpdateGalleryDialog
+          trigger={
+            <Button variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />}>
+              ثبت گالری جدید
+            </Button>
+          }
+        />
 
         <CustomTextField id='form-props-search' placeholder='جستجوی گالری' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>

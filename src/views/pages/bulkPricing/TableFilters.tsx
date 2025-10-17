@@ -38,6 +38,7 @@ const TableFilters = ({ filters }: { filters: ReturnType<typeof useQuerySetState
               }
             }}
           >
+            <MenuItem value=''>همه</MenuItem>
             <MenuItem value={BulkPricingType.PERCENT}>درصدی</MenuItem>
             <MenuItem value={BulkPricingType.FIXED}>ثابت</MenuItem>
           </CustomTextField>
