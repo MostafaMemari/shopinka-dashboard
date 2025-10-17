@@ -4,11 +4,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { bulkPricingSchema } from '@/libs/validators/bulkPricing.schema'
 import { BulkPricingFormType, BulkPricingItem, BulkPricingType } from '@/types/app/bulkPricing.type'
 
-interface UsePageFormProps {
+interface Props {
   initialData?: BulkPricingItem
 }
 
-export const useBulkPricingFormFields = ({ initialData }: UsePageFormProps) => {
+export const useBulkPricingFormFields = ({ initialData }: Props) => {
   const defaultValues: BulkPricingFormType = {
     productId: initialData?.productId ?? null,
     variantId: initialData?.variantId ?? null,

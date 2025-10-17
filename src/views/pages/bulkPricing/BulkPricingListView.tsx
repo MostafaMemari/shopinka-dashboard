@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Card from '@mui/material/Card'
-import { Box, CardHeader, Divider } from '@mui/material'
+import { Box, Button, CardHeader, Divider } from '@mui/material'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 import { useDebounce } from '@/hooks/useDebounce'
 import ErrorState from '@/components/states/ErrorState'
@@ -14,6 +14,7 @@ import { useBulkPricing } from '@/hooks/reactQuery/bulk-pricing/useBulkPricing'
 import { useBulkPricingFilters } from '@/hooks/reactQuery/bulk-pricing/useBulkPricingFilters'
 import { BulkPricingItem } from '@/types/app/bulkPricing.type'
 import TableFilters from './TableFilters'
+import CreateUpdateBulkPricingDIalog from './CreateUpdateBulkPricingDIalog'
 
 const BulkPricingListView = () => {
   const { filters, queryParams } = useBulkPricingFilters()
@@ -35,11 +36,13 @@ const BulkPricingListView = () => {
       <Divider />
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 4, p: 6 }}>
-        {/* <CreateGalleryModal>
-          <Button variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />}>
-            ثبت گالری جدید
-          </Button>
-        </CreateGalleryModal> */}
+        <CreateUpdateBulkPricingDIalog
+          trigger={
+            <Button variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />}>
+              ثبت فروش عمده جدید
+            </Button>
+          }
+        />
 
         <CustomTextField id='form-props-search' placeholder='جستجوی گالری' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>

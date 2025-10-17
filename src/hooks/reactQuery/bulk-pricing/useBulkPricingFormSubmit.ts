@@ -3,7 +3,7 @@
 import { QueryKeys } from '@/types/enums/query-keys'
 
 import { useFormMutation } from '@/hooks/useFormMutation'
-import { createBulkPricing, updateBulkPricing } from '@/libs/api/bulkPricind.api'
+import { createBulkPricing, updateBulkPricing } from '@/libs/api/bulkPricing.api'
 import { errorBulkPricingMessage } from '@/messages/bulkPricingMessages'
 import { BulkPricingFormType, BulkPricingItem } from '@/types/app/bulkPricing.type'
 

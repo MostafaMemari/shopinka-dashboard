@@ -1,6 +1,6 @@
 import ConfirmDeleteModal from '@/components/dialogs/ConfirmDeleteModal'
 import { useInvalidateQuery } from '@/hooks/useInvalidateQuery'
-import { removeBulkPricing } from '@/libs/api/bulkPricind.api'
+import { removeBulkPricing } from '@/libs/api/bulkPricing.api'
 import { QueryKeys } from '@/types/enums/query-keys'
 import { ReactNode } from 'react'
 

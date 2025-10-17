@@ -19,4 +19,6 @@ export type BulkPricingItem = {
   updateAt: string
 }
 
-export type BulkPricingFormType = yup.InferType<typeof bulkPricingSchema>
+export type BulkPricingFormType = Omit<yup.InferType<typeof bulkPricingSchema>, 'discount'> & {
+  discount: number
+}

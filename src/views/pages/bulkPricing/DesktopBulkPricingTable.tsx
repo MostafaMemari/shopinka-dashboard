@@ -2,13 +2,12 @@
 
 // MUI Imports
 import Typography from '@mui/material/Typography'
-import { Box, IconButton } from '@mui/material'
+import { Badge, Box } from '@mui/material'
 
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
 
-// API Import
-import Link from 'next/link'
+// Type Imports
 import { BulkPricingItem } from '@/types/app/bulkPricing.type'
 
 // Desktop Table Component
@@ -17,8 +16,10 @@ const DesktopBulkPricingTable = ({ data }: { data: BulkPricingItem[] }) => (
     <table className={tableStyles.table}>
       <thead>
         <tr>
-          <th>نام گالری</th>
-          <th>توضیحات</th>
+          <th>حداقل تعداد</th>
+          <th>تخفیف</th>
+          <th>نوع تخفیف</th>
+          <th>عمومی</th>
           <th>عملیات</th>
         </tr>
       </thead>
@@ -27,19 +28,29 @@ const DesktopBulkPricingTable = ({ data }: { data: BulkPricingItem[] }) => (
           <tr key={row.id}>
             <td>
               <Typography className='font-medium' color='text.primary'>
-                {row.id}
-              </Typography>
-            </td>
-            <td>
-              <Typography className='font-medium' color='text.primary'>
-                {row.isGlobal ?? '-'}
+                {row.minQty}
               </Typography>
             </td>
 
             <td>
-              <Box display='flex' alignItems='center' gap={2}>
-                {/* <RemoveGalleryModal id={String(row.id)} />
-                <UpdateGalleryModal gallery={row} /> */}
+              <Typography className='font-medium' color='text.primary'>
+                {row.discount}%
+              </Typography>
+            </td>
+
+            <td>
+              <Badge badgeContent={row.type === 'PERCENT' ? 'درصدی' : row.type === 'FIXED' ? 'ثابت' : ''} color={row.type === 'PERCENT' ? 'primary' : 'secondary'} />
+            </td>
+
+            <td>
+              <Badge badgeContent={row.isGlobal ? 'سراسری' : 'محصول'} color={row.isGlobal ? 'primary' : 'secondary'} />
+            </td>
+
+            <td>
+              <Box display='flex' alignItems='center' gap={1}>
+                {/* عملیات مثل ویرایش و حذف */}
+                {/* <EditBulkPricingModal data={row} /> */}
+                {/* <DeleteBulkPricingModal id={row.id} /> */}
               </Box>
             </td>
           </tr>

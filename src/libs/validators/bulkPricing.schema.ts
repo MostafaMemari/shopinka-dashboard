@@ -36,7 +36,8 @@ export const bulkPricingSchema = yup.object({
       is: BulkPricingType.PERCENT,
       then: schema => schema.min(1, 'برای نوع درصدی باید حداقل 1 باشد').max(99, 'برای نوع درصدی باید حداکثر 99 باشد').required('مقدار تخفیف الزامی است'),
       otherwise: schema => schema.min(1000, 'برای نوع مبلغی باید حداقل 1000 باشد').required('مقدار تخفیف الزامی است')
-    }),
+    })
+    .required('مقدار تخفیف الزامی است'),
 
   isGlobal: yup.boolean().default(true)
 })
