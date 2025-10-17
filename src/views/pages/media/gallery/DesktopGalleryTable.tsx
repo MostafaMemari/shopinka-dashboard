@@ -5,8 +5,6 @@ import Typography from '@mui/material/Typography'
 import { Box, IconButton } from '@mui/material'
 
 // Component Imports
-import RemoveGalleryModal from './RemoveGalleryModal'
-import UpdateGalleryModal from './UpdateGalleryModal'
 
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
@@ -14,6 +12,8 @@ import tableStyles from '@core/styles/table.module.css'
 // API Import
 import { Gallery } from '@/types/app/gallery.type'
 import Link from 'next/link'
+import RemoveGalleryDialog from './RemoveGalleryDialog'
+import CreateUpdateGalleryDialog from './CreateUpdateGalleryDialog'
 
 // Desktop Table Component
 const DesktopGalleryTable = ({ data }: { data: Gallery[] }) => (
@@ -42,8 +42,15 @@ const DesktopGalleryTable = ({ data }: { data: Gallery[] }) => (
 
             <td>
               <Box display='flex' alignItems='center' gap={2}>
-                <RemoveGalleryModal id={String(row.id)} />
-                <UpdateGalleryModal gallery={row} />
+                <RemoveGalleryDialog id={String(row.id)} />
+                <CreateUpdateGalleryDialog
+                  gallery={row}
+                  trigger={
+                    <IconButton size='small'>
+                      <i className='tabler-edit text-gray-500 text-lg' />
+                    </IconButton>
+                  }
+                />
                 <Link href={`/media/${row.id}`}>
                   <IconButton size='small'>
                     <i className='tabler-eye text-gray-500 text-lg' />

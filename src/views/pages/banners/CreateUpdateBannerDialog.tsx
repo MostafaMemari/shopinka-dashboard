@@ -9,7 +9,6 @@ import { useBannerFormFields } from '@/hooks/reactQuery/banner/useBannerFormFiel
 import FormField from '@/components/form/FormField'
 import Grid from '@mui/material/Grid2'
 import { MenuItem } from '@mui/material'
-import BannerThumbnailImage from './BannerThumbnailImage'
 import FormImagePicker from '@/components/form/FormImagePicker'
 
 interface Props {
