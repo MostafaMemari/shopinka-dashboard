@@ -7,6 +7,7 @@ import { Font } from '@/types/app/font.type'
 import FormField from '@/components/form/FormField'
 import { useFontFormSubmit } from '@/hooks/reactQuery/font/useFontFormSubmit'
 import { useFontFormFields } from '@/hooks/reactQuery/font/useFontFormFields'
+import Grid from '@mui/material/Grid2'
 
 interface CreateFontModalProps {
   font?: Font
@@ -38,7 +39,7 @@ const CreateUpdateFontDialog = ({ trigger, font }: CreateFontModalProps) => {
     })
   )
 
-  const title = isUpdate ? 'بروزرسانی حمل و نقل' : 'بروزرسانی حمل و نقل'
+  const title = isUpdate ? 'بروزرسانی فونت' : 'بروزرسانی فونت'
   const submitText = isUpdate ? 'بروزرسانی' : 'ثبت'
 
   return (
@@ -57,11 +58,27 @@ const CreateUpdateFontDialog = ({ trigger, font }: CreateFontModalProps) => {
         actions={<FormActions formId='create-update-font' onCancel={handleClose} onSubmit={onSubmit} isLoading={isPending} submitText={submitText} />}
       >
         <form onSubmit={onSubmit} id='create-update-font' className='flex flex-col gap-5'>
-          <FormField control={control} errors={errors} name='name' label='روش حمل و نقل' placeholder='لطفا عنوان روش حمل را وارد کنید' />
-          <FormField control={control} errors={errors} inputType='number' name='price' label='هزینه (تومان)' placeholder='لطفا هزینه حمل را وارد کنید' />
-          <FormField control={control} errors={errors} inputType='number' name='estimatedDays' label='مدت زمان تخمینی (روز)' placeholder='لطفا مدت زمان تخمینی را وارد کنید' />
+          <Grid container spacing={6} className='mbe-6'>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <FormField control={control} errors={errors} name='name' label='نام فونت' placeholder='لطفا نام فونت را وارد کنید' />
+            </Grid>
 
-          <FormField control={control} errors={errors} type='switch' name='isActive' label='فعال' />
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <FormField control={control} errors={errors} name='displayName' label='نام نمایشی فونت' placeholder='لطفا نام نمایشی فونت را وارد کنید' />
+            </Grid>
+
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <FormField control={control} errors={errors} inputType='number' name='lineHeight' label='ارتفاع خط' placeholder='لطفا ارتفاع خط را وارد کنید' />
+            </Grid>
+
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <FormField control={control} errors={errors} inputType='number' name='size' label='اندازه فونت' placeholder='لطفا اندازه فونت را وارد کنید' />
+            </Grid>
+
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <FormField control={control} errors={errors} type='switch' name='isPersian' label='فونت فارسی' />
+            </Grid>
+          </Grid>
         </form>
       </CustomDialog>
     </div>

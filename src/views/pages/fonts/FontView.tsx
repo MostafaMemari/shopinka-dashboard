@@ -35,7 +35,7 @@ const FontView = () => {
         <CreateUpdateFontDialog
           trigger={
             <Button variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />}>
-              ثبت حمل و نقل جدید
+              ثبت فونت جدید
             </Button>
           }
         />
