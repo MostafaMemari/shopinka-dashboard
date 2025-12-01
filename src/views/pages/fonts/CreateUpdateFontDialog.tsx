@@ -8,6 +8,8 @@ import FormField from '@/components/form/FormField'
 import { useFontFormSubmit } from '@/hooks/reactQuery/font/useFontFormSubmit'
 import { useFontFormFields } from '@/hooks/reactQuery/font/useFontFormFields'
 import Grid from '@mui/material/Grid2'
+import ThumbnailFontImage from './ThumbnailFontImage'
+import FontFile from './FontFile'
 
 interface CreateFontModalProps {
   font?: Font
@@ -58,7 +60,14 @@ const CreateUpdateFontDialog = ({ trigger, font }: CreateFontModalProps) => {
         actions={<FormActions formId='create-update-font' onCancel={handleClose} onSubmit={onSubmit} isLoading={isPending} submitText={submitText} />}
       >
         <form onSubmit={onSubmit} id='create-update-font' className='flex flex-col gap-5'>
-          <Grid container spacing={6} className='mbe-6'>
+          <Grid container spacing={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <ThumbnailFontImage control={control} mainImage={font?.thumbnail} />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <FontFile control={control} mainImage={font?.file} />
+            </Grid>
+
             <Grid size={{ xs: 12, sm: 6 }}>
               <FormField control={control} errors={errors} name='name' label='نام فونت' placeholder='لطفا نام فونت را وارد کنید' />
             </Grid>
