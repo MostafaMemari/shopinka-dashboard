@@ -94,6 +94,11 @@ const horizontalMenuData = (): HorizontalMenuDataType[] => [
     label: 'حمل و نقل',
     icon: 'tabler-truck',
     href: '/shipping'
+  },
+  {
+    label: 'فونت ها',
+    icon: 'tabler-font',
+    href: '/fonts'
   }
 ]
 

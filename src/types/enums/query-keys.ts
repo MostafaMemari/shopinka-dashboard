@@ -20,6 +20,7 @@ export enum QueryKeys {
   Contacts = 'contacts',
   Banners = 'banners',
   Users = 'users',
+  Fonts = 'fonts',
 
   BulkPricing = 'bulkPricing',
   BulkPricings = 'bulkPricings'

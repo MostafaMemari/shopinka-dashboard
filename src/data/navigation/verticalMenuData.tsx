@@ -98,6 +98,11 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
     label: 'بنر',
     icon: 'tabler-slideshow',
     href: '/banners'
+  },
+  {
+    label: 'فونت ها',
+    icon: 'tabler-typography',
+    href: '/fonts'
   }
 ]
 
