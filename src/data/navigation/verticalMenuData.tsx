@@ -103,6 +103,11 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
     label: 'فونت ها',
     icon: 'tabler-typography',
     href: '/fonts'
+  },
+  {
+    label: 'متریال',
+    icon: 'tabler-sticker',
+    href: '/material-sticker'
   }
 ]
 

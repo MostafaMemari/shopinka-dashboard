@@ -99,6 +99,11 @@ const horizontalMenuData = (): HorizontalMenuDataType[] => [
     label: 'فونت ها',
     icon: 'tabler-font',
     href: '/fonts'
+  },
+  {
+    label: 'متریال',
+    icon: 'tabler-sticker',
+    href: '/material-sticker'
   }
 ]
 

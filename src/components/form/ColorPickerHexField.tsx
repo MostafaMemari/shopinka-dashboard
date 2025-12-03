@@ -7,7 +7,7 @@ import { HexColorPicker } from 'react-colorful'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import Popper from '@mui/material/Popper'
 
-type ColorPickerFormFieldProps = {
+type Props = {
   name: string
   label?: string
   placeholder?: string
@@ -16,14 +16,7 @@ type ColorPickerFormFieldProps = {
   errors?: Record<string, any>
 }
 
-const ColorPickerFormField: React.FC<ColorPickerFormFieldProps> = ({
-  name,
-  label = 'انتخاب رنگ',
-  placeholder = '#FFFFFF',
-  helperText,
-  control: externalControl,
-  errors: externalErrors
-}) => {
+const ColorPickerHexField: React.FC<Props> = ({ name, label = 'انتخاب رنگ', placeholder = '#FFFFFF', helperText, control: externalControl, errors: externalErrors }) => {
   const context = useFormContext()
   const control = externalControl ?? context?.control
   const errors = externalErrors ?? context?.formState?.errors ?? {}
@@ -103,4 +96,4 @@ const ColorPickerFormField: React.FC<ColorPickerFormFieldProps> = ({
   )
 }
 
-export default ColorPickerFormField
+export default ColorPickerHexField

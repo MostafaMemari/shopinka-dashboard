@@ -6,7 +6,7 @@ export enum QueryKeys {
   Category = 'category',
   Products = 'products',
   Product = 'product',
-  ProductVariants = 'productVariants',
+  ProductVariants = 'product-variants',
   Galleries = 'galleries',
   Comments = 'comments',
   Blog = 'blog',
@@ -21,7 +21,7 @@ export enum QueryKeys {
   Banners = 'banners',
   Users = 'users',
   Fonts = 'fonts',
-
-  BulkPricing = 'bulkPricing',
-  BulkPricings = 'bulkPricings'
+  MaterialStickers = 'material-stickers',
+  BulkPricing = 'bulk-pricing',
+  BulkPricings = 'bulk-pricings'
 }
