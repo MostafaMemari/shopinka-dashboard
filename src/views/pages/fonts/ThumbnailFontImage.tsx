@@ -26,7 +26,7 @@ const ThumbnailFontImage = ({ mainImage, control }: Props) => {
 
   return (
     <Controller
-      name='mainImageId'
+      name='thumbnailId'
       control={control}
       defaultValue={mainImage?.id || null}
       render={({ field: { onChange } }) => {
@@ -44,23 +44,12 @@ const ThumbnailFontImage = ({ mainImage, control }: Props) => {
 
         return (
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-            {/* Thumbnail */}
             {selected ? (
               <Box sx={{ position: 'relative', width: 120, height: 120 }}>
                 <Image src={selected.fileUrl} alt='font' fill style={{ objectFit: 'contain' }} />
 
                 <Tooltip title='حذف'>
-                  <IconButton
-                    size='small'
-                    onClick={remove}
-                    sx={{
-                      position: 'absolute',
-                      top: 4,
-                      right: 4,
-                      bgcolor: 'white',
-                      '&:hover': { bgcolor: 'error.light' }
-                    }}
-                  >
+                  <IconButton size='small' onClick={remove} sx={{ position: 'absolute', top: 4, right: 4, bgcolor: 'white', '&:hover': { bgcolor: 'error.light' } }}>
                     <DeleteOutlineIcon fontSize='small' />
                   </IconButton>
                 </Tooltip>
@@ -69,7 +58,6 @@ const ThumbnailFontImage = ({ mainImage, control }: Props) => {
               <EmptyPlaceholder width={120} height={120} text='' />
             )}
 
-            {/* Pick / Change */}
             <GalleryDialog
               initialSelected={selected || undefined}
               multi={false}

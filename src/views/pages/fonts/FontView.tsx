@@ -24,7 +24,7 @@ const FontView = () => {
   useEffect(() => {
     if (debouncedInputValue !== filters.state.search) filters.setState({ search: debouncedInputValue, page: 1 })
   }, [debouncedInputValue, filters])
-  const { data, isLoading, isFetching, error, refetch } = useFonts({ params: { ...queryParams, name: queryParams.search } })
+  const { data, isLoading, isFetching, error, refetch } = useFonts({ params: { ...queryParams, name: queryParams.search, includeFile: true, includeThumbnail: true } })
 
   const shippings: Font[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])

@@ -31,7 +31,7 @@ const FontFile = ({ mainImage, control }: Props) => {
 
   return (
     <Controller
-      name='mainImageId'
+      name='fileId'
       control={control}
       defaultValue={mainImage?.id || null}
       render={({ field: { onChange } }) => {

@@ -23,7 +23,12 @@ interface DropzoneSectionProps {
 
 const DropzoneSection: React.FC<DropzoneSectionProps> = ({ files, setFiles, maxFiles }) => {
   const { getRootProps, getInputProps } = useDropzone({
-    accept: { 'image/*': [] },
+    accept: {
+      'image/*': [],
+      'font/ttf': ['.ttf'],
+      'font/woff': ['.woff'],
+      'font/woff2': ['.woff2']
+    },
     onDrop: (acceptedFiles: File[], fileRejections) => {
       if (files.length + acceptedFiles.length > maxFiles) {
         showToast({ type: 'error', message: `حداکثر ${maxFiles} فایل می‌توانید انتخاب کنید!` })
@@ -32,7 +37,7 @@ const DropzoneSection: React.FC<DropzoneSectionProps> = ({ files, setFiles, maxF
       }
 
       if (fileRejections.length > 0) {
-        showToast({ type: 'error', message: 'فقط فایل‌های تصویری مجاز هستند!' })
+        showToast({ type: 'error', message: 'فقط فایل‌های تصویری و فونت مجاز هستند!' })
 
         return
       }

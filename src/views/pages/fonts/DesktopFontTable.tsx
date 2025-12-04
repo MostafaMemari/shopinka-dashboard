@@ -2,7 +2,7 @@
 
 // MUI Imports
 import Typography from '@mui/material/Typography'
-import { Box, IconButton } from '@mui/material'
+import { Box, IconButton, Chip, Avatar } from '@mui/material'
 
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
@@ -14,27 +14,25 @@ import { Font } from '@/types/app/font.type'
 import RemoveFontModal from './RemoveFontModal'
 import CreateUpdateFontDialog from './CreateUpdateFontDialog'
 
-export type FontForm = {
-  id?: string
-  name: string
-  price: number | null
-  estimatedDays: number | null
-  isActive: boolean
-}
-
 const DesktopFontTable = ({ data }: { data: Font[] }) => {
+  console.log(data)
+
   return (
     <div className='overflow-x-auto'>
       <table className={tableStyles.table}>
         <thead>
           <tr>
-            <th>نام روش حمل</th>
-            <th>هزینه (تومان)</th>
-            <th>مدت زمان تخمینی (روز)</th>
-            <th>وضعیت</th>
+            <th>فونت</th>
+            <th>نام نمایشی</th>
+            <th>سایز</th>
+            <th>فاصله خطوط</th>
+            <th>فارسی</th>
+            <th>سختی کار</th>
+            <th>عکس</th>
             <th>عملیات</th>
           </tr>
         </thead>
+
         <tbody>
           {data.map(row => (
             <tr key={row.id}>
@@ -43,13 +41,44 @@ const DesktopFontTable = ({ data }: { data: Font[] }) => {
                   {row.name}
                 </Typography>
               </td>
+
               <td>
-                <Typography className='font-medium' color='text.primary'></Typography>
+                <Typography className='font-medium' color='text.primary'>
+                  {row.displayName}
+                </Typography>
+              </td>
+
+              <td>
+                <Typography className='font-medium' color='text.primary'>
+                  {row.size}
+                </Typography>
+              </td>
+
+              <td>
+                <Typography className='font-medium' color='text.primary'>
+                  {row.lineHeight}
+                </Typography>
+              </td>
+
+              <td>{row.isPersian ? <Chip label='فارسی' color='success' size='small' /> : <Chip label='لاتین' color='default' size='small' />}</td>
+
+              <td>
+                <Typography className='font-medium' color='text.primary'>
+                  {row.difficultyRatio}
+                </Typography>
               </td>
               <td>
-                <Typography className='font-medium' color='text.primary'></Typography>
+                <img
+                  src={row.thumbnail?.fileUrl}
+                  alt={row.displayName}
+                  style={{
+                    width: '50px',
+                    height: '50px',
+                    display: 'block'
+                  }}
+                />
               </td>
-              <td></td>
+
               <td>
                 <Box display='flex' alignItems='center' gap={2}>
                   <RemoveFontModal id={String(row.id)} />
