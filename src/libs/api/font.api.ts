@@ -1,7 +1,6 @@
 import { Font, FontFormType } from '@/types/app/font.type'
 import { Response } from '@/types/response'
 import { serverApiFetch } from '@/utils/api/serverApiFetch'
-import { FontForm } from '@/views/pages/fonts/DesktopFontTable'
 
 export const getFonts = async (params?: Record<string, string>): Promise<Response<Font[]>> => {
   const res = await serverApiFetch('/font', { method: 'GET', query: { ...params } })
@@ -19,7 +18,7 @@ export const getFont = async (id: number): Promise<{ status: number; data: FontF
   }
 }
 
-export const removeFont = async (id: string): Promise<{ status: number; data: { message: string; font: FontForm } | null }> => {
+export const removeFont = async (id: string): Promise<{ status: number; data: { message: string; font: FontFormType } | null }> => {
   const res = await serverApiFetch(`/font/${id}`, { method: 'DELETE' })
 
   return {
@@ -27,7 +26,9 @@ export const removeFont = async (id: string): Promise<{ status: number; data: { 
   }
 }
 
-export const updateFont = async (id: string, data: Partial<FontFormType>): Promise<{ status: number; data: FontForm | null }> => {
+export const updateFont = async (id: string, data: Partial<FontFormType>): Promise<{ status: number; data: FontFormType | null }> => {
+  console.log(data)
+
   const res = await serverApiFetch(`/font/${id}`, {
     method: 'PATCH',
     body: { ...data }
@@ -38,7 +39,7 @@ export const updateFont = async (id: string, data: Partial<FontFormType>): Promi
   }
 }
 
-export const createFont = async (data: Omit<FontFormType, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<{ status: number; data: FontForm | null }> => {
+export const createFont = async (data: Omit<FontFormType, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<{ status: number; data: FontFormType | null }> => {
   const res = await serverApiFetch('/font', {
     method: 'POST',
     body: { ...data }

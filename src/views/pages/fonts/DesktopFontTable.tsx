@@ -15,8 +15,6 @@ import RemoveFontModal from './RemoveFontModal'
 import CreateUpdateFontDialog from './CreateUpdateFontDialog'
 
 const DesktopFontTable = ({ data }: { data: Font[] }) => {
-  console.log(data)
-
   return (
     <div className='overflow-x-auto'>
       <table className={tableStyles.table}>

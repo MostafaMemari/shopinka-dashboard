@@ -4,7 +4,7 @@ import ConfirmDeleteModal from '@/components/dialogs/ConfirmDeleteModal'
 import { IconButton } from '@mui/material'
 import { useInvalidateQuery } from '@/hooks/useInvalidateQuery'
 import { QueryKeys } from '@/types/enums/query-keys'
-import { removeShipping } from '@/libs/api/shipping.api'
+import { removeFont } from '@/libs/api/font.api'
 
 const RemoveShippingModal = ({ id }: { id: string }) => {
   const { invalidate } = useInvalidateQuery()
@@ -13,19 +13,19 @@ const RemoveShippingModal = ({ id }: { id: string }) => {
     <ConfirmDeleteModal
       id={id}
       onDelete={async id => {
-        const res = await removeShipping(id as string)
+        const res = await removeFont(id as string)
 
-        if (res.status === 200) invalidate(QueryKeys.Shippings)
+        if (res.status === 200) invalidate(QueryKeys.Fonts)
 
         return res
       }}
-      dialogTitle='آیا از حذف روش حمل و نقل اطمینان دارید؟'
+      dialogTitle='آیا از حذف فونت و نقل اطمینان دارید؟'
       dialogMessage=''
       messages={{
-        success: 'روش حمل و نقل با موفقیت حذف شد',
-        unauthorized: 'شما اجازه حذف این روش حمل و نقل را ندارید',
-        notFound: 'روش حمل و نقل مورد نظر یافت نشد',
-        error: 'خطای عمومی هنگام حذف روش حمل و نقل'
+        success: 'فونت و نقل با موفقیت حذف شد',
+        unauthorized: 'شما اجازه حذف این فونت و نقل را ندارید',
+        notFound: 'فونت و نقل مورد نظر یافت نشد',
+        error: 'خطای عمومی هنگام حذف فونت و نقل'
       }}
       buttonText='حذف'
     >
