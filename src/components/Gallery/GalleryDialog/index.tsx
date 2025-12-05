@@ -82,14 +82,14 @@ const GalleryDialog = ({ btnLabel, multi = false, onSelect, initialSelected, tri
 
   const handleOpen = () => setOpen(true)
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false)
     setActiveItem(null)
     setSelectedItems([])
     setSearchTerm('')
     setGallerySelected('all')
     setPage(1)
-  }
+  }, [])
 
   const handleGalleryChange = (event: SelectChangeEvent<string>) => {
     const newGalleryId = event.target.value as string
@@ -102,14 +102,14 @@ const GalleryDialog = ({ btnLabel, multi = false, onSelect, initialSelected, tri
     refetchItems()
   }
 
-  const handleSelect = () => {
+  const handleSelect = useCallback(() => {
     if (selectedItems.length > 0) {
       onSelect?.(multi ? selectedItems : selectedItems[0])
       handleClose()
     } else {
       showToast({ type: 'warning', message: 'لطفاً حداقل یک تصویر انتخاب کنید' })
     }
-  }
+  }, [selectedItems, multi, onSelect, handleClose])
 
   const handleShowMore = () => {
     setPage(prev => prev + 1)
@@ -126,7 +126,8 @@ const GalleryDialog = ({ btnLabel, multi = false, onSelect, initialSelected, tri
         </Button>
       </Box>
     ),
-    [selectedItems.length]
+
+    [selectedItems.length, handleSelect, handleClose]
   )
 
   return (
