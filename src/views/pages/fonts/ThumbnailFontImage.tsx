@@ -45,14 +45,8 @@ const ThumbnailFontImage = ({ mainImage, control }: Props) => {
         return (
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
             {selected ? (
-              <Box sx={{ position: 'relative', width: 120, height: 120 }}>
+              <Box sx={{ position: 'relative', width: 120, height: 120, border: '1px solid', borderColor: 'divider', borderRadius: 1, overflow: 'hidden' }}>
                 <Image src={selected.fileUrl} alt='font' fill style={{ objectFit: 'contain' }} />
-
-                <Tooltip title='حذف'>
-                  <IconButton size='small' onClick={remove} sx={{ position: 'absolute', top: 4, right: 4, bgcolor: 'white', '&:hover': { bgcolor: 'error.light' } }}>
-                    <DeleteOutlineIcon fontSize='small' />
-                  </IconButton>
-                </Tooltip>
               </Box>
             ) : (
               <EmptyPlaceholder width={120} height={120} text='' />

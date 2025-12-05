@@ -51,7 +51,6 @@ const FontFile = ({ mainImage, control }: Props) => {
 
         return (
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-            {/* Thumbnail or File Extension */}
             {selected ? (
               <Box
                 sx={{
@@ -59,7 +58,8 @@ const FontFile = ({ mainImage, control }: Props) => {
                   width: 120,
                   height: 120,
                   borderRadius: 2,
-                  border: '1px solid #ddd',
+                  border: '1px solid',
+                  borderColor: 'divider',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -69,22 +69,6 @@ const FontFile = ({ mainImage, control }: Props) => {
                 }}
               >
                 {ext}
-
-                <Tooltip title='حذف'>
-                  <IconButton
-                    size='small'
-                    onClick={remove}
-                    sx={{
-                      position: 'absolute',
-                      top: 4,
-                      right: 4,
-                      bgcolor: 'white',
-                      '&:hover': { bgcolor: 'error.light' }
-                    }}
-                  >
-                    <DeleteOutlineIcon fontSize='small' />
-                  </IconButton>
-                </Tooltip>
               </Box>
             ) : (
               <EmptyPlaceholder width={120} height={120} text='' />

@@ -20,13 +20,13 @@ const DesktopFontTable = ({ data }: { data: Font[] }) => {
       <table className={tableStyles.table}>
         <thead>
           <tr>
+            <th>تصویر</th>
             <th>فونت</th>
             <th>نام نمایشی</th>
             <th>سایز</th>
             <th>فاصله خطوط</th>
-            <th>فارسی</th>
+            <th>زبان</th>
             <th>سختی کار</th>
-            <th>عکس</th>
             <th>عملیات</th>
           </tr>
         </thead>
@@ -34,6 +34,10 @@ const DesktopFontTable = ({ data }: { data: Font[] }) => {
         <tbody>
           {data.map(row => (
             <tr key={row.id}>
+              <td>
+                <img src={row.thumbnail?.fileUrl} alt={row.displayName} style={{ width: '50px', height: '50px', display: 'block' }} />
+              </td>
+
               <td>
                 <Typography className='font-medium' color='text.primary'>
                   {row.name}
@@ -64,17 +68,6 @@ const DesktopFontTable = ({ data }: { data: Font[] }) => {
                 <Typography className='font-medium' color='text.primary'>
                   {row.difficultyRatio}
                 </Typography>
-              </td>
-              <td>
-                <img
-                  src={row.thumbnail?.fileUrl}
-                  alt={row.displayName}
-                  style={{
-                    width: '50px',
-                    height: '50px',
-                    display: 'block'
-                  }}
-                />
               </td>
 
               <td>
