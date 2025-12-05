@@ -1,25 +1,25 @@
 'use client'
 
-// MUI Imports
+// MUI
 import Typography from '@mui/material/Typography'
 import { Box, IconButton } from '@mui/material'
 
-// Style Imports
+// Styles
 import tableStyles from '@core/styles/table.module.css'
 
-// Type Imports
-
-// Component Imports
+// Components
 import RemoveMaterialStickerModal from './RemoveMaterialStickerModal'
 import CreateUpdateMaterialStickerDialog from './CreateUpdateMaterialStickerDialog'
-import { MaterialSticker } from '@/types/app/material-sticker.type'
 
-export type MaterialStickerForm = {
-  id?: string
-  name: string
-  price: number | null
-  estimatedDays: number | null
-  isActive: boolean
+// Types
+import { MaterialSticker } from '@/types/app/material-sticker.type'
+import { SurfaceType } from '@/types/app/material-sticker.type'
+
+const surfaceLabel = {
+  MATTE: 'مات',
+  GLOSSY: 'براق',
+  RAINBOW: 'رنگین‌کمانی',
+  REFLECTIVE: 'رفلکتیو'
 }
 
 const DesktopMaterialStickerTable = ({ data }: { data: MaterialSticker[] }) => {
@@ -28,13 +28,16 @@ const DesktopMaterialStickerTable = ({ data }: { data: MaterialSticker[] }) => {
       <table className={tableStyles.table}>
         <thead>
           <tr>
-            <th>نام روش حمل</th>
-            <th>هزینه (تومان)</th>
-            <th>مدت زمان تخمینی (روز)</th>
-            <th>وضعیت</th>
+            <th>عنوان</th>
+            <th>رنگ</th>
+            <th>گرادیان</th>
+            <th>جنس متریال</th>
+            <th>قیمت هر سانت</th>
+            <th>درصد سود</th>
             <th>عملیات</th>
           </tr>
         </thead>
+
         <tbody>
           {data.map(row => (
             <tr key={row.id}>
@@ -43,13 +46,49 @@ const DesktopMaterialStickerTable = ({ data }: { data: MaterialSticker[] }) => {
                   {row.name}
                 </Typography>
               </td>
+
               <td>
-                <Typography className='font-medium' color='text.primary'></Typography>
+                <Box
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '8px',
+                    border: '1px solid #ccc',
+                    backgroundColor: row.colorCode
+                  }}
+                />
               </td>
+
               <td>
-                <Typography className='font-medium' color='text.primary'></Typography>
+                <Box
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '8px',
+                    border: '1px solid #ccc',
+                    background: row.backgroundFrom && row.backgroundTo ? `linear-gradient(135deg, ${row.backgroundFrom}, ${row.backgroundTo})` : row.colorCode
+                  }}
+                />
               </td>
-              <td></td>
+
+              <td>
+                <Typography className='font-medium' color='text.primary'>
+                  {surfaceLabel[row.surface as SurfaceType]}
+                </Typography>
+              </td>
+
+              <td>
+                <Typography className='font-medium' color='text.primary'>
+                  {row.pricePerCM?.toLocaleString()} تومان
+                </Typography>
+              </td>
+
+              <td>
+                <Typography className='font-medium' color='text.primary'>
+                  {row.profitPercent}%
+                </Typography>
+              </td>
+
               <td>
                 <Box display='flex' alignItems='center' gap={2}>
                   <RemoveMaterialStickerModal id={String(row.id)} />

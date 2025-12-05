@@ -71,7 +71,7 @@ const CreateUpdateMaterialStickerDialog = ({ trigger, materialSticker }: CreateM
               <FormField inputType='number' control={control} errors={errors} name='profitPercent' label='درصد سود' placeholder='لطفا درصد سود را وارد کنید' />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <FormField control={control} errors={errors} name='type' label='جنس متریال' select placeholder='لطفا نوع دسته را انتخاب کنید'>
+              <FormField control={control} errors={errors} name='surface' label='جنس متریال' select placeholder='لطفا نوع دسته را انتخاب کنید'>
                 <MenuItem value={SurfaceType.GLOSSY}>براق</MenuItem>
                 <MenuItem value={SurfaceType.MATTE}>مات</MenuItem>
                 <MenuItem value={SurfaceType.RAINBOW}>چندرنگ</MenuItem>
