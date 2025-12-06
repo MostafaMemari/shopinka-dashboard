@@ -1,7 +1,6 @@
 import { MaterialSticker, MaterialStickerFormType } from '@/types/app/material-sticker.type'
 import { Response } from '@/types/response'
 import { serverApiFetch } from '@/utils/api/serverApiFetch'
-import { MaterialStickerForm } from '@/views/pages/material-sticker/DesktopMaterialStickerTable'
 
 export const getMaterialStickers = async (params?: Record<string, string>): Promise<Response<MaterialSticker[]>> => {
   const res = await serverApiFetch('/material-sticker', { method: 'GET', query: { ...params } })
@@ -11,7 +10,7 @@ export const getMaterialStickers = async (params?: Record<string, string>): Prom
   }
 }
 
-export const getMaterialSticker = async (id: number): Promise<{ status: number; data: MaterialStickerFormType | null }> => {
+export const getMaterialSticker = async (id: number): Promise<{ status: number; data: MaterialSticker | null }> => {
   const res = await serverApiFetch(`/material-sticker/${id}`, { method: 'GET' })
 
   return {
@@ -19,7 +18,7 @@ export const getMaterialSticker = async (id: number): Promise<{ status: number; 
   }
 }
 
-export const removeMaterialSticker = async (id: string): Promise<{ status: number; data: { message: string; materialSticker: MaterialStickerForm } | null }> => {
+export const removeMaterialSticker = async (id: string): Promise<{ status: number; data: { message: string; materialSticker: MaterialSticker } | null }> => {
   const res = await serverApiFetch(`/material-sticker/${id}`, { method: 'DELETE' })
 
   return {
@@ -27,7 +26,7 @@ export const removeMaterialSticker = async (id: string): Promise<{ status: numbe
   }
 }
 
-export const updateMaterialSticker = async (id: string, data: Partial<MaterialStickerFormType>): Promise<{ status: number; data: MaterialStickerForm | null }> => {
+export const updateMaterialSticker = async (id: string, data: Partial<MaterialStickerFormType>): Promise<{ status: number; data: MaterialSticker | null }> => {
   const res = await serverApiFetch(`/material-sticker/${id}`, {
     method: 'PATCH',
     body: { ...data }
@@ -40,7 +39,7 @@ export const updateMaterialSticker = async (id: string, data: Partial<MaterialSt
 
 export const createMaterialSticker = async (
   data: Omit<MaterialStickerFormType, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
-): Promise<{ status: number; data: MaterialStickerForm | null }> => {
+): Promise<{ status: number; data: MaterialSticker | null }> => {
   const res = await serverApiFetch('/material-sticker', {
     method: 'POST',
     body: { ...data }
@@ -48,5 +47,22 @@ export const createMaterialSticker = async (
 
   return {
     ...res
+  }
+}
+
+export const toggleMaterialStickerDefaultStatus = async (id: string, isDefault: boolean): Promise<{ status: number; data: MaterialSticker | null }> => {
+  try {
+    const res = await serverApiFetch(`/material-sticker/${id}`, { method: 'PATCH', body: { isDefault } })
+
+    console.log(res)
+
+    return {
+      ...res
+    }
+  } catch (error: any) {
+    return {
+      status: error.message.includes('401') ? 401 : 500,
+      data: error.message
+    }
   }
 }

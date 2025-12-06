@@ -19,6 +19,7 @@ export type MaterialSticker = {
   backgroundFrom: string
   backgroundTo: string
   customStickers?: User | null
+  isDefault: boolean
 }
 
 export type MaterialStickerFormType = yup.InferType<typeof materialStickerSchema>

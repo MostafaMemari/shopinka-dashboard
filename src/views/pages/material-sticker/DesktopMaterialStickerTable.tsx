@@ -14,6 +14,7 @@ import CreateUpdateMaterialStickerDialog from './CreateUpdateMaterialStickerDial
 // Types
 import { MaterialSticker, SurfaceType } from '@/types/app/material-sticker.type'
 import GradientPreview from './GradientPreview'
+import MaterialStickerIsDefaultToggle from './MaterialStickerIsDefaultToggle.tsx'
 
 const surfaceLabel = {
   MATTE: 'مات',
@@ -83,6 +84,8 @@ const DesktopMaterialStickerTable = ({ data }: { data: MaterialSticker[] }) => {
 
               <td>
                 <Box display='flex' alignItems='center' gap={2}>
+                  <MaterialStickerIsDefaultToggle id={row.id} isDefault={row.isDefault} />
+
                   <RemoveMaterialStickerModal id={String(row.id)} />
 
                   <CreateUpdateMaterialStickerDialog
