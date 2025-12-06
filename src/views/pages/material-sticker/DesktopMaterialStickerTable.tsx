@@ -12,8 +12,8 @@ import RemoveMaterialStickerModal from './RemoveMaterialStickerModal'
 import CreateUpdateMaterialStickerDialog from './CreateUpdateMaterialStickerDialog'
 
 // Types
-import { MaterialSticker } from '@/types/app/material-sticker.type'
-import { SurfaceType } from '@/types/app/material-sticker.type'
+import { MaterialSticker, SurfaceType } from '@/types/app/material-sticker.type'
+import GradientPreview from './GradientPreview'
 
 const surfaceLabel = {
   MATTE: 'مات',
@@ -60,15 +60,7 @@ const DesktopMaterialStickerTable = ({ data }: { data: MaterialSticker[] }) => {
               </td>
 
               <td>
-                <Box
-                  sx={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: '8px',
-                    border: '1px solid #ccc',
-                    background: row.backgroundFrom && row.backgroundTo ? `linear-gradient(135deg, ${row.backgroundFrom}, ${row.backgroundTo})` : row.colorCode
-                  }}
-                />
+                <GradientPreview row={row} />
               </td>
 
               <td>
