@@ -9,6 +9,7 @@ export type Font = {
   lineHeight: number
   size: number
   isPersian: boolean
+  isDefault: boolean
   difficultyRatio: number
 
   fileId: number | null

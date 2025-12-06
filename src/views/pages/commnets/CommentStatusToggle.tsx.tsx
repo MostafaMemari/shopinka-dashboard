@@ -28,7 +28,7 @@ const CommentStatusToggle = ({ id, isActive }: CommentStatusToggleProps) => {
   })
 
   const handleToggle = () => {
-    onSubmit({ isActive: !isActive }, () => {})
+    onSubmit({ isActive: !isActive })
   }
 
   return (
