@@ -64,7 +64,24 @@ const GalleryContent = ({ galleryItems, isLoading, error, selectedItems, onShowM
               }}
               onClick={() => onItemClick(item)}
             >
-              <Image src={item.fileUrl} alt={item.title} fill style={{ objectFit: 'cover' }} sizes='(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw' />
+              {item.mimetype.startsWith('image/') ? (
+                <Image src={item.fileUrl} alt={item.title} fill style={{ objectFit: 'cover' }} sizes='(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw' />
+              ) : (
+                <Box
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    bgcolor: 'background.default'
+                  }}
+                >
+                  <Typography variant='body2' color='text.secondary'>
+                    {item.title}
+                  </Typography>
+                </Box>
+              )}
             </Box>
           ))}
         </Box>

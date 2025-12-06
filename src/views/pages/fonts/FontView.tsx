@@ -40,7 +40,7 @@ const FontView = () => {
           }
         />
 
-        <CustomTextField id='form-props-search' placeholder='جستجوی حمل و نقل' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
+        <CustomTextField id='form-props-search' placeholder='جستجوی فونت' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>
       {isLoading || isFetching ? (
         <TableListSkeleton />
