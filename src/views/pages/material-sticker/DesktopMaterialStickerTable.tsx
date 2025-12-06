@@ -14,7 +14,7 @@ import CreateUpdateMaterialStickerDialog from './CreateUpdateMaterialStickerDial
 // Types
 import { MaterialSticker, SurfaceType } from '@/types/app/material-sticker.type'
 import GradientPreview from './GradientPreview'
-import MaterialStickerIsDefaultToggle from './MaterialStickerIsDefaultToggle.tsx'
+import MaterialStickerIsDefaultToggle from './MaterialStickerIsDefaultToggle'
 
 const surfaceLabel = {
   MATTE: 'مات',

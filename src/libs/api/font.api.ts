@@ -49,3 +49,18 @@ export const createFont = async (data: Omit<FontFormType, 'id' | 'userId' | 'cre
     ...res
   }
 }
+
+export const toggleFontDefaultStatus = async (id: string, isDefault: boolean): Promise<{ status: number; data: Font | null }> => {
+  try {
+    const res = await serverApiFetch(`/font/${id}`, { method: 'PATCH', body: { isDefault } })
+
+    return {
+      ...res
+    }
+  } catch (error: any) {
+    return {
+      status: error.message.includes('401') ? 401 : 500,
+      data: error.message
+    }
+  }
+}

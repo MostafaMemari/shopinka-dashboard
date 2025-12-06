@@ -54,8 +54,6 @@ export const toggleMaterialStickerDefaultStatus = async (id: string, isDefault: 
   try {
     const res = await serverApiFetch(`/material-sticker/${id}`, { method: 'PATCH', body: { isDefault } })
 
-    console.log(res)
-
     return {
       ...res
     }

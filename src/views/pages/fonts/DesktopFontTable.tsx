@@ -13,6 +13,7 @@ import { Font } from '@/types/app/font.type'
 // Component Imports
 import RemoveFontModal from './RemoveFontModal'
 import CreateUpdateFontDialog from './CreateUpdateFontDialog'
+import FontisDefaultToggle from './FontisDefaultToggle'
 
 const DesktopFontTable = ({ data }: { data: Font[] }) => {
   return (
@@ -27,6 +28,7 @@ const DesktopFontTable = ({ data }: { data: Font[] }) => {
             <th>فاصله خطوط</th>
             <th>زبان</th>
             <th>سختی کار</th>
+            <th>حجم فونت</th>
             <th>عملیات</th>
           </tr>
         </thead>
@@ -69,9 +71,16 @@ const DesktopFontTable = ({ data }: { data: Font[] }) => {
                   {row.difficultyRatio}
                 </Typography>
               </td>
+              <td>
+                <Typography className='font-medium' color='text.primary'>
+                  {row.file?.size ? `${(row.file.size / 1024).toFixed(2)} KB` : '-'}
+                </Typography>
+              </td>
 
               <td>
                 <Box display='flex' alignItems='center' gap={2}>
+                  <FontisDefaultToggle id={row.id} isDefault={row.isDefault} />
+
                   <RemoveFontModal id={String(row.id)} />
 
                   <CreateUpdateFontDialog

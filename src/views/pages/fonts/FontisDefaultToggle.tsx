@@ -1,27 +1,26 @@
 'use client'
 
 import { FormControlLabel, Switch, Tooltip } from '@mui/material'
-import { toggleCommentStatus } from '@/libs/api/comment.api'
 import { useFormSubmit } from '@/hooks/useFormSubmit'
 import { QueryKeys } from '@/types/enums/query-keys'
-import { toggleMaterialStickerDefaultStatus } from '@/libs/api/material-sticker.api'
+import { toggleFontDefaultStatus } from '@/libs/api/font.api'
 
 interface Props {
   id: number
   isDefault: boolean
 }
 
-const MaterialStickerIsDefaultToggle = ({ id, isDefault }: Props) => {
+const FontisDefaultToggle = ({ id, isDefault }: Props) => {
   const { isLoading, onSubmit } = useFormSubmit<{ isDefault: boolean }>({
     updateApi: async () => {
-      return toggleMaterialStickerDefaultStatus(id.toString(), !isDefault)
+      return toggleFontDefaultStatus(id.toString(), !isDefault)
     },
     errorMessages: {
       400: 'درخواست نامعتبر است',
       404: 'نظر پیدا نشد',
       500: 'خطای سرور'
     },
-    queryKey: QueryKeys.MaterialStickers,
+    queryKey: QueryKeys.Fonts,
     successMessage: 'وضعیت پیش‌فرض با موفقیت تغییر کرد',
     isUpdate: true,
     initialData: { id: String(id), isDefault },
@@ -39,4 +38,4 @@ const MaterialStickerIsDefaultToggle = ({ id, isDefault }: Props) => {
   )
 }
 
-export default MaterialStickerIsDefaultToggle
+export default FontisDefaultToggle
