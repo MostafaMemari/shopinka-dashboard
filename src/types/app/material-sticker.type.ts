@@ -19,6 +19,9 @@ export type MaterialSticker = {
   backgroundFrom: string
   backgroundTo: string
   customStickers?: User | null
+  displayOrder: number
+  createdAt: string
+  updatedAt: string
   isDefault: boolean
 }
 

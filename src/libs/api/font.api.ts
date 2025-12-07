@@ -64,3 +64,14 @@ export const toggleFontDefaultStatus = async (id: string, isDefault: boolean): P
     }
   }
 }
+
+export const reorderFonts = async (orderData: { id: number; displayOrder: number }[]): Promise<{ status: number; data: Font[] | null }> => {
+  const res = await serverApiFetch('/font/reorder', {
+    method: 'PATCH',
+    body: [...orderData]
+  })
+
+  return {
+    ...res
+  }
+}

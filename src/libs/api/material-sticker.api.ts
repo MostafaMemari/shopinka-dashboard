@@ -64,3 +64,14 @@ export const toggleMaterialStickerDefaultStatus = async (id: string, isDefault: 
     }
   }
 }
+
+export const reorderMaterialStickers = async (orderData: { id: number; displayOrder: number }[]): Promise<{ status: number; data: MaterialSticker[] | null }> => {
+  const res = await serverApiFetch('/material-sticker/reorder', {
+    method: 'PATCH',
+    body: [...orderData]
+  })
+
+  return {
+    ...res
+  }
+}
