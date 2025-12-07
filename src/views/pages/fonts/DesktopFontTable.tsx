@@ -14,8 +14,12 @@ import { Font } from '@/types/app/font.type'
 import RemoveFontModal from './RemoveFontModal'
 import CreateUpdateFontDialog from './CreateUpdateFontDialog'
 import FontisDefaultToggle from './FontisDefaultToggle'
+import MoveButtons from '@/components/MoveButtons'
+import { useFontReorder } from '@/hooks/reactQuery/font/useMutationFont'
 
 const DesktopFontTable = ({ data }: { data: Font[] }) => {
+  const { rows, moveUp, moveDown } = useFontReorder(data)
+
   return (
     <div className='overflow-x-auto'>
       <table className={tableStyles.table}>
@@ -29,12 +33,13 @@ const DesktopFontTable = ({ data }: { data: Font[] }) => {
             <th>زبان</th>
             <th>سختی کار</th>
             <th>حجم فونت</th>
+            <th>ترتیب</th>
             <th>عملیات</th>
           </tr>
         </thead>
 
         <tbody>
-          {data.map(row => (
+          {rows.map(row => (
             <tr key={row.id}>
               <td>
                 <img src={row.thumbnail?.fileUrl} alt={row.displayName} style={{ width: '50px', height: '50px', display: 'block' }} />
@@ -42,13 +47,13 @@ const DesktopFontTable = ({ data }: { data: Font[] }) => {
 
               <td>
                 <Typography className='font-medium' color='text.primary'>
-                  {row.name}
+                  {row.displayName}
                 </Typography>
               </td>
 
               <td>
                 <Typography className='font-medium' color='text.primary'>
-                  {row.displayName}
+                  {row.name}
                 </Typography>
               </td>
 
@@ -75,6 +80,10 @@ const DesktopFontTable = ({ data }: { data: Font[] }) => {
                 <Typography className='font-medium' color='text.primary'>
                   {row.file?.size ? `${(row.file.size / 1024).toFixed(2)} KB` : '-'}
                 </Typography>
+              </td>
+
+              <td>
+                <MoveButtons onMoveUp={() => moveUp(row.id)} onMoveDown={() => moveDown(row.id)} />
               </td>
 
               <td>

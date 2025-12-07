@@ -8,7 +8,7 @@ import CreateUpdateMaterialStickerDialog from './CreateUpdateMaterialStickerDial
 import tableStyles from '@core/styles/table.module.css'
 import { MaterialSticker, SurfaceType } from '@/types/app/material-sticker.type'
 import { useMaterialStickerReorder } from '@/hooks/reactQuery/material-sticker/useMutationMaterialSticker'
-import MoveButtons from './MoveButtons'
+import MoveButtons from '../../../components/MoveButtons'
 
 interface DesktopMaterialStickerTableProps {
   data: MaterialSticker[]
