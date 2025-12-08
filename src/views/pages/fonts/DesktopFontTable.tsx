@@ -2,7 +2,7 @@
 
 // MUI Imports
 import Typography from '@mui/material/Typography'
-import { Box, IconButton, Chip, Avatar } from '@mui/material'
+import { Box, IconButton, Chip } from '@mui/material'
 
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'

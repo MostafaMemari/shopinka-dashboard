@@ -1,4 +1,4 @@
-import { reorderFonts } from '@/libs/api/font.api'
+import { reorderFonts, setDefaultFont } from '@/libs/api/font.api'
 import { QueryKeys } from '@/types/enums/query-keys'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Font } from '@/types/app/font.type'
@@ -33,4 +33,18 @@ export const useFontReorder = (initialData: Font[]) => {
   })
 
   return { rows, moveUp, moveDown, setRows }
+}
+
+export const useSetDefaultFontMutation = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: number) => setDefaultFont(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.Fonts] })
+    },
+    onError: error => {
+      console.error('Error setting default font:', error)
+    }
+  })
 }
