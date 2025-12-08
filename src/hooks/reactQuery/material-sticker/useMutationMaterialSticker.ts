@@ -1,4 +1,4 @@
-import { reorderMaterialStickers } from '@/libs/api/material-sticker.api'
+import { reorderMaterialStickers, setDefaultMaterialSticker } from '@/libs/api/material-sticker.api'
 import { QueryKeys } from '@/types/enums/query-keys'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { MaterialSticker } from '@/types/app/material-sticker.type'
@@ -33,4 +33,18 @@ export const useMaterialStickerReorder = (initialData: MaterialSticker[]) => {
   })
 
   return { rows, moveUp, moveDown, setRows }
+}
+
+export const useSetDefaultMaterialStickerMutation = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: number) => setDefaultMaterialSticker(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.MaterialStickers] })
+    },
+    onError: error => {
+      console.error('Error setting default material sticker:', error)
+    }
+  })
 }

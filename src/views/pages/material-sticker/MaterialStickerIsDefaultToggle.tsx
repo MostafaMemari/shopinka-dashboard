@@ -4,6 +4,7 @@ import { FormControlLabel, Switch, Tooltip } from '@mui/material'
 import { useFormSubmit } from '@/hooks/useFormSubmit'
 import { QueryKeys } from '@/types/enums/query-keys'
 import { toggleMaterialStickerDefaultStatus } from '@/libs/api/material-sticker.api'
+import { useSetDefaultMaterialStickerMutation } from '@/hooks/reactQuery/material-sticker/useMutationMaterialSticker'
 
 interface Props {
   id: number
@@ -11,29 +12,13 @@ interface Props {
 }
 
 const MaterialStickerIsDefaultToggle = ({ id, isDefault }: Props) => {
-  const { isLoading, onSubmit } = useFormSubmit<{ isDefault: boolean }>({
-    updateApi: async () => {
-      return toggleMaterialStickerDefaultStatus(id.toString(), !isDefault)
-    },
-    errorMessages: {
-      400: 'درخواست نامعتبر است',
-      404: 'نظر پیدا نشد',
-      500: 'خطای سرور'
-    },
-    queryKey: QueryKeys.MaterialStickers,
-    successMessage: 'وضعیت پیش‌فرض با موفقیت تغییر کرد',
-    isUpdate: true,
-    initialData: { id: String(id), isDefault },
-    noChangeMessage: 'وضعیتی تغییر نکرد'
-  })
+  const { mutate: toggleDefault, isPending } = useSetDefaultMaterialStickerMutation()
 
-  const handleToggle = () => {
-    onSubmit({ isDefault: !isDefault })
-  }
+  const handleToggle = () => toggleDefault(id)
 
   return (
     <Tooltip title={isDefault ? 'لغو تأیید پیش‌فرض' : 'تأیید پیش‌فرض'}>
-      <FormControlLabel control={<Switch size='small' checked={isDefault} onChange={handleToggle} disabled={isLoading} />} label='' sx={{ margin: 0 }} />
+      <FormControlLabel control={<Switch size='small' checked={isDefault} onChange={handleToggle} disabled={isPending} />} label='' sx={{ margin: 0 }} />
     </Tooltip>
   )
 }
