@@ -1,9 +1,6 @@
 'use client'
 
 import { FormControlLabel, Switch, Tooltip } from '@mui/material'
-import { useFormSubmit } from '@/hooks/useFormSubmit'
-import { QueryKeys } from '@/types/enums/query-keys'
-import { toggleMaterialStickerDefaultStatus } from '@/libs/api/material-sticker.api'
 import { useSetDefaultMaterialStickerMutation } from '@/hooks/reactQuery/material-sticker/useMutationMaterialSticker'
 
 interface Props {
