@@ -1,4 +1,5 @@
 import { Address, AddressSnapshot } from './address.type'
+import { CustomSticker } from './customSticker.type'
 import { Product } from './product.type'
 import { AttributeValue } from './productAttributes.type'
 import { ProductVariant } from './productVariant.type'
@@ -53,11 +54,13 @@ export type OrderItem = {
   orderId: number
   productId: number | null
   productVariantId: number | null
+  customStickerId: number | null
   price: number
   quantity: number
   createdAt: string
   product: Product | null
   productVariant: ProductVariant | null
+  customSticker: CustomSticker | null
 }
 
 export const ORDER_STATUS_MAP = {
@@ -71,7 +74,7 @@ export const ORDER_STATUS_MAP = {
 
 export interface OrderMappedItem {
   id: number
-  type: 'SIMPLE' | 'VARIABLE'
+  type: 'SIMPLE' | 'VARIABLE' | 'CUSTOM_STICKER'
   title: string
   slug: string
   thumbnail: string

@@ -18,6 +18,8 @@ export const getOrderById = async (id: string): Promise<{ status: number; data: 
     method: 'GET'
   })
 
+  console.log(res)
+
   return {
     ...res
   }

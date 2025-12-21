@@ -202,9 +202,7 @@ const OrderTable = ({ orderItems }: { orderItems: OrderMappedItem[] }) => {
         {table.getFilteredRowModel().rows.length === 0 ? (
           <tbody>
             <tr>
-              <td colSpan={table.getVisibleFlatColumns().length} className='text-center'>
-                No data available
-              </td>
+              <td colSpan={table.getVisibleFlatColumns().length} className='text-center'></td>
             </tr>
           </tbody>
         ) : (
