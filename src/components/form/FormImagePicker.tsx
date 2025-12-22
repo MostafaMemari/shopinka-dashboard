@@ -16,7 +16,7 @@ import ModalGallery from '@/components/Gallery/GalleryDialog'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 
 // Types
-import { GalleryItem } from '@/types/app/gallery.type'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 import type { FieldValues } from 'react-hook-form'
 
@@ -93,11 +93,12 @@ function FormImagePicker<FormValues extends FieldValues>({
                 btnLabel={btnLabel ?? (selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر')}
                 multi={false}
                 onSelect={handleSelect}
-              >
-                <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
-                  {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
-                </Typography>
-              </ModalGallery>
+                trigger={
+                  <Typography variant='body2' color='primary' sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}>
+                    {selectedImage ? 'تغییر تصویر' : 'انتخاب تصویر'} از گالری
+                  </Typography>
+                }
+              />
             </Box>
           </Box>
         )

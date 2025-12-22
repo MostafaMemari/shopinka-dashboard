@@ -1,5 +1,5 @@
 import type { Editor } from '@tiptap/core'
-import { GalleryItem } from '@/types/app/gallery.type'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 export interface EditorToolbarProps {
   editor: Editor | null

@@ -1,4 +1,5 @@
 'use client'
+import './styles.css'
 
 // MUI Imports
 import Divider from '@mui/material/Divider'
@@ -33,9 +34,8 @@ import { useEffect, useState } from 'react'
 import EditorToolbar from './EditorToolbar'
 
 // Style Imports
-import './styles.css'
 import { RichTextEditorProps } from './types'
-import { GalleryItem } from '@/types/app/gallery.type'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 const RichTextEditor = ({ label, placeholder = 'متن خود را وارد کنید', content = '', onChange, value, height = '250px' }: RichTextEditorProps) => {
   const [open, setOpen] = useState(false)

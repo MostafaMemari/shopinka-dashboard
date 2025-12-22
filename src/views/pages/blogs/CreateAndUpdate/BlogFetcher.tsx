@@ -27,7 +27,7 @@ const BlogFetcher = ({ id }: BlogFetcherProps) => {
   if (error) return <div>خطا در بارگذاری مقاله: {error.message}</div>
   if (!id || !blog?.data) return <div>مقاله یافت نشد</div>
 
-  return <BlogForm blog={blog.data} refetch={refetch} />
+  return <BlogForm blog={blog.data} />
 }
 
 export default BlogFetcher

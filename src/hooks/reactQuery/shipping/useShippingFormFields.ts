@@ -10,7 +10,7 @@ interface UsePageFormProps {
 export const useShippingFormFields = ({ initialData }: UsePageFormProps) => {
   const defaultValues: ShippingFormType = {
     name: initialData?.name ?? '',
-    price: initialData?.price ?? null,
+    price: initialData?.price ?? 0,
     estimatedDays: initialData?.estimatedDays ?? null,
     isActive: initialData?.isActive ?? true
   }

@@ -1,6 +1,6 @@
 import * as yup from 'yup'
-import { GalleryItem } from './gallery.type'
 import { bannerSchema } from '@/libs/validators/banner.schema'
+import { GalleryItem } from './galleryItem.type'
 
 export type Banner = {
   id: number

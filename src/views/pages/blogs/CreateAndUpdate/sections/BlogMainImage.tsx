@@ -15,7 +15,6 @@ import Typography from '@mui/material/Typography'
 // Icons & Components
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import Image from 'next/image'
-import ModalGallery from '@/components/Gallery/GalleryDialog'
 import EmptyPlaceholder from '@/components/EmptyPlaceholder'
 
 // Types

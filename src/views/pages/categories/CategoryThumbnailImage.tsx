@@ -9,7 +9,7 @@ import Image from 'next/image'
 import { Typography, Button } from '@mui/material'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 
-import { GalleryItem } from '@/types/app/gallery.type'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 import ModalGallery from '@/components/Gallery/GalleryDialog'
 import ImagePlaceholder from '@/components/EmptyPlaceholder'
 import { Category } from '@/types/app/category.type'
@@ -102,11 +102,16 @@ const CategoryThumbnailImage = ({ isLoading, category }: CategoryThumbnailImageP
             )}
           </Box>
 
-          <ModalGallery initialSelected={selectedImage || undefined} multi={false} onSelect={handleSelect}>
-            <Button variant='outlined' color='primary' fullWidth>
-              {selectedImage ? 'تغییر تصویر بندانگشتی' : 'انتخاب تصویر بندانگشتی'}
-            </Button>
-          </ModalGallery>
+          <ModalGallery
+            initialSelected={selectedImage || undefined}
+            multi={false}
+            onSelect={handleSelect}
+            trigger={
+              <Button variant='outlined' color='primary' fullWidth>
+                {selectedImage ? 'تغییر تصویر بندانگشتی' : 'انتخاب تصویر بندانگشتی'}
+              </Button>
+            }
+          />
 
           {errors.thumbnailImageId && (
             <Typography variant='caption' color='error' id='thumbnailImageId-error'>

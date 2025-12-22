@@ -7,8 +7,8 @@ import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import { Category } from '@/types/app/category.type'
 import { CategoryFormType } from '@/libs/validators/category.schema'
-import { useCategories } from '@/hooks/reactQuery/useCategory'
 import { Controller, type Control, type FieldErrors } from 'react-hook-form'
+import { useCategories } from '@/hooks/reactQuery/category/useCategory'
 
 interface ParentCategorySelectProps {
   control: Control<CategoryFormType>

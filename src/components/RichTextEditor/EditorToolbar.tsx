@@ -10,7 +10,7 @@ import GalleryDialog from '../Gallery/GalleryDialog'
 
 // Types
 import { EditorToolbarProps } from './types'
-import { GalleryItem } from '@/types/app/gallery.type'
+import { GalleryItem } from '@/types/app/galleryItem.type'
 
 const EditorToolbar = ({ editor, openLinkDialog, toggleFullScreen, isFullScreen, onSelectImages }: EditorToolbarProps) => {
   const [selectedImages, setSelectedImages] = useState<GalleryItem[]>([])
