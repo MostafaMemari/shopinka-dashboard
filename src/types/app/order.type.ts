@@ -1,5 +1,7 @@
 import { Address, AddressSnapshot } from './address.type'
-import { CustomSticker } from './customSticker.type'
+import { CustomSticker, Line } from './customSticker.type'
+import { Font } from './font.type'
+import { MaterialSticker } from './material-sticker.type'
 import { Product } from './product.type'
 import { AttributeValue } from './productAttributes.type'
 import { ProductVariant } from './productVariant.type'
@@ -84,4 +86,9 @@ export interface OrderMappedItem {
   count: number
   totalPrice: number
   attributeValues: AttributeValue[] | null
+  customStickerData: {
+    lines: Line[]
+    font: Font
+    material: MaterialSticker
+  } | null
 }

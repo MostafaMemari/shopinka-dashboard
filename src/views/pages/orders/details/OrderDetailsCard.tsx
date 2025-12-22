@@ -35,7 +35,8 @@ import tableStyles from '@core/styles/table.module.css'
 import { type OrderDetails, type OrderMappedItem } from '@/types/app/order.type'
 import { mappedOrderItem } from '@/utils/mappedOrderItem'
 import classNames from 'classnames'
-import { Box, Button } from '@mui/material'
+import { Box, Button, IconButton, Tooltip } from '@mui/material'
+import CustomStickerDialog from './CustomStickerDialog'
 
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
@@ -59,6 +60,19 @@ const OrderTable = ({ orderItems }: { orderItems: OrderMappedItem[] }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState(...[orderItems])
   const [globalFilter, setGlobalFilter] = useState('')
+
+  const [open, setOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState<any>(null)
+
+  const handleOpenCustomSticker = (customStickerData: any) => {
+    setSelectedProduct(customStickerData)
+    setOpen(true)
+  }
+
+  const handleCloseCustomSticker = () => {
+    setOpen(false)
+    setSelectedProduct(null)
+  }
 
   const columns = useMemo<ColumnDef<OrderMappedItem, any>[]>(
     () => [
@@ -88,12 +102,28 @@ const OrderTable = ({ orderItems }: { orderItems: OrderMappedItem[] }) => {
         header: 'نام محصول',
         cell: ({ row }) => (
           <div className='flex items-center gap-3'>
-            <img src={row.original.thumbnail} alt={row.original.thumbnail} height={34} className='rounded' />
+            <img src={row.original.thumbnail} alt={row.original.title} height={34} className='rounded' />
+
             <div className='flex flex-col items-start'>
-              <Typography color='text.primary' className='font-medium'>
+              <Typography color='text.primary' className='font-medium flex items-center gap-1'>
                 {row.original.title}
+
+                {row.original.type === 'CUSTOM_STICKER' && (
+                  <Tooltip title='مشاهده جزئیات استیکر سفارشی'>
+                    <IconButton
+                      size='small'
+                      onClick={e => {
+                        e.stopPropagation()
+                        handleOpenCustomSticker({ ...row.original.customStickerData, thumbnail: row.original.thumbnail })
+                      }}
+                    >
+                      <i className='tabler-sticker bs-2.5 is-2.5' />
+                    </IconButton>
+                  </Tooltip>
+                )}
               </Typography>
-              <Box display='flex' alignItems='center' gap={2}>
+
+              <Box display='flex' alignItems='center' gap={2} flexWrap='wrap'>
                 {row.original.attributeValues?.map(att => {
                   if (att.colorCode) {
                     return (
@@ -123,6 +153,7 @@ const OrderTable = ({ orderItems }: { orderItems: OrderMappedItem[] }) => {
           </div>
         )
       }),
+
       columnHelper.accessor('salePrice', {
         header: 'قیمت',
         cell: ({ row }) => <Typography>{`${row.original.salePrice || row.original.basePrice}`}</Typography>
@@ -222,6 +253,7 @@ const OrderTable = ({ orderItems }: { orderItems: OrderMappedItem[] }) => {
           </tbody>
         )}
       </table>
+      <CustomStickerDialog open={open} onClose={handleCloseCustomSticker} data={selectedProduct} />
     </div>
   )
 }

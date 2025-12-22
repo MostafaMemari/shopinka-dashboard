@@ -1,3 +1,5 @@
+import { Font } from '@/types/app/font.type'
+import { MaterialSticker } from '@/types/app/material-sticker.type'
 import { OrderItem, OrderMappedItem } from '@/types/app/order.type'
 
 export function mappedOrderItem(orderItem: OrderItem[]): OrderMappedItem[] {
@@ -8,7 +10,7 @@ export function mappedOrderItem(orderItem: OrderItem[]): OrderMappedItem[] {
     const customSticker = item?.customSticker
     const variant = item.productVariant
 
-    const id = item.product?.id ?? variant?.id ?? 0
+    const id = (isCustom ? item.customSticker?.id : isSimple ? item.product?.id : variant?.id) ?? 0
     const type: 'SIMPLE' | 'VARIABLE' | 'CUSTOM_STICKER' = isSimple ? 'SIMPLE' : isCustom ? 'CUSTOM_STICKER' : 'VARIABLE'
     const title = (isCustom ? customSticker?.name : product?.name) ?? ''
     const thumbnail = (isCustom ? customSticker?.previewImage?.fileUrl : product?.mainImage?.fileUrl) ?? ''
@@ -29,7 +31,14 @@ export function mappedOrderItem(orderItem: OrderItem[]): OrderMappedItem[] {
       salePrice,
       discount,
       totalPrice: salePrice ? item.quantity * salePrice : item.quantity * basePrice,
-      attributeValues: variant?.attributeValues ?? []
+      attributeValues: variant?.attributeValues ?? [],
+      customStickerData: isCustom
+        ? {
+            lines: customSticker?.lines ?? [],
+            font: customSticker?.font ?? ({} as Font),
+            material: customSticker?.material ?? ({} as MaterialSticker)
+          }
+        : null
     }
   })
 }
