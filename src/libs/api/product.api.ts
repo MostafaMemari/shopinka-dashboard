@@ -7,7 +7,7 @@ import { showToast } from '@/utils/showToast'
 import { generateProductSeoDescription } from '@/hooks/reactQuery/seoDescriptionGenerators'
 
 import { SeoMetaTargetType, type SeoForm } from '@/types/app/seo.type'
-import { serverApiFetch } from '../serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const getProducts = async (params?: Record<string, string | boolean>): Promise<Response<Product[]>> => {
   const res = await serverApiFetch('/product/admin', {

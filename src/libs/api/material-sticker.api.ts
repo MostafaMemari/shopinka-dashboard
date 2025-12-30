@@ -1,6 +1,6 @@
 import { MaterialSticker, MaterialStickerFormType } from '@/types/app/material-sticker.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const getMaterialStickers = async (params?: Record<string, string>): Promise<Response<MaterialSticker[]>> => {
   const res = await serverApiFetch('/material-sticker', { method: 'GET', query: { ...params } })

@@ -1,6 +1,6 @@
 import { Font, FontFormType } from '@/types/app/font.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const getFonts = async (params?: Record<string, string>): Promise<Response<Font[]>> => {
   const res = await serverApiFetch('/font', { method: 'GET', query: { ...params } })

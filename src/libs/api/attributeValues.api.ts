@@ -1,5 +1,5 @@
 import { AttributeValueFormType, AttributeValue } from '@/types/app/productAttributes.type'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const removeAttributeValue = async (id: string): Promise<{ status: number; data: { message: string; attribute: AttributeValue } | null }> => {
   const res = await serverApiFetch(`/attribute-value/${id}`, { method: 'DELETE' })

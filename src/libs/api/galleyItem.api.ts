@@ -1,6 +1,6 @@
 import { GalleryItem, GalleryItemFormType } from '@/types/app/galleryItem.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const getItemGalleries = async (params?: Record<string, string>): Promise<Response<GalleryItem[]>> => {
   const res = await serverApiFetch('/gallery-item', {

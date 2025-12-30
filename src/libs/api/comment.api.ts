@@ -1,6 +1,6 @@
 import { Comment, CommentForm } from '@/types/app/comment.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const getComments = async (params?: Record<string, string | boolean>): Promise<Response<Comment[]>> => {
   try {

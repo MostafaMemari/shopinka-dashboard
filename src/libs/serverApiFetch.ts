@@ -42,8 +42,6 @@ export const serverApiFetch = async (
     const contentType = response.headers.get('content-type')
     const data = contentType?.includes('application/json') ? await response.json() : await response.text()
 
-    // await new Promise(resolve => setTimeout(resolve, 200))
-
     return {
       status: response.status,
       data

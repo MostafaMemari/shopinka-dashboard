@@ -1,6 +1,6 @@
 import { Response } from '@/types/response'
 import { ProductVariantForm, ProductVariant } from '@/types/app/productVariant.type'
-import { serverApiFetch } from '../serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const getProductVariants = async (params?: Record<string, string>): Promise<Response<ProductVariant[]>> => {
   const res = await serverApiFetch('/product-variant', {

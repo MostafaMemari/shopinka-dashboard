@@ -1,5 +1,6 @@
 import { Contact } from '@/types/app/contact.type'
-import { serverApiFetch } from '../serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
+
 import { Pager, Response } from '@/types/response'
 
 export const getContacts = async (params?: Record<string, string>): Promise<Response<Contact[]>> => {

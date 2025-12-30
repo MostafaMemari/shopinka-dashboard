@@ -1,6 +1,6 @@
 import { ShippingInfo, ShippingInfoType } from '@/types/app/shippingInfo.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const getShippings = async (params?: { page?: number; take?: number }): Promise<Response<ShippingInfo[]>> => {
   const res = await serverApiFetch('/shipping-info', { method: 'GET', query: { ...params } })

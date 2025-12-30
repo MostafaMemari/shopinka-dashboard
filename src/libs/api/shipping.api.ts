@@ -1,6 +1,7 @@
 import { Shipping, ShippingFormType } from '@/types/app/shipping.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
+
 import { ShippingForm } from '@/views/pages/shipping/DesktopShippingTable'
 
 export const getShippings = async (params?: Record<string, string>): Promise<Response<Shipping[]>> => {

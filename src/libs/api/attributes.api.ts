@@ -1,6 +1,6 @@
 import { Attribute, AttributeFormType } from '@/types/app/productAttributes.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const getAttributes = async (params?: Record<string, string>): Promise<Response<Attribute[]>> => {
   const res = await serverApiFetch('/attribute?includeValues=true', { method: 'GET', query: { ...params } })

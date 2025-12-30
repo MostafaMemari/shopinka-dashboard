@@ -1,7 +1,8 @@
 import { generateBlogSeoDescription } from '@/hooks/reactQuery/seoDescriptionGenerators'
 import { Blog, BlogFormType } from '@/types/app/blog.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
+
 import { blogFormSchema } from '../validators/blog.schema'
 import { type InferType } from 'yup'
 import { handleSeoSave } from '../services/seo/seo.service'

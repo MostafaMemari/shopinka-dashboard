@@ -1,7 +1,8 @@
 import { generateCategorySeoDescription } from '@/hooks/reactQuery/seoDescriptionGenerators'
 import { Category, CategoryFormType } from '@/types/app/category.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
+
 import { handleSeoSave } from '../services/seo/seo.service'
 import { showToast } from '@/utils/showToast'
 import { SeoForm, SeoMetaTargetType } from '@/types/app/seo.type'

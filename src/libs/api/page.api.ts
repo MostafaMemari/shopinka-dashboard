@@ -1,6 +1,6 @@
 import { Page, PageFormType } from '@/types/app/page.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const getPages = async (params?: Record<string, string>): Promise<Response<Page[]>> => {
   const res = await serverApiFetch('/page', {

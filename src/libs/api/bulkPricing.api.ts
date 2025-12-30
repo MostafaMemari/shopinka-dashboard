@@ -1,6 +1,6 @@
 import { BulkPricingFormType } from '@/types/app/bulkPricing.type'
 import { Response } from '@/types/response'
-import { serverApiFetch } from '@/utils/api/serverApiFetch'
+import { serverApiFetch } from '@/libs/serverApiFetch'
 
 export const getBulkPricings = async (params?: Record<string, string>): Promise<Response<any[]>> => {
   const res = await serverApiFetch('/bulk-pricing', {
