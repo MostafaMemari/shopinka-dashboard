@@ -1,85 +1,72 @@
 'use server'
 
 import { Product, ProductFormType } from '@/types/app/product.type'
-import { Response } from '@/types/response'
+import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 import { handleSeoSave } from '../services/seo/seo.service'
 import { showToast } from '@/utils/showToast'
 import { generateProductSeoDescription } from '@/hooks/reactQuery/seoDescriptionGenerators'
-
 import { SeoMetaTargetType, type SeoForm } from '@/types/app/seo.type'
-import { serverApiFetch } from '@/libs/serverApiFetch'
 
-export const getProducts = async (params?: Record<string, string | boolean>): Promise<Response<Product[]>> => {
-  const res = await serverApiFetch('/product/admin', {
+export const getProducts = async (params?: Record<string, string | boolean>) => {
+  const res = await serverApiFetch<Product[]>('/product/admin', {
     method: 'GET',
     query: { ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const getProductById = async (id: number): Promise<{ status: number; data: Product | null }> => {
-  const res = await serverApiFetch(`/product/${id}`, {
-    method: 'GET'
-  })
+export const getProductById = async (id: number) => {
+  const res = await serverApiFetch<Product>(`/product/${id}`, { method: 'GET' })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const defaultVariantProduct = async (id: number, variantId: number | null): Promise<{ status: number; data: Product | null }> => {
-  const res = await serverApiFetch(`/product/${id}/default-variant`, {
+export const defaultVariantProduct = async (id: number, variantId: number | null) => {
+  const res = await serverApiFetch<Product>(`/product/${id}/default-variant`, {
     method: 'PATCH',
     body: { variantId }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const updateProduct = async (id: number, data: Partial<ProductFormType>): Promise<{ status: number; data: Product | null }> => {
-  const res = await serverApiFetch(`/product/${id}`, {
+export const updateProduct = async (id: number, data: Partial<ProductFormType>) => {
+  const res = await serverApiFetch<Product>(`/product/${id}`, {
     method: 'PATCH',
-    body: { ...data }
+    body: data
   })
 
   if (res.status === 200) await handleSeo(Number(id), data, true)
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const createProduct = async (data: ProductFormType): Promise<{ status: number; data: { product: (Product & { id: number }) | null } }> => {
-  const res = await serverApiFetch('/product', {
+export const createProduct = async (data: ProductFormType) => {
+  const res = await serverApiFetch<{ product: Product & { id: number } }>('/product', {
     method: 'POST',
-    body: { ...data }
+    body: data
   })
 
-  if (res.status === 200 || res.status === 201) {
+  if (res.ok && res.data?.product?.id) {
     await handleSeo(res.data.product.id, data)
   }
 
-  return {
-    ...res,
-    status: 201
-  }
+  return unwrapApi(res)
 }
 
-export const removeProduct = async (id: string): Promise<{ status: number; data: { message: string; product: Product } | null }> => {
-  const res = await serverApiFetch(`/product/${id}`, { method: 'DELETE' })
+export const removeProduct = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; product: Product }>(`/product/${id}`, {
+    method: 'DELETE'
+  })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
+// ---------- SEO Handler ----------
 const handleSeo = async (productId: number, data: Partial<ProductFormType>, isUpdate?: boolean) => {
-  const seoData = isUpdate
+  const seoData: Partial<SeoForm> = isUpdate
     ? {
         seo_title: data.seo_title,
         seo_description: data.seo_description,

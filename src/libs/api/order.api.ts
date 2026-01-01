@@ -1,37 +1,29 @@
 import { Order, OrderDetails } from '@/types/app/order.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
-export const getOrders = async (params?: Record<string, string | number | boolean>): Promise<Response<Order>> => {
-  const res = await serverApiFetch('/order', {
+export const getOrders = async (params?: Record<string, string | number | boolean>) => {
+  const res = await serverApiFetch<Order[]>('/order', {
     method: 'GET',
     query: { ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const getOrderById = async (id: string): Promise<{ status: number; data: OrderDetails }> => {
-  const res = await serverApiFetch(`/order/${id}`, {
+export const getOrderById = async (id: string) => {
+  const res = await serverApiFetch<OrderDetails>(`/order/${id}`, {
     method: 'GET'
   })
 
-  console.log(res)
-
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const changeStatusOrder = async (orderId: number, status: 'CANCELLED' | 'DELIVERED'): Promise<Response<Order[]>> => {
-  const res = await serverApiFetch(`/order/status/${orderId}`, {
+export const changeStatusOrder = async (orderId: number, status: 'CANCELLED' | 'DELIVERED') => {
+  const res = await serverApiFetch<Order[]>(`/order/status/${orderId}`, {
     method: 'PATCH',
     body: { status }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }

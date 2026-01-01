@@ -1,23 +1,18 @@
 import { Contact } from '@/types/app/contact.type'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
-import { Pager, Response } from '@/types/response'
-
-export const getContacts = async (params?: Record<string, string>): Promise<Response<Contact[]>> => {
-  const res = await serverApiFetch('/contact', {
+export const getContacts = async (params?: Record<string, string>) => {
+  const res = await serverApiFetch<Contact[]>('/contact', {
     method: 'GET',
     query: { ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const removeContact = async (id: string): Promise<{ status: number; data: { message: string; page: Pager } | null }> => {
-  const res = await serverApiFetch(`/contact/${id}`, { method: 'DELETE' })
+export const removeContact = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; page: any }>(`/contact/${id}`, { method: 'DELETE' })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }

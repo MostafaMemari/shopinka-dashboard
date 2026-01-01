@@ -1,49 +1,44 @@
 import { Attribute, AttributeFormType } from '@/types/app/productAttributes.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
-export const getAttributes = async (params?: Record<string, string>): Promise<Response<Attribute[]>> => {
-  const res = await serverApiFetch('/attribute?includeValues=true', { method: 'GET', query: { ...params } })
-
-  return {
-    ...res
-  }
-}
-
-export const getAttribute = async (id: number): Promise<{ status: number; data: Attribute | null }> => {
-  const res = await serverApiFetch(`/attribute/${id}}`, { method: 'GET' })
-
-  return {
-    ...res
-  }
-}
-
-export const removeAttribute = async (id: string): Promise<{ status: number; data: { message: string; attribute: Attribute } | null }> => {
-  const res = await serverApiFetch(`/attribute/${id}`, { method: 'DELETE' })
-
-  return {
-    ...res
-  }
-}
-
-export const updateAttribute = async (id: string, data: Partial<AttributeFormType>): Promise<{ status: number; data: Attribute | null }> => {
-  const res = await serverApiFetch(`/attribute/${id}`, {
-    method: 'PATCH',
-    body: { ...data }
+export const getAttributes = async (params?: Record<string, string>) => {
+  const res = await serverApiFetch<Attribute[]>('/attribute', {
+    method: 'GET',
+    query: { includeValues: true, ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const createAttribute = async (data: AttributeFormType): Promise<{ status: number; data: Attribute | null }> => {
-  const res = await serverApiFetch('/attribute', {
+export const getAttribute = async (id: number) => {
+  const res = await serverApiFetch<Attribute>(`/attribute/${id}`, {
+    method: 'GET'
+  })
+
+  return unwrapApi(res)
+}
+
+export const createAttribute = async (data: AttributeFormType) => {
+  const res = await serverApiFetch<Attribute>('/attribute', {
     method: 'POST',
-    body: { ...data }
+    body: data
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
+}
+
+export const updateAttribute = async (id: string, data: Partial<AttributeFormType>) => {
+  const res = await serverApiFetch<Attribute>(`/attribute/${id}`, {
+    method: 'PATCH',
+    body: data
+  })
+
+  return unwrapApi(res)
+}
+
+export const removeAttribute = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; attribute: Attribute }>(`/attribute/${id}`, { method: 'DELETE' })
+
+  return unwrapApi(res)
 }

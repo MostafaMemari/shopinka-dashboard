@@ -1,70 +1,59 @@
 import { generateCategorySeoDescription } from '@/hooks/reactQuery/seoDescriptionGenerators'
 import { Category, CategoryFormType } from '@/types/app/category.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
 import { handleSeoSave } from '../services/seo/seo.service'
 import { showToast } from '@/utils/showToast'
 import { SeoForm, SeoMetaTargetType } from '@/types/app/seo.type'
 
-export const getCategories = async (params?: Record<string, string | boolean | number>): Promise<Response<Category[]>> => {
-  const res = await serverApiFetch('/category', {
+export const getCategories = async (params?: Record<string, string | boolean | number>) => {
+  const res = await serverApiFetch<Category[]>('/category', {
     method: 'GET',
     query: { ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const getCategoryById = async (id: number): Promise<{ status: number; data: Category | null }> => {
-  const res = await serverApiFetch(`/category/${id}`)
+export const getCategoryById = async (id: number) => {
+  const res = await serverApiFetch<Category>(`/category/${id}`)
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const updateCategory = async (id: number, data: Partial<CategoryFormType>): Promise<{ status: number; data: Category | null }> => {
-  const res = await serverApiFetch(`/category/${id}`, {
+export const updateCategory = async (id: number, data: Partial<CategoryFormType>) => {
+  const res = await serverApiFetch<Category>(`/category/${id}`, {
     method: 'PATCH',
-    body: { ...data }
+    body: data
   })
 
   if (id) {
-    await handleSeo(Number(id), data, true)
+    await handleSeo(id, data, true)
   } else {
     showToast({ type: 'error', message: 'خطا در دریافت آیدی دسته بندی' })
   }
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const createCategory = async (data: CategoryFormType): Promise<{ status: number; data: { category: Category | null } }> => {
-  const res = await serverApiFetch('/category', {
+export const createCategory = async (data: CategoryFormType) => {
+  const res = await serverApiFetch<{ category: Category }>('/category', {
     method: 'POST',
-    body: { ...data }
+    body: data
   })
 
-  if (res.status === 200 || res.status === 201) {
+  if (res.ok && (res.status === 200 || res.status === 201)) {
     await handleSeo(res.data.category.id, data)
   }
 
-  return {
-    ...res,
-    status: 201
-  }
+  return unwrapApi(res)
 }
 
-export const removeCategory = async (id: string): Promise<{ status: number; data: { message: string; category: CategoryFormType } | null }> => {
-  const res = await serverApiFetch(`/category/${id}`, { method: 'DELETE' })
+export const removeCategory = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; category: CategoryFormType }>(`/category/${id}`, { method: 'DELETE' })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
 const handleSeo = async (categoryId: number, data: Partial<CategoryFormType>, isUpdate?: boolean) => {

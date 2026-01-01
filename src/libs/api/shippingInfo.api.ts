@@ -1,33 +1,30 @@
 import { ShippingInfo, ShippingInfoType } from '@/types/app/shippingInfo.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
-export const getShippings = async (params?: { page?: number; take?: number }): Promise<Response<ShippingInfo[]>> => {
-  const res = await serverApiFetch('/shipping-info', { method: 'GET', query: { ...params } })
-
-  return {
-    ...res
-  }
-}
-
-export const updateShippingInfo = async (id: string, data: Partial<ShippingInfoType>): Promise<{ status: number; data: ShippingInfo | null }> => {
-  const res = await serverApiFetch(`/shipping-info/${id}`, {
-    method: 'PATCH',
-    body: { ...data }
+export const getShippings = async (params?: { page?: number; take?: number }) => {
+  const res = await serverApiFetch<ShippingInfo[]>('/shipping-info', {
+    method: 'GET',
+    query: { ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const addShippingInfo = async (data: ShippingInfoType): Promise<{ status: number; data: ShippingInfo | null }> => {
-  const res = await serverApiFetch('/shipping-info', {
+export const updateShippingInfo = async (id: string, data: Partial<ShippingInfoType>) => {
+  const res = await serverApiFetch<ShippingInfo>(`/shipping-info/${id}`, {
+    method: 'PATCH',
+    body: data
+  })
+
+  return unwrapApi(res)
+}
+
+export const addShippingInfo = async (data: ShippingInfoType) => {
+  const res = await serverApiFetch<ShippingInfo>('/shipping-info', {
     method: 'POST',
     body: { ...data, sentAt: new Date() }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }

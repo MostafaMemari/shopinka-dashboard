@@ -1,85 +1,70 @@
 import { Font, FontFormType } from '@/types/app/font.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
-export const getFonts = async (params?: Record<string, string>): Promise<Response<Font[]>> => {
-  const res = await serverApiFetch('/font', { method: 'GET', query: { ...params } })
-
-  return {
-    ...res
-  }
-}
-
-export const getFont = async (id: number): Promise<{ status: number; data: FontFormType | null }> => {
-  const res = await serverApiFetch(`/font/${id}}`, { method: 'DELETE' })
-
-  return {
-    ...res
-  }
-}
-
-export const removeFont = async (id: string): Promise<{ status: number; data: { message: string; font: FontFormType } | null }> => {
-  const res = await serverApiFetch(`/font/${id}`, { method: 'DELETE' })
-
-  return {
-    ...res
-  }
-}
-
-export const updateFont = async (id: string, data: Partial<FontFormType>): Promise<{ status: number; data: FontFormType | null }> => {
-  console.log(data)
-
-  const res = await serverApiFetch(`/font/${id}`, {
-    method: 'PATCH',
-    body: { ...data }
+export const getFonts = async (params?: Record<string, string>) => {
+  const res = await serverApiFetch<Font[]>('/font', {
+    method: 'GET',
+    query: { ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const createFont = async (data: Omit<FontFormType, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<{ status: number; data: FontFormType | null }> => {
-  const res = await serverApiFetch('/font', {
+export const getFont = async (id: number) => {
+  const res = await serverApiFetch<FontFormType>(`/font/${id}`, {
+    method: 'GET'
+  })
+
+  return unwrapApi(res)
+}
+
+export const removeFont = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; font: FontFormType }>(`/font/${id}`, { method: 'DELETE' })
+
+  return unwrapApi(res)
+}
+
+export const updateFont = async (id: string, data: Partial<FontFormType>) => {
+  const res = await serverApiFetch<FontFormType>(`/font/${id}`, {
+    method: 'PATCH',
+    body: data
+  })
+
+  return unwrapApi(res)
+}
+
+export const createFont = async (data: Omit<FontFormType, 'id' | 'userId' | 'createdAt' | 'updatedAt'>) => {
+  const res = await serverApiFetch<FontFormType>('/font', {
     method: 'POST',
-    body: { ...data }
+    body: data
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const toggleFontDefaultStatus = async (id: string, isDefault: boolean): Promise<{ status: number; data: Font | null }> => {
-  try {
-    const res = await serverApiFetch(`/font/${id}`, { method: 'PATCH', body: { isDefault } })
-
-    return {
-      ...res
-    }
-  } catch (error: any) {
-    return {
-      status: error.message.includes('401') ? 401 : 500,
-      data: error.message
-    }
-  }
-}
-
-export const setDefaultFont = async (id: number): Promise<{ status: number; data: Font[] | null }> => {
-  const res = await serverApiFetch(`/font/${id}/default`, { method: 'PATCH' })
-
-  return {
-    ...res
-  }
-}
-
-export const reorderFonts = async (orderData: { id: number; displayOrder: number }[]): Promise<{ status: number; data: Font[] | null }> => {
-  const res = await serverApiFetch('/font/reorder', {
+export const toggleFontDefaultStatus = async (id: string, isDefault: boolean) => {
+  const res = await serverApiFetch<Font>(`/font/${id}`, {
     method: 'PATCH',
-    body: [...orderData]
+    body: { isDefault }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
+}
+
+export const setDefaultFont = async (id: number) => {
+  const res = await serverApiFetch<Font[]>(`/font/${id}/default`, {
+    method: 'PATCH'
+  })
+
+  return unwrapApi(res)
+}
+
+export const reorderFonts = async (orderData: { id: number; displayOrder: number }[]) => {
+  const res = await serverApiFetch<Font[]>('/font/reorder', {
+    method: 'PATCH',
+    body: { orderData }
+  })
+
+  return unwrapApi(res)
 }

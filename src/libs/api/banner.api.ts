@@ -1,49 +1,44 @@
 import { Banner, BannerFormType } from '@/types/app/banner.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
-export const getBanners = async (params?: Record<string, string | boolean>): Promise<Response<Banner[]>> => {
-  const res = await serverApiFetch('/banner?includeValues=true', { method: 'GET', query: { ...params } })
+export const getBanners = async (params?: Record<string, string | boolean>) => {
+  const res = await serverApiFetch<Banner[]>('/banner', {
+    method: 'GET',
+    query: { includeValues: true, ...params }
+  })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const getBanner = async (id: number): Promise<{ status: number; data: Banner | null }> => {
-  const res = await serverApiFetch(`/banner/${id}}`, { method: 'GET' })
+export const getBanner = async (id: number) => {
+  const res = await serverApiFetch<Banner>(`/banner/${id}`, {
+    method: 'GET'
+  })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const removeBanner = async (id: string): Promise<{ status: number; data: { message: string; banner: Banner } | null }> => {
-  const res = await serverApiFetch(`/banner/${id}`, { method: 'DELETE' })
+export const removeBanner = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; banner: Banner }>(`/banner/${id}`, { method: 'DELETE' })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const updateBanner = async (id: number, data: Partial<BannerFormType>): Promise<{ status: number; data: Banner | null }> => {
-  const res = await serverApiFetch(`/banner/${id}`, {
+export const updateBanner = async (id: number, data: Partial<BannerFormType>) => {
+  const res = await serverApiFetch<Banner>(`/banner/${id}`, {
     method: 'PATCH',
-    body: { ...data }
+    body: data
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const createBanner = async (data: BannerFormType): Promise<{ status: number; data: Banner | null }> => {
-  const res = await serverApiFetch('/banner', {
+export const createBanner = async (data: BannerFormType) => {
+  const res = await serverApiFetch<Banner>('/banner', {
     method: 'POST',
-    body: { ...data }
+    body: data
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }

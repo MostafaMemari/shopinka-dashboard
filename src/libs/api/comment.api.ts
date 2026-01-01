@@ -1,96 +1,42 @@
 import { Comment, CommentForm } from '@/types/app/comment.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
-export const getComments = async (params?: Record<string, string | boolean>): Promise<Response<Comment[]>> => {
-  try {
-    const res = await serverApiFetch('/comment/admin', {
-      method: 'GET',
-      query: { ...params }
-    })
+export const getComments = async (params?: Record<string, string | boolean>) => {
+  const res = await serverApiFetch<{ items: Comment[]; pager: any }>('/comment/admin', {
+    method: 'GET',
+    query: { ...params }
+  })
 
-    return {
-      ...res
-    }
-  } catch (error: any) {
-    return {
-      status: error.message.includes('401') ? 401 : 500,
-      data: {
-        items: [],
-        pager: {
-          totalCount: 0,
-          totalPages: 0,
-          currentPage: 0,
-          hasNextPage: false,
-          hasPreviousPage: false
-        }
-      }
-    }
-  }
+  return unwrapApi(res)
 }
 
-export const updateComment = async (id: string, data: Partial<CommentForm>): Promise<{ status: number; data: Comment | null }> => {
-  try {
-    const res = await serverApiFetch(`/comment/${id}`, {
-      method: 'PATCH',
-      body: { ...data }
-    })
+export const updateComment = async (id: string, data: Partial<CommentForm>) => {
+  const res = await serverApiFetch<Comment>(`/comment/${id}`, {
+    method: 'PATCH',
+    body: data
+  })
 
-    return {
-      ...res
-    }
-  } catch (error: any) {
-    return {
-      status: error.message.includes('401') ? 401 : 500,
-      data: null
-    }
-  }
+  return unwrapApi(res)
 }
 
-export const createComment = async (data: CommentForm): Promise<{ status: number; data: Comment | null }> => {
-  try {
-    const res = await serverApiFetch('/comment', {
-      method: 'POST',
-      body: { ...data }
-    })
+export const createComment = async (data: CommentForm) => {
+  const res = await serverApiFetch<Comment>('/comment', {
+    method: 'POST',
+    body: data
+  })
 
-    return {
-      ...res
-    }
-  } catch (error: any) {
-    return {
-      status: error.message.includes('401') ? 401 : 500,
-      data: null
-    }
-  }
+  return unwrapApi(res)
 }
 
-export const removeComment = async (id: string): Promise<{ status: number; data: { message: string; comment: CommentForm } | null }> => {
-  try {
-    const res = await serverApiFetch(`/comment/${id}`, { method: 'DELETE' })
+export const removeComment = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; comment: CommentForm }>(`/comment/${id}`, { method: 'DELETE' })
 
-    return {
-      ...res
-    }
-  } catch (error: any) {
-    return {
-      status: error.message.includes('401') ? 401 : 500,
-      data: error.message
-    }
-  }
+  return unwrapApi(res)
 }
 
-export const toggleCommentStatus = async (id: string): Promise<{ status: number; data: { message: string; comment: CommentForm } | null }> => {
-  try {
-    const res = await serverApiFetch(`/comment/toggle-active/${id}`, { method: 'PATCH' })
+export const toggleCommentStatus = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; comment: CommentForm }>(`/comment/toggle-active/${id}`, { method: 'PATCH' })
 
-    return {
-      ...res
-    }
-  } catch (error: any) {
-    return {
-      status: error.message.includes('401') ? 401 : 500,
-      data: error.message
-    }
-  }
+  return unwrapApi(res)
 }

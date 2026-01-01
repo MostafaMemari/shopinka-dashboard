@@ -1,55 +1,46 @@
 import { Page, PageFormType } from '@/types/app/page.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
-export const getPages = async (params?: Record<string, string>): Promise<Response<Page[]>> => {
-  const res = await serverApiFetch('/page', {
+export const getPages = async (params?: Record<string, string>) => {
+  const res = await serverApiFetch<Page[]>('/page', {
     method: 'GET',
     query: { ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const getPageById = async (id: number): Promise<{ status: number; data: Page | null }> => {
-  const res = await serverApiFetch(`/page/${id}`, {
+export const getPageById = async (id: number) => {
+  const res = await serverApiFetch<Page>(`/page/${id}`, {
     method: 'GET'
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const updatePage = async (id: number, data: Partial<PageFormType>): Promise<{ status: number; data: Page | null }> => {
-  const res = await serverApiFetch(`/page/${id}`, {
+export const updatePage = async (id: number, data: Partial<PageFormType>) => {
+  const res = await serverApiFetch<Page>(`/page/${id}`, {
     method: 'PATCH',
-    body: { ...data }
+    body: data
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const createPage = async (data: PageFormType): Promise<{ status: number; data: { page: Page | null } }> => {
-  const res = await serverApiFetch('/page', {
+export const createPage = async (data: PageFormType) => {
+  const res = await serverApiFetch<{ page: Page }>('/page', {
     method: 'POST',
-    body: { ...data }
+    body: data
   })
 
-  return {
-    ...res,
-    status: 201
-  }
+  return unwrapApi(res)
 }
 
-export const removePage = async (id: string): Promise<{ status: number; data: { message: string; page: Page } | null }> => {
-  const res = await serverApiFetch(`/page/${id}`, { method: 'DELETE' })
+export const removePage = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; page: Page }>(`/page/${id}`, {
+    method: 'DELETE'
+  })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }

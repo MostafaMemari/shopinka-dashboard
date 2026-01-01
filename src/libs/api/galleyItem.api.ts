@@ -1,69 +1,54 @@
 import { GalleryItem, GalleryItemFormType } from '@/types/app/galleryItem.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
-export const getItemGalleries = async (params?: Record<string, string>): Promise<Response<GalleryItem[]>> => {
-  const res = await serverApiFetch('/gallery-item', {
+export const getItemGalleries = async (params?: Record<string, string>) => {
+  const res = await serverApiFetch<GalleryItem[]>('/gallery-item', {
     method: 'GET',
     query: { ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const getGalleryItemById = async (id: number): Promise<{ status: number; data: GalleryItem | null }> => {
-  const res = await serverApiFetch(`/gallery-item/${id}}`, { method: 'GET' })
+export const getGalleryItemById = async (id: number) => {
+  const res = await serverApiFetch<GalleryItem>(`/gallery-item/${id}`, { method: 'GET' })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const getGalleryItems = async (params: Record<string, string>): Promise<{ status: number; data: GalleryItem | null }> => {
-  const res = await serverApiFetch(`/gallery-item`, { method: 'GET', query: { ...params } })
+export const getGalleryItems = async (params: Record<string, string>) => {
+  const res = await serverApiFetch<GalleryItem[]>('/gallery-item', {
+    method: 'GET',
+    query: { ...params }
+  })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const removeGalleryItem = async (
-  galleryItemIds: string[],
-  isForce: boolean = true
-): Promise<{ status: number; data: { message: string; attribute: GalleryItem } | null }> => {
-  const res = await serverApiFetch(`/gallery-item/`, {
+export const removeGalleryItem = async (galleryItemIds: string[], isForce: boolean = true) => {
+  const res = await serverApiFetch<{ message: string; attribute: GalleryItem }>('/gallery-item', {
     method: 'DELETE',
-    body: {
-      galleryItemIds,
-      isForce
-    }
+    body: { galleryItemIds, isForce }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const updateGalleryItem = async (id: number, data: Partial<GalleryItemFormType>): Promise<{ status: number; data: GalleryItem | null }> => {
-  const res = await serverApiFetch(`/gallery-item/${id}`, {
+export const updateGalleryItem = async (id: number, data: Partial<GalleryItemFormType>) => {
+  const res = await serverApiFetch<GalleryItem>(`/gallery-item/${id}`, {
     method: 'PATCH',
-    body: { ...data }
+    body: data
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const createGalleryItem = async (formData: FormData): Promise<{ status: number; data: GalleryItem | null }> => {
-  const res = await serverApiFetch('/gallery-item', {
+export const createGalleryItem = async (formData: FormData) => {
+  const res = await serverApiFetch<GalleryItem>('/gallery-item', {
     method: 'POST',
     body: formData
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }

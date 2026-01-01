@@ -1,7 +1,7 @@
 import { generateBlogSeoDescription } from '@/hooks/reactQuery/seoDescriptionGenerators'
 import { Blog, BlogFormType } from '@/types/app/blog.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
 import { blogFormSchema } from '../validators/blog.schema'
 import { type InferType } from 'yup'
@@ -11,61 +11,53 @@ import { SeoForm, SeoMetaTargetType } from '@/types/app/seo.type'
 
 type BlogForm = InferType<typeof blogFormSchema>
 
-export const getBlogs = async (params?: Record<string, string | boolean>): Promise<Response<Blog[]>> => {
-  const res = await serverApiFetch('/blog', {
+export const getBlogs = async (params?: Record<string, string | boolean>) => {
+  const res = await serverApiFetch<Blog[]>('/blog', {
     method: 'GET',
     query: { ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const getBlogById = async (id: number): Promise<{ status: number; data: Blog | null }> => {
-  const res = await serverApiFetch(`/blog/${id}`, {
+export const getBlogById = async (id: number) => {
+  const res = await serverApiFetch<Blog>(`/blog/${id}`, {
     method: 'GET'
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const updateBlog = async (id: number, data: Partial<BlogFormType>): Promise<{ status: number; data: Blog | null }> => {
-  const res = await serverApiFetch(`/blog/${id}`, {
+export const updateBlog = async (id: number, data: Partial<BlogFormType>) => {
+  const res = await serverApiFetch<Blog>(`/blog/${id}`, {
     method: 'PATCH',
-    body: { ...data }
+    body: data
   })
 
-  if (res.status === 200) await handleSeo(Number(id), data, true)
-
-  return {
-    ...res
+  if (res.ok && res.status === 200) {
+    await handleSeo(id, data, true)
   }
+
+  return unwrapApi(res)
 }
 
-export const createBlog = async (data: BlogFormType): Promise<{ status: number; data: { blog: (Blog & { id: number }) | null } }> => {
-  const res = await serverApiFetch('/blog', {
+export const createBlog = async (data: BlogFormType) => {
+  const res = await serverApiFetch<{ blog: Blog & { id: number } }>('/blog', {
     method: 'POST',
-    body: { ...data }
+    body: data
   })
 
-  if (res.status === 200 || res.status === 201) {
+  if (res.ok && (res.status === 200 || res.status === 201)) {
     await handleSeo(res.data.blog.id, data)
   }
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const removeBlog = async (id: string): Promise<{ status: number; data: { message: string; blog: Blog } | null }> => {
-  const res = await serverApiFetch(`/blog/${id}`, { method: 'DELETE' })
+export const removeBlog = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; blog: Blog }>(`/blog/${id}`, { method: 'DELETE' })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
 const handleSeo = async (blogId: number, data: Partial<BlogForm>, isUpdate?: boolean) => {

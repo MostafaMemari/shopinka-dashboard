@@ -1,68 +1,56 @@
 import { SeoForm, SeoMetaTargetType } from '@/types/app/seo.type'
 import { generateTagSeoDescription } from '@/hooks/reactQuery/seoDescriptionGenerators'
 import { Tag, TagFormType } from '@/types/app/tag.type'
-import { Response } from '@/types/response'
 import { serverApiFetch } from '@/libs/serverApiFetch'
-
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 import { handleSeoSave } from '../services/seo/seo.service'
 import { showToast } from '@/utils/showToast'
 
-export const getTags = async (params?: Record<string, string | boolean>): Promise<Response<Tag[]>> => {
-  const res = await serverApiFetch('/tag', {
+export const getTags = async (params?: Record<string, string | boolean>) => {
+  const res = await serverApiFetch<Tag[]>('/tag', {
     method: 'GET',
     query: { ...params }
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const getTagById = async (id: number): Promise<{ status: number; data: Tag | null }> => {
-  const res = await serverApiFetch(`/tag/${id}`, {
-    method: 'GET'
-  })
+export const getTagById = async (id: number) => {
+  const res = await serverApiFetch<Tag>(`/tag/${id}`, { method: 'GET' })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const updateTag = async (id: number, data: Partial<TagFormType>): Promise<{ status: number; data: Tag | null }> => {
-  const res = await serverApiFetch(`/tag/${id}`, {
+export const updateTag = async (id: number, data: Partial<TagFormType>) => {
+  const res = await serverApiFetch<Tag>(`/tag/${id}`, {
     method: 'PATCH',
-    body: { ...data }
+    body: data
   })
 
   if (id) await handleSeo(Number(id), data, true)
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const createTag = async (data: TagFormType): Promise<{ status: number; data: { tag: Tag | null } }> => {
-  const res = await serverApiFetch('/tag', {
+export const createTag = async (data: TagFormType) => {
+  const res = await serverApiFetch<{ tag: Tag | null }>('/tag', {
     method: 'POST',
-    body: { ...data }
+    body: data
   })
 
-  if (res.status === 200 || res.status === 201) {
+  if (res.ok && res.data?.tag?.id) {
     await handleSeo(res.data.tag.id, data)
   }
 
-  return {
-    ...res,
-    status: 201
-  }
+  return unwrapApi(res)
 }
 
-export const removeTag = async (id: string): Promise<{ status: number; data: { message: string; tag: Tag } | null }> => {
-  const res = await serverApiFetch(`/tag/${id}`, { method: 'DELETE' })
+export const removeTag = async (id: string) => {
+  const res = await serverApiFetch<{ message: string; tag: Tag }>(`/tag/${id}`, {
+    method: 'DELETE'
+  })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
 const handleSeo = async (tagId: number, data: Partial<TagFormType>, isUpdate?: boolean) => {

@@ -1,22 +1,20 @@
 import { User } from '@/types/app/user.type'
 import { serverApiFetch } from '@/libs/serverApiFetch'
+import { unwrapApi } from '@/libs/helpers/unwrapApi'
 
-import { Response } from '@/types/response'
+export const getUsers = async (params?: Record<string, string | boolean>) => {
+  const res = await serverApiFetch<User[]>('/user', {
+    method: 'GET',
+    query: { ...params }
+  })
 
-export const getUsers = async (params?: Record<string, string | boolean>): Promise<Response<User>> => {
-  const res = await serverApiFetch('/user', { method: 'GET', query: { ...params } })
-
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
 
-export const getUserById = async (id: string): Promise<{ status: number; data: User }> => {
-  const res = await serverApiFetch(`/user/${id}`, {
+export const getUserById = async (id: string) => {
+  const res = await serverApiFetch<User>(`/user/${id}`, {
     method: 'GET'
   })
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }

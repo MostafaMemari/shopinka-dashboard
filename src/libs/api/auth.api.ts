@@ -4,33 +4,33 @@ import 'server-only'
 import { cookies } from 'next/headers'
 import { COOKIE_NAMES } from '../constants'
 import { serverApiFetch } from '@/libs/serverApiFetch'
-
-export const sendOtp = async (mobile: string): Promise<{ status: number; data: any }> => {
-  const res = await serverApiFetch('/auth/authenticate', {
-    method: 'POST',
-    body: {
-      mobile
-    }
-  })
-
-  return {
-    ...res
-  }
-}
+import { unwrapApi } from '../helpers/unwrapApi'
 
 interface VerifyOtpResponse {
   accessToken: string
   refreshToken: string
 }
 
-export const verifyOtp = async (mobile: string, otp: string): Promise<{ status: number; data: VerifyOtpResponse | { message: string } }> => {
-  const res = await serverApiFetch('/auth/verify-authenticate-otp', {
+export const sendOtp = async (mobile: string) => {
+  const res = await serverApiFetch('/auth/authenticate', {
+    method: 'POST',
+    body: { mobile }
+  })
+
+  return unwrapApi(res)
+}
+
+// تایید OTP و ست کردن کوکی‌ها
+export const verifyOtp = async (mobile: string, otp: string) => {
+  const res = await serverApiFetch<VerifyOtpResponse>('/auth/verify-authenticate-otp', {
     method: 'POST',
     body: { mobile, otp }
   })
 
-  if (res?.status === 201 || (res?.status === 200 && res?.data?.accessToken && res?.data?.refreshToken)) {
-    const { accessToken, refreshToken }: VerifyOtpResponse = res.data
+  const result = unwrapApi(res)
+
+  if (result.status === 200 || result.status === 201) {
+    const { accessToken, refreshToken } = result.data as VerifyOtpResponse
 
     const cookieStore = await cookies()
 
@@ -39,7 +39,6 @@ export const verifyOtp = async (mobile: string, otp: string): Promise<{ status: 
       path: '/',
       expires: new Date(Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRE_TIME) * 1000)
     })
-
     cookieStore.set(COOKIE_NAMES.REFRESH_TOKEN, refreshToken, {
       httpOnly: true,
       path: '/',
@@ -47,14 +46,16 @@ export const verifyOtp = async (mobile: string, otp: string): Promise<{ status: 
     })
   }
 
-  return {
-    ...res
-  }
+  return result
 }
 
-export const logout = async (): Promise<{ status: number; data: any }> => {
+export const logout = async () => {
   const cookieStore = await cookies()
   const refreshToken = cookieStore.get(COOKIE_NAMES.REFRESH_TOKEN)?.value
+
+  if (!refreshToken) {
+    return { status: 400, data: null, error: 'Refresh token not found' }
+  }
 
   const res = await serverApiFetch('/auth/signout', {
     method: 'POST',
@@ -64,7 +65,5 @@ export const logout = async (): Promise<{ status: number; data: any }> => {
   cookieStore.delete(COOKIE_NAMES.ACCESS_TOKEN)
   cookieStore.delete(COOKIE_NAMES.REFRESH_TOKEN)
 
-  return {
-    ...res
-  }
+  return unwrapApi(res)
 }
