@@ -5,6 +5,7 @@ import { getUserById } from '@/libs/api/user.api'
 import { getOrders } from '@/libs/api/order.api'
 import UserOrdersCard from '@/views/pages/users/details/UserOrdersCard'
 import UserDetails from '@/views/pages/users/details/UserDetails'
+import NotFound from '@/views/NotFound'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -15,7 +16,11 @@ async function Page({ params }: Props) {
 
   const user = await getUserById(id)
 
-  const orders = (await getOrders({ userId: id, includeTransaction: true, take: 50 })).data.items
+  const ordersResponse = await getOrders({ userId: id, includeTransaction: true, take: 50 })
+
+  const orders = ordersResponse?.data ?? []
+
+  if (!user.data) return <NotFound mode='light' />
 
   return (
     <Grid container spacing={6}>

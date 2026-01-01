@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactNode, useState } from 'react'
-import { Button } from '@mui/material'
+import { Box, Button, FormControlLabel, Switch } from '@mui/material'
 import CustomDialog from '@/components/dialogs/CustomDialog'
 import { showToast } from '@/utils/showToast'
 import { createGalleryItem } from '@/libs/api/galleyItem.api'
@@ -21,10 +21,13 @@ interface Props {
 
 const UploadMediaDoalog = ({ galleryId, trigger }: Props) => {
   const [openUpload, setOpenUpload] = useState(false)
+
   const [openGallerySelect, setOpenGallerySelect] = useState(false)
   const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedGalleryId, setSelectedGalleryId] = useState<string>('')
+  const [isWatermarked, setIsWatermarked] = useState<boolean>(true)
+
   const maxFiles = 5
 
   const { invalidate } = useInvalidateQuery()
@@ -97,6 +100,7 @@ const UploadMediaDoalog = ({ galleryId, trigger }: Props) => {
 
       files.forEach(file => formData.append('image', file))
       formData.append('galleryId', effectiveGalleryId)
+      formData.append('isWatermarked', String(isWatermarked))
 
       const res = await createGalleryItem(formData)
 
@@ -140,6 +144,15 @@ const UploadMediaDoalog = ({ galleryId, trigger }: Props) => {
           </>
         }
       >
+        <Box display='flex' justifyContent='flex-start' alignItems='center' mb={2}>
+          <FormControlLabel
+            control={<Switch checked={isWatermarked} onChange={e => setIsWatermarked(e.target.checked)} color='primary' />}
+            label='افزودن واترمارک'
+            labelPlacement='end'
+            sx={{ m: 0 }}
+          />
+        </Box>
+
         <DropzoneSection files={files} setFiles={setFiles} maxFiles={maxFiles} />
         {files.length > 0 && <FileList files={files} onRemoveFile={handleRemoveFile} />}
       </CustomDialog>

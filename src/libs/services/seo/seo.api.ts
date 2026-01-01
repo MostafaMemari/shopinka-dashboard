@@ -21,7 +21,10 @@ export const saveSeoMeta = async (
       }
     })
 
-    return res
+    return {
+      status: res.status,
+      data: { seo: (res as any).data?.seo || null }
+    }
   } catch (error: any) {
     return {
       status: error.message.includes('401') ? 401 : 500,
