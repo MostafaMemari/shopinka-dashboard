@@ -9,14 +9,15 @@ export type ServerApiFetchOptions = {
   body?: BodyInit | Record<string, unknown>
   query?: Record<string, string | number | boolean>
   headers?: HeadersInit
+  retry?: boolean
 }
 
 export async function serverApiFetch<T>(path: string, options: ServerApiFetchOptions = {}): Promise<ApiResult<T>> {
   const cookieStore = await cookies()
+
   const token = cookieStore.get(COOKIE_NAMES.ACCESS_TOKEN)?.value
 
   const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData
-
   const body = options.method !== 'GET' && options.body ? (options.body instanceof FormData ? options.body : JSON.stringify(options.body)) : undefined
 
   let queryString = ''
@@ -40,6 +41,42 @@ export async function serverApiFetch<T>(path: string, options: ServerApiFetchOpt
     cache: 'no-store'
   })
 
+  if (response.status === 401 && !options.retry) {
+    const refreshToken = cookieStore.get(COOKIE_NAMES.REFRESH_TOKEN)?.value
+
+    if (refreshToken) {
+      const refreshRes = await fetch(`${process.env.API_BASE_URL}/auth/refresh-token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken })
+      })
+
+      if (refreshRes.ok) {
+        const data = await refreshRes.json()
+
+        cookieStore.set(COOKIE_NAMES.ACCESS_TOKEN, data.accessToken, {
+          httpOnly: true,
+          path: '/',
+          expires: new Date(Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRE_TIME) * 1000)
+        })
+
+        return serverApiFetch<T>(path, { ...options, retry: true })
+      } else {
+        cookieStore.delete(COOKIE_NAMES.ACCESS_TOKEN)
+        cookieStore.delete(COOKIE_NAMES.REFRESH_TOKEN)
+
+        return {
+          ok: false,
+          status: 401,
+          message: 'توکن منقضی شده و رفرش موفق نبود'
+        }
+      }
+    }
+  }
+
+  const contentType = response.headers.get('content-type')
+  const data = contentType?.includes('application/json') ? await response.json() : await response.text()
+
   if (!response.ok) {
     return {
       ok: false,
@@ -47,9 +84,6 @@ export async function serverApiFetch<T>(path: string, options: ServerApiFetchOpt
       message: 'خطا در ارتباط با سرور'
     }
   }
-
-  const contentType = response.headers.get('content-type')
-  const data = contentType?.includes('application/json') ? await response.json() : await response.text()
 
   return {
     ok: true,

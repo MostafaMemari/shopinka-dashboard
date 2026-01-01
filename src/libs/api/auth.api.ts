@@ -20,7 +20,6 @@ export const sendOtp = async (mobile: string) => {
   return unwrapApi(res)
 }
 
-// تایید OTP و ست کردن کوکی‌ها
 export const verifyOtp = async (mobile: string, otp: string) => {
   const res = await serverApiFetch<VerifyOtpResponse>('/auth/verify-authenticate-otp', {
     method: 'POST',
