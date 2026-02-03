@@ -55,6 +55,11 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
     href: '/bulk-pricing'
   },
   {
+    label: 'مانیتور 404',
+    icon: 'tabler-alert-triangle',
+    href: '/404-monitor'
+  },
+  {
     label: 'کاربران',
     icon: 'tabler-users',
     href: '/users'
