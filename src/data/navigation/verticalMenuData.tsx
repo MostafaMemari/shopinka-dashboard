@@ -57,7 +57,7 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
   {
     label: 'مانیتور 404',
     icon: 'tabler-alert-triangle',
-    href: '/404-monitor'
+    href: '/monitor-404'
   },
   {
     label: 'کاربران',
