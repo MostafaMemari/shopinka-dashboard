@@ -8,8 +8,6 @@ export const getManitor404s = async (params?: Record<string, string>) => {
     query: { ...params }
   })
 
-  console.log(res)
-
   return unwrapApi(res)
 }
 
