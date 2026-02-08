@@ -2,11 +2,11 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY . .
+
 RUN npm install -g pnpm --registry=https://registry.npmmirror.com
 RUN pnpm install --frozen-lockfile --registry=https://registry.npmmirror.com
 
-COPY . .
 RUN pnpm build
 
 # ---------- Runner ----------

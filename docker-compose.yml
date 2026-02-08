@@ -1,6 +1,6 @@
 services:
   frontend:
-    container_name: frontend_shopinka
+    container_name: dashboard_shopinka
     build:
       context: .
       dockerfile: Dockerfile
