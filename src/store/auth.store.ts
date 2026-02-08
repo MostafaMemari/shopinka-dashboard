@@ -1,57 +1,47 @@
-import { create } from 'zustand'
 import { getMe } from '@/libs/api/user.api'
 import { User } from '@/types/app/user.type'
+import { create } from 'zustand'
 
 interface AuthStore {
   isLogin: boolean
-  user: Partial<User> | null
+  user: User | null
   isLoading: boolean
   error: string | null
 
-  checkAuth: () => Promise<void>
+  loginStart: () => void
+  loginSuccess: (user: User) => void
+  loginFailure: (error: string) => void
   logout: () => void
+  setLoading: (loading: boolean) => void
+  checkAuth: () => Promise<void>
 }
 
-export const useAuthStore = create<AuthStore>(set => ({
+const useAuthStore = create<AuthStore>(set => ({
   isLogin: false,
   user: null,
-  isLoading: false,
+  isLoading: true,
   error: null,
+
+  loginStart: () => set({ isLoading: true, error: null }),
+  loginSuccess: (user: User) => set({ isLogin: true, user, isLoading: false }),
+  loginFailure: (error: string) => set({ isLoading: false, error }),
+  logout: () => set({ isLogin: false, user: null, isLoading: false, error: null }),
+  setLoading: (loading: boolean) => set({ isLoading: loading }),
 
   checkAuth: async () => {
     try {
-      set({ isLoading: true, error: null })
-
+      set({ isLoading: true })
       const res = await getMe()
 
-      if (!res.ok) {
-        throw new Error(res.message || 'خطا در دریافت اطلاعات کاربر')
-      }
+      if (!res.ok) throw new Error(res.message || 'خطا در دریافت اطلاعات کاربر')
 
-      set({
-        isLogin: true,
-        user: {
-          fullName: res.data.fullName || '',
-          mobile: res.data.mobile,
-          role: res.data.role
-        },
-        isLoading: false
-      })
-    } catch (err: any) {
-      set({
-        isLogin: false,
-        user: null,
-        isLoading: false,
-        error: err.message || 'خطای ناشناخته'
-      })
+      const user = res.data
+
+      set({ isLogin: true, user, isLoading: false })
+    } catch (err) {
+      set({ isLogin: false, user: null, isLoading: false })
     }
-  },
-
-  logout: () =>
-    set({
-      isLogin: false,
-      user: null,
-      isLoading: false,
-      error: null
-    })
+  }
 }))
+
+export default useAuthStore

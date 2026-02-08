@@ -21,7 +21,7 @@ import '@assets/iconify-icons/generated-icons.css'
 
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import QueryProvider from './providers'
-import { AuthGuard } from '@/components/guards/AuthGuard'
+import AppInitializer from '@/components/common/AppInitializer'
 
 export const metadata = {
   title: 'ووکسی - قالب داشبورد مدیریتی Next.js و MUI',
@@ -51,11 +51,11 @@ const RootLayout = async (props: ChildrenType) => {
           draggable
           pauseOnHover
         />
+        <AppInitializer />
+
         <InitColorSchemeScript attribute='data' defaultMode={systemMode} />
         <QueryProvider>
-          <NuqsAdapter>
-            <AuthGuard>{children}</AuthGuard>
-          </NuqsAdapter>
+          <NuqsAdapter>{children}</NuqsAdapter>
         </QueryProvider>
       </body>
     </html>

@@ -8,10 +8,6 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
   if (pathname === '/login') {
-    if (accessToken && refreshToken) {
-      return NextResponse.redirect(new URL('/home', request.url))
-    }
-
     return NextResponse.next()
   }
 

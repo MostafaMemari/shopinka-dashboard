@@ -25,6 +25,8 @@ import { showToast } from '@/utils/showToast'
 import { verifyOtp } from '@/libs/api/auth.api'
 import { handleApiError } from '@/utils/handleApiError'
 import { Box } from '@mui/material'
+import useAuthStore from '@/store/auth.store'
+import { getMe } from '@/libs/api/user.api'
 
 const Slot = (props: SlotProps & { isError?: boolean }) => (
   <div
@@ -47,10 +49,11 @@ const FakeCaret = () => (
 export const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string; onBack: () => void }) => {
   const [otp, setOtp] = useState('')
   const [isError, setIsError] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const otpInputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const router = useRouter()
+
+  const { setLoading, loginSuccess, isLoading } = useAuthStore()
 
   const resetOtpForm = useCallback(() => {
     setIsError(true)
@@ -59,7 +62,7 @@ export const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string
     otpInputRef.current?.focus()
   }, [])
 
-  const { timeLeft, isExpired, formatTime, resetTimer } = useOtpTimer(300)
+  const { timeLeft, isExpired, formatTime } = useOtpTimer(300)
 
   useEffect(() => {
     otpInputRef.current?.focus()
@@ -67,7 +70,7 @@ export const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string
 
   const handleSubmit = useCallback(async () => {
     try {
-      setIsLoading(true)
+      setLoading(true)
 
       if (otp.length === 6 && /^\d{6}$/.test(otp)) {
         if (isExpired) {
@@ -88,6 +91,9 @@ export const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string
 
         if (res?.status === 201 || res.status === 200) {
           showToast({ type: 'success', message: 'ورود شما با موفقیت انجام شد' })
+          const getUser = await getMe()
+
+          if (getUser.ok) loginSuccess({ ...getUser.data })
           router.push('/home')
         }
 
@@ -98,9 +104,9 @@ export const OtpInputComponent = ({ phoneNumber, onBack }: { phoneNumber: string
     } catch (error) {
       showToast({ type: 'error', message: 'خطای سیستمی' })
     } finally {
-      setIsLoading(false)
+      setLoading(false)
     }
-  }, [otp, isExpired, phoneNumber, router, resetOtpForm])
+  }, [otp, isExpired, phoneNumber, router, resetOtpForm, setLoading, loginSuccess])
 
   useEffect(() => {
     if (otp.length === 6 && /^\d{6}$/.test(otp)) {

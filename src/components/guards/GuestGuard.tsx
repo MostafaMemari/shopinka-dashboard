@@ -5,26 +5,25 @@ import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { useState, useEffect } from 'react'
 import LoadingSpinner from '../LoadingSpinner'
-import { logout } from '@/libs/api/auth.api'
 
-interface AuthGuardProps {
+// ----------------------------------------------------------------------
+
+interface GuestGuardProps {
   children: ReactNode
 }
 
-const ALLOWED_ROLES = ['SUPER_ADMIN', 'ADMIN']
-
-export function AuthGuard({ children }: AuthGuardProps) {
+export function GuestGuard({ children }: GuestGuardProps) {
   const router = useRouter()
 
-  const { isLogin, isLoading, user } = useAuthStore()
+  const { isLogin, isLoading } = useAuthStore()
 
   const [isChecking, setIsChecking] = useState(true)
 
   const checkPermissions = async () => {
     if (isLoading) return
 
-    if (!isLogin || !user || !ALLOWED_ROLES.includes(user.role)) {
-      router.replace('/login')
+    if (isLogin) {
+      router.replace('/home')
 
       return
     }
