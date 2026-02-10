@@ -15,6 +15,7 @@ import TableFilters from './TableFilters'
 import { TableListSkeleton } from '@/components/TableSkeleton'
 import { useProducts } from '@/hooks/reactQuery/product/useProduct'
 import { useProductFilters } from '@/hooks/reactQuery/product/useProductFilters'
+import Link from '@/components/Link'
 
 const ProductListView = () => {
   const router = useRouter()
@@ -38,7 +39,6 @@ const ProductListView = () => {
   const products: Product[] = useMemo(() => data?.data?.items || [], [data])
   const paginationData = useMemo(() => data?.data?.pager || { currentPage: 1, totalPages: 1, totalCount: 0 }, [data])
 
-  const handleAddProduct = () => router.push('/products/add')
   const handlePageChange = (page: number) => filters.setState({ page })
   const handlePerPageChange = (take: number) => filters.setState({ take, page: 1 })
 
@@ -49,9 +49,11 @@ const ProductListView = () => {
       <Divider />
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 4, p: 6 }}>
-        <Button onClick={handleAddProduct} variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />}>
-          ثبت محصول جدید
-        </Button>
+        <Link href='/products/add'>
+          <Button variant='contained' className='max-sm:w-full' startIcon={<i className='tabler-plus' />} component='a'>
+            ثبت محصول جدید
+          </Button>
+        </Link>
 
         <CustomTextField id='form-props-search' placeholder='جستجوی محصول' type='search' value={inputValue} onChange={e => setInputValue(e.target.value)} />
       </Box>

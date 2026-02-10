@@ -27,6 +27,7 @@ const UploadMediaDoalog = ({ galleryId, trigger }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedGalleryId, setSelectedGalleryId] = useState<string>('')
   const [isWatermarked, setIsWatermarked] = useState<boolean>(true)
+  const [isThumbnail, setIsThumbnail] = useState<boolean>(true)
 
   const maxFiles = 5
 
@@ -101,6 +102,7 @@ const UploadMediaDoalog = ({ galleryId, trigger }: Props) => {
       files.forEach(file => formData.append('image', file))
       formData.append('galleryId', effectiveGalleryId)
       formData.append('isWatermarked', String(isWatermarked))
+      formData.append('isThumbnail', String(isThumbnail))
 
       const res = await createGalleryItem(formData)
 
@@ -144,13 +146,18 @@ const UploadMediaDoalog = ({ galleryId, trigger }: Props) => {
           </>
         }
       >
-        <Box display='flex' justifyContent='flex-start' alignItems='center' mb={2}>
-          <FormControlLabel
-            control={<Switch checked={isWatermarked} onChange={e => setIsWatermarked(e.target.checked)} color='primary' />}
-            label='افزودن واترمارک'
-            labelPlacement='end'
-            sx={{ m: 0 }}
-          />
+        <Box display='flex' gap={3} flexDirection={{ xs: 'column', sm: 'row' }}>
+          <Box display='flex' alignItems='center' mb={2}>
+            <FormControlLabel
+              control={<Switch checked={isWatermarked} onChange={e => setIsWatermarked(e.target.checked)} color='primary' />}
+              label='افزودن واترمارک'
+              sx={{ m: 0 }}
+            />
+          </Box>
+
+          <Box display='flex' alignItems='center' mb={2}>
+            <FormControlLabel control={<Switch checked={isThumbnail} onChange={e => setIsThumbnail(e.target.checked)} color='primary' />} label='افزودن تصویر شاخص' sx={{ m: 0 }} />
+          </Box>
         </Box>
 
         <DropzoneSection files={files} setFiles={setFiles} maxFiles={maxFiles} />
