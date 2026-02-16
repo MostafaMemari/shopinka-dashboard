@@ -67,6 +67,7 @@ const ProductListView = () => {
       ) : (
         <>
           <DesktopProductTable products={products} />
+
           <TablePaginationComponent
             paginationData={paginationData}
             rowsPerPage={filters.state.take}

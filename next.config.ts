@@ -2,7 +2,7 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['s3.shopinka.ir']
+    domains: ['s3.shopinka.ir', 'shopinka-dev.s3.ir-thr-at1.arvanstorage.ir']
   },
   experimental: {
     serverActions: {
