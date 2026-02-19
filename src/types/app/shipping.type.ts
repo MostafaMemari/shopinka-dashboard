@@ -12,6 +12,7 @@ export type Shipping = {
   createdAt: string
   updatedAt: string
   user?: User | null
+  isDefault: boolean
 }
 
 export type ShippingFormType = yup.InferType<typeof shippingSchema>

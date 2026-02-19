@@ -3,7 +3,7 @@ import * as yup from 'yup'
 export const shippingSchema = yup.object({
   name: yup.string().required('نام الزامی است'),
 
-  price: yup.number().typeError('قیمت باید عدد باشد').required('قیمت الزامی است').positive('قیمت باید عددی مثبت باشد'),
+  price: yup.number().typeError('قیمت باید عدد باشد').required('قیمت الزامی است').min(0, 'قیمت باید صفر یا عددی مثبت باشد'),
 
   estimatedDays: yup
     .number()

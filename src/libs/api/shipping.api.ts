@@ -35,6 +35,14 @@ export const updateShipping = async (id: string, data: Partial<ShippingFormType>
   return unwrapApi(res)
 }
 
+export const setDefaultShiping = async (id: number) => {
+  const res = await serverApiFetch<Shipping[]>(`/shipping/${id}/default`, {
+    method: 'PATCH'
+  })
+
+  return unwrapApi(res)
+}
+
 export const createShipping = async (data: Omit<ShippingFormType, 'id' | 'userId' | 'createdAt' | 'updatedAt'>) => {
   const res = await serverApiFetch<ShippingForm>('/shipping', {
     method: 'POST',

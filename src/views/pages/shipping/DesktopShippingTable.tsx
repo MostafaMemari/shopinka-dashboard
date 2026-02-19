@@ -13,6 +13,7 @@ import { Shipping } from '@/types/app/shipping.type'
 // Component Imports
 import RemoveShippingModal from './RemoveShippingModal'
 import CreateUpdateShippingDialog from './CreateUpdateShippingDialog'
+import ShippingDefaultToggle from './ShippingDefaultToggle'
 
 export type ShippingForm = {
   id?: string
@@ -58,6 +59,8 @@ const DesktopShippingTable = ({ data }: { data: Shipping[] }) => {
               </td>
               <td>
                 <Box display='flex' alignItems='center' gap={2}>
+                  <ShippingDefaultToggle id={row.id} isDefault={row.isDefault} />
+
                   <RemoveShippingModal id={String(row.id)} />
 
                   <CreateUpdateShippingDialog

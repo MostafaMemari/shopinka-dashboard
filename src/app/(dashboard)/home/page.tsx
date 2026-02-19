@@ -1,3 +1,5 @@
+import HomeView from '@/views/pages/home/HomeView'
+
 export default function Page() {
-  return <h1>HoOOme page!</h1>
+  return <HomeView />
 }
