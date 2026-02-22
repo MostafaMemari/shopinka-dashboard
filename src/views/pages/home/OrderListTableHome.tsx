@@ -34,6 +34,7 @@ import CustomTextField from '@core/components/mui/TextField'
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
 import TablePaginationComponentReactTable from '@/components/TablePaginationComponentReactTable'
+import { Box } from '@mui/material'
 
 declare module '@tanstack/table-core' {
   interface FilterFns {

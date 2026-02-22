@@ -11,6 +11,7 @@ import { Transaction } from './transaction.type'
 import { User } from './user.type'
 
 export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED'
+export type CancelledOrderByType = 'USER' | 'SYSTEM' | 'ADMIN'
 
 export type Order = {
   id: number
@@ -23,6 +24,12 @@ export type Order = {
   status: OrderStatus
   createdAt: string
   updatedAt: string
+
+  cancelReason?: string | null
+  cancelledAt?: string | null
+  cancelledByType?: CancelledOrderByType | null
+  cancelledById?: string | null
+
   user?: User
   address?: Address
   transaction?: Transaction
@@ -68,10 +75,17 @@ export type OrderItem = {
 export const ORDER_STATUS_MAP = {
   DELIVERED: { label: 'تحویل شده', color: 'success', colorClassName: 'text-success' },
   CANCELLED: { label: 'لغو شده', color: 'error', colorClassName: 'text-error' },
+  FULFILLING: { label: 'در حال آماده‌سازی', color: 'primary', colorClassName: 'text-primary' },
   PROCESSING: { label: 'درحال پردازش', color: 'secondary', colorClassName: 'text-secondary' },
   PENDING: { label: 'در انتظار', color: 'warning', colorClassName: 'text-warning' },
   SHIPPED: { label: 'تحویل پست', color: 'info', colorClassName: 'text-info' },
   UNKNOWN: { label: 'نامشخص', color: 'info', colorClassName: 'text-info' }
+} as const
+
+export const ORDER_CANCEL_MAP = {
+  USER: 'کاربر',
+  SYSTEM: 'سیستم',
+  ADMIN: 'ادمین'
 } as const
 
 export interface OrderMappedItem {

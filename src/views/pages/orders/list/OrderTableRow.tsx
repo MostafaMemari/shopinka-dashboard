@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Typography, Chip } from '@mui/material'
-import { Order, ORDER_STATUS_MAP } from '@/types/app/order.type'
+import { Order, ORDER_CANCEL_MAP, ORDER_STATUS_MAP } from '@/types/app/order.type'
 import { changeStatusOrder } from '@/libs/api/order.api'
 import OrderTableActions from './OrderTableActions'
 import { ShippingInfo } from '@/types/app/shippingInfo.type'
@@ -33,6 +33,7 @@ const OrderTableRow = ({ order, refetch }: OrderTableRowProps) => {
     : TRANSACTION_STATUS_MAP.UNKNOWN
 
   const orderStatus = order.status ? ORDER_STATUS_MAP[order.status as keyof typeof ORDER_STATUS_MAP] || ORDER_STATUS_MAP.UNKNOWN : ORDER_STATUS_MAP.UNKNOWN
+  const cancelledOrder = order.cancelledByType ? ORDER_CANCEL_MAP[order.cancelledByType] : undefined
 
   return (
     <tr>
@@ -59,7 +60,7 @@ const OrderTableRow = ({ order, refetch }: OrderTableRowProps) => {
         </div>
       </td>
       <td>
-        <Chip label={orderStatus.label} color={orderStatus.color} size='small' />
+        <Chip label={`${orderStatus.label} توسط ${cancelledOrder}`} color={orderStatus.color} size='small' />
       </td>
       <td>{order.transaction?.createdAt ? new Date(order.transaction.createdAt).toLocaleString('fa-ir') : '-'}</td>
       <td>{order.transaction?.amount ?? '-'}</td>
