@@ -56,7 +56,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 const formatPrice = (price: number | null | undefined): string => {
   if (!price) return '—'
 
-  return `${(price / 10).toLocaleString('fa-IR')} تومان`
+  return `${price.toLocaleString('fa-IR')} تومان`
 }
 
 const getItemName = (item: CartItem): string => {
@@ -75,7 +75,7 @@ const getItemName = (item: CartItem): string => {
 
 const getItemType = (item: CartItem): string => {
   if (item.product) return 'محصول ساده'
-  if (item.productVariant) return 'واریانت محصول'
+  if (item.productVariant) return 'محصول متغییر'
   if (item.customSticker) return 'استیکر سفارشی'
 
   return 'نامشخص'

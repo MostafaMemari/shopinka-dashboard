@@ -95,6 +95,11 @@ const verticalMenuData = (): VerticalMenuDataType[] => [
     href: '/orders'
   },
   {
+    label: 'سبد خرید',
+    icon: 'tabler-shopping-cart',
+    href: '/carts'
+  },
+  {
     label: 'حمل و نقل',
     icon: 'tabler-truck',
     href: '/shipping'

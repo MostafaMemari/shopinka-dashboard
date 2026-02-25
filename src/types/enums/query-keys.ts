@@ -24,5 +24,6 @@ export enum QueryKeys {
   MaterialStickers = 'material-stickers',
   BulkPricing = 'bulk-pricing',
   BulkPricings = 'bulk-pricings',
-  Manitor404s = 'manitor-404s'
+  Manitor404s = 'manitor-404s',
+  Carts = 'carts'
 }

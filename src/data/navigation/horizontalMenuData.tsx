@@ -80,6 +80,11 @@ const horizontalMenuData = (): HorizontalMenuDataType[] => [
     href: '/categories'
   },
   {
+    label: 'سبد خرید',
+    icon: 'tabler-shopping-cart',
+    href: '/carts'
+  },
+  {
     label: 'برچسب‌ها',
     icon: 'tabler-tag',
     href: '/tags'
