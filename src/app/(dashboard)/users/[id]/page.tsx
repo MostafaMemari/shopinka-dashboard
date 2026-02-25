@@ -7,7 +7,7 @@ import UserOrdersCard from '@/views/pages/users/details/UserOrdersCard'
 import UserDetails from '@/views/pages/users/details/UserDetails'
 import NotFound from '@/views/NotFound'
 import UserTabs from '@/views/pages/users/details/UserTabs'
-import { Box } from '@mui/material'
+import UserCartCard from '@/views/pages/users/details/UserCartCard'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -38,8 +38,8 @@ async function Page({ params }: Props) {
               content: <UserOrdersCard orders={orders} />
             },
             {
-              label: 'جزئیات دیگر',
-              content: <Box>محتوای تب دوم</Box>
+              label: 'سبد خرید',
+              content: <UserCartCard carts={orders} />
             }
           ]}
         />
