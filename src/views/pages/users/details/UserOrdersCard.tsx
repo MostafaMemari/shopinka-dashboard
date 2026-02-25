@@ -5,8 +5,6 @@ import { useState, useMemo } from 'react'
 
 // MUI Imports
 import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import Checkbox from '@mui/material/Checkbox'
 import Typography from '@mui/material/Typography'
 
 // Third-party Imports

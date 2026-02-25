@@ -8,6 +8,7 @@ import UserDetails from '@/views/pages/users/details/UserDetails'
 import NotFound from '@/views/NotFound'
 import UserTabs from '@/views/pages/users/details/UserTabs'
 import UserCartCard from '@/views/pages/users/details/UserCartCard'
+import { getCartByUserId } from '@/libs/api/cart.api'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -19,8 +20,10 @@ async function Page({ params }: Props) {
   const user = await getUserById(id)
 
   const ordersResponse = await getOrders({ userId: id, includeTransaction: true, includeOrder: true, take: 50 })
+  const cartResponse = await getCartByUserId(id)
 
   const orders = ordersResponse?.data
+  const carts = cartResponse?.data
 
   if (!user.data) return <NotFound mode='light' />
 
@@ -39,7 +42,7 @@ async function Page({ params }: Props) {
             },
             {
               label: 'سبد خرید',
-              content: <UserCartCard carts={orders} />
+              content: <UserCartCard carts={carts} />
             }
           ]}
         />
