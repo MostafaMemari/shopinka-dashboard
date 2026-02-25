@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install -g pnpm --registry=https://registry.npmmirror.com
-RUN pnpm install --frozen-lockfile --registry=https://registry.npmmirror.com
+RUN npm install -g pnpm
+RUN pnpm install --frozen-lockfile
 
 RUN pnpm build
 
