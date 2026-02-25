@@ -61,28 +61,6 @@ const OrderTable = ({ orders }: { orders: Order[] }) => {
 
   const columns = useMemo<ColumnDef<Order, any>[]>(
     () => [
-      {
-        id: 'select',
-        header: ({ table }) => (
-          <Checkbox
-            {...{
-              checked: table.getIsAllRowsSelected(),
-              indeterminate: table.getIsSomeRowsSelected(),
-              onChange: table.getToggleAllRowsSelectedHandler()
-            }}
-          />
-        ),
-        cell: ({ row }) => (
-          <Checkbox
-            {...{
-              checked: row.getIsSelected(),
-              disabled: !row.getCanSelect(),
-              indeterminate: row.getIsSomeSelected(),
-              onChange: row.getToggleSelectedHandler()
-            }}
-          />
-        )
-      },
       columnHelper.accessor('id', {
         header: 'شناسه',
         cell: ({ row }) => <Link className='text-sky-300 dark:text-sky-600' href={`/orders/${row.original.id}`}>{`#${row.original.id}`}</Link>
@@ -217,11 +195,10 @@ const OrderTable = ({ orders }: { orders: Order[] }) => {
   )
 }
 
-const UserOrdersCard = ({ orders }: { orders: Order[] }) => {
+const UserOrdersCard = ({ orders }: { orders: any }) => {
   return (
     <Card>
-      <CardHeader title='سفارشات' />
-      <OrderTable orders={orders} />
+      <OrderTable orders={orders?.items} />
     </Card>
   )
 }
