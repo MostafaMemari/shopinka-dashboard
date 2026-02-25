@@ -79,6 +79,9 @@ const CartRow = ({ cart }: { cart: Cart }) => {
         </TableCell>
 
         <TableCell>{new Date(cart.createdAt).toLocaleDateString('fa-IR')}</TableCell>
+        <TableCell>
+          {new Date(cart.updatedAt).toLocaleTimeString('fa-IR')} - {new Date(cart.updatedAt).toLocaleDateString('fa-IR')}
+        </TableCell>
         <TableCell align='center'>
           <Chip label={`${cart.items.length} آیتم`} color='primary' size='small' variant='filled' />
         </TableCell>
@@ -188,6 +191,7 @@ const DesktopCartTable = ({ carts }: { carts: Cart[] }) => {
             <TableCell>موبایل</TableCell>
             <TableCell>وضعیت شماره</TableCell>
             <TableCell>تاریخ ایجاد</TableCell>
+            <TableCell>آخرین تغییرات</TableCell>
             <TableCell align='center'>تعداد آیتم</TableCell>
             <TableCell align='right'>جمع کل</TableCell>
             <TableCell width={50} />
