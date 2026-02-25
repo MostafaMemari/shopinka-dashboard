@@ -74,10 +74,6 @@ const CartRow = ({ cart }: { cart: Cart }) => {
 
         <TableCell>{cart.user?.mobile}</TableCell>
 
-        <TableCell>
-          <Chip label={cart.user?.isVerifiedMobile ? 'تایید شده' : 'تایید نشده'} color={cart.user?.isVerifiedMobile ? 'success' : 'error'} size='small' variant='outlined' />
-        </TableCell>
-
         <TableCell>{new Date(cart.createdAt).toLocaleDateString('fa-IR')}</TableCell>
         <TableCell>
           {new Date(cart.updatedAt).toLocaleTimeString('fa-IR')} - {new Date(cart.updatedAt).toLocaleDateString('fa-IR')}
@@ -116,10 +112,6 @@ const CartRow = ({ cart }: { cart: Cart }) => {
                 borderColor: 'divider'
               }}
             >
-              <Typography variant='subtitle2' gutterBottom component='div' color='text.secondary'>
-                جزئیات آیتم‌های سبد خرید #{cart.id}
-              </Typography>
-
               <Table size='small' aria-label='purchases'>
                 <TableHead>
                   <TableRow>
@@ -189,7 +181,6 @@ const DesktopCartTable = ({ carts }: { carts: Cart[] }) => {
           <TableRow>
             <TableCell>شناسه</TableCell>
             <TableCell>موبایل</TableCell>
-            <TableCell>وضعیت شماره</TableCell>
             <TableCell>تاریخ ایجاد</TableCell>
             <TableCell>آخرین تغییرات</TableCell>
             <TableCell align='center'>تعداد آیتم</TableCell>
